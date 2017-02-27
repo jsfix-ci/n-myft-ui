@@ -4,7 +4,7 @@
 */
 
 const nextButtons = require('../myft-common');
-const nNotification = require('../notification');
+const nNotification = require('n-notification');
 const Delegate = require('ftdomdelegate');
 const myftClient = require('next-myft-client');
 

@@ -3,9 +3,6 @@
 
 const path = require('path');
 const BowerWebpackPlugin = require('bower-webpack-plugin');
-const componentsToTest = [
-	'myft'
-];
 
 module.exports = function (karma) {
 
@@ -34,7 +31,7 @@ module.exports = function (karma) {
 				'Array.prototype.findIndex|always|gated'
 			].join(',') + '&excludes=Symbol,Symbol.iterator,Symbol.species,Map,Set',
 			'myft/**/*.spec.js'
-		]
+		],
 
 		// preprocess matching files before serving them to	the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -67,6 +64,10 @@ module.exports = function (karma) {
 				new BowerWebpackPlugin({ includes: /\.js$/ }),
 			],
 			resolve: {
+				alias: {
+					'react': 'preact-compat',
+					'react-dom': 'preact-compat'
+				},
 				root: [
 					path.join(__dirname, 'bower_components'),
 					path.join(__dirname, 'node_modules')

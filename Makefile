@@ -8,6 +8,9 @@ run:
 	cp -rf $(shell cat _test-server/template-copy-list.txt) bower_components/n-ui
 	node _test-server/app
 
+test-build:
+	webpack --config webpack.config.js
+
 test-unit:
 	karma start karma.conf.js
 
@@ -20,7 +23,7 @@ test-unit-dev:
 
 # Note: `run` executes `node _test-server/app`, which fires up exchange, then deploys
 # a test static site to s3, then exits, freeing the process to execute `nightwatch a11y`.
-test: verify test-unit
+test: verify test-unit test-build
 
 # Test-dev is only for development environments.
 test-dev: verify test-unit-dev

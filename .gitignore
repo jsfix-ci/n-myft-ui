@@ -1,0 +1,13 @@
+*.env*
+/.sass-cache/
+/bower_components/
+/node_modules/
+/npm-debug.log*
+.DS_Store
+.editorconfig
+.eslintrc.js
+.scss-lint.yml
+public/main-without-n-ui.js
+public/main-without-n-ui.js.map
+public/main.css
+public/main.css.map
