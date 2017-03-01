@@ -8,7 +8,6 @@ const Delegate = require('ftdomdelegate');
 
 const delegate = new Delegate(document.body);
 const pushNotifications = require('./js/push-notifications');
-const grabUrlHashWithPrefix = require('./js/grab-url-hash-with-prefix');
 const uuid = require('n-ui-foundations').uuid;
 const $$ = require('n-ui-foundations').$$
 
@@ -227,8 +226,8 @@ function showCopyToListOverlay (contentId, excludeList) {
 	showListsOverlay('Copy to list', `/myft/list?fragment=true&copy=true&contentId=${contentId}&excludeList=${excludeList}`, contentId)
 }
 
-function showArticleSavedOverlay (contentId, fromClippings) {
-	showListsOverlay('Article saved', `/myft/list?fragment=true&fromArticleSaved=true&contentId=${contentId}${fromClippings && '&fromClippings=true'}`, contentId)
+function showArticleSavedOverlay (contentId) {
+	showListsOverlay('Article saved', `/myft/list?fragment=true&fromArticleSaved=true&contentId=${contentId}`, contentId)
 }
 
 function showCreateListOverlay () {
@@ -402,26 +401,6 @@ export function init (opts) {
 	}
 	initialised = true;
 	flags = opts.flags;
-
-	grabUrlHashWithPrefix('myft:notification:')
-		.then(messageKey => {
-			if (!messageKey || !nNotificationMsgs.hasOwnProperty(messageKey)) { return; }
-			nNotification.show({
-				content: nNotificationMsgs[messageKey],
-				type: 'clippings',
-				duration: 0
-			});
-		});
-
-	grabUrlHashWithPrefix('myft:list-overlay:')
-		.then(messageKey => {
-			if (messageKey === 'clippings') {
-				const matches = window.location.pathname.match(/^\/content\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/);
-				if (matches && matches.length) {
-					showArticleSavedOverlay(matches[1], true);
-				}
-			}
-		});
 
 	if (opts && opts.anonymous) {
 		['follow', 'save'].forEach(action => {
