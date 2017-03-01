@@ -188,11 +188,14 @@ function sendSubscriptionToServer (subscription, isRemove) {
 				endpoints = currentSubscription.items;
 			}
 
+			const authKey = subscription.getKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh')))) : '';
+			const authSecret = subscription.getKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth')))) : '';
 			const index = endpoints.indexOf(thisEndpoint);
+
 			if(isRemove || (!thisEndpoint && index >= 0)) {
 				myftClient.remove('user', null, 'enabled', 'endpoint', encodeURIComponent(thisEndpoint));
 			} else if (index < 0) {
-				myftClient.add('user', null, 'enabled', 'endpoint', encodeURIComponent(thisEndpoint));
+				myftClient.add('user', null, 'enabled', 'endpoint', encodeURIComponent(thisEndpoint), {authKey: authKey, authSecret: authSecret});
 			}
 		});
 
