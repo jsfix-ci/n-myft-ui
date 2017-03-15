@@ -18,6 +18,8 @@
 	}
 }
 
+//TODO this parameter is only necessary up to n-ui@4
+//Auto adding myft to a head stylesheet is no longer a requirement
 @mixin nUiMyftCommon ($force-head: true) {
 	@if $force-head == true {
 		@include nUiStylesheetStart('head-n-ui-core');
