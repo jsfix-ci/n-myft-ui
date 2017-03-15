@@ -18,8 +18,13 @@
 	}
 }
 
-@mixin nUiMyftCommon () {
-	@include nUiStylesheetStart('head-n-ui-core');
+//TODO this parameter is only necessary up to n-ui@4
+//Auto adding myft to a head stylesheet is no longer a requirement
+@mixin nUiMyftCommon ($force-head: true) {
+	@if $force-head == true {
+		@include nUiStylesheetStart('head-n-ui-core');
+	}
+
 	.myft-ui,
 	.n-myft-ui {
 		display: inline-block;
@@ -104,7 +109,9 @@
 		display: none;
 	}
 
-	@include nUiStylesheetEnd('head-n-ui-core');
+	@if $force-head == true {
+		@include nUiStylesheetEnd('head-n-ui-core');
+	}
 }
 
 $n-ui-myft-common-applied: false !default;
