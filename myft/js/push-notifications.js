@@ -26,64 +26,56 @@ function init () {
 			subscribe();
 		}
 	});
-
 	initialiseState();
 }
 
 // Once the service worker is registered set the initial state
 function initialiseState () {
-	// Are Notifications supported in the service worker?
-	if (!('showNotification' in window.ServiceWorkerRegistration.prototype)) {
-		//TODO: send tracking event
-		return;
+	if ('serviceWorker' in navigator && 'PushManager' in window) {
+		// Check the current Notification permission.
+		// If its denied, it's a permanent block until the
+		// user changes the permission
+		if (Notification.permission === 'denied') {
+			console.warn('Notification permissions denied'); //eslint-disable-line
+			return;
+		}
+
+		if (infoText) {
+			// Wipe out the “not supported” message
+			infoText.textContent = '';
+		}
+
+		// We need the service worker registration to check for a subscription
+		navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+			// Do we already have a push message subscription?
+			serviceWorkerRegistration.pushManager.getSubscription()
+				.then(function (subscription) {
+					// Enable any UI which subscribes / unsubscribes from
+					// push messages.
+					pushButton.disabled = false;
+					pushButtonContainer.classList.add('js-push-supported');
+					if (!subscription) {
+						// We aren't subscribed to push, so set UI
+						// to allow the user to enable push
+						return;
+					}
+
+					// Keep your server in sync with the latest subscriptionId
+					sendSubscriptionToServer(subscription);
+
+					// Set your UI to show they have subscribed for
+					// push messages
+					nButtons.toggleState(pushButton);
+					isPushEnabled = true;
+				})
+				.catch(function (err) {
+					console.warn('Error during getSubscription()', err); //eslint-disable-line
+				});
+		});
+
+	} else {
+		pushButtonContainer.classList.add('myft-ui--unsupported');
 	}
-
-	// Check the current Notification permission.
-	// If its denied, it's a permanent block until the
-	// user changes the permission
-	if (Notification.permission === 'denied') {
-		console.warn('Notification permissions denied'); //eslint-disable-line
-		return;
-	}
-
-	// Check if push messaging is supported
-	if (!('PushManager' in window)) {
-		//TODO: send tracking event
-		return;
-	}
-
-	if (infoText) {
-		// Wipe out the “not supported” message
-		infoText.textContent = '';
-	}
-
-	// We need the service worker registration to check for a subscription
-	navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
-		// Do we already have a push message subscription?
-		serviceWorkerRegistration.pushManager.getSubscription()
-			.then(function (subscription) {
-				// Enable any UI which subscribes / unsubscribes from
-				// push messages.
-				pushButton.disabled = false;
-				pushButtonContainer.classList.add('js-push-supported');
-				if (!subscription) {
-					// We aren't subscribed to push, so set UI
-					// to allow the user to enable push
-					return;
-				}
-
-				// Keep your server in sync with the latest subscriptionId
-				sendSubscriptionToServer(subscription);
-
-				// Set your UI to show they have subscribed for
-				// push messages
-				nButtons.toggleState(pushButton);
-				isPushEnabled = true;
-			})
-			.catch(function (err) {
-				console.warn('Error during getSubscription()', err); //eslint-disable-line
-			});
-	});
 }
 
 function subscribe () {
