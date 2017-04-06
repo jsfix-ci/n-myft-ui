@@ -22,6 +22,14 @@
 		display: block;
 	}
 
+	.js .myft-ui--prefer[data-preference-name="push-notifications"] .js-myft-ui__info {
+		display: none;
+	}
+
+	.js .myft-ui--unsupported[data-preference-name="push-notifications"] .js-myft-ui__info {
+		display: block;
+	}
+
 	.myft-ui__info {
 		margin: 0 0 5px 10px;
 	}
