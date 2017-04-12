@@ -7,7 +7,6 @@ const myftClient = require('next-myft-client');
 const Delegate = require('ftdomdelegate');
 
 const delegate = new Delegate(document.body);
-const pushNotifications = require('./js/push-notifications');
 const uuid = require('n-ui-foundations').uuid;
 const $$ = require('n-ui-foundations').$$
 
@@ -448,10 +447,6 @@ export function init (opts) {
 			ev.preventDefault();
 			showCreateListOverlay();
 		});
-
-		if (flags.get('enablePushNotificationPreference')) {
-			pushNotifications.init(opts.pushNotifications);
-		}
 	}
 }
 
