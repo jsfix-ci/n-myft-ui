@@ -31,14 +31,6 @@ You can require different sizes of the button as below:
 
 The templates require an _contentId_ variable. You can also override the button text by providing a _buttonText_ property.
 
-### Prefer
-
-	{{>n-ui/myft/templates/prefer preferenceName="email-digest" buttonText="Subscribe"}}
-	{{>n-ui/myft/templates/unprefer preferenceName="email-digest" buttonText="Subscribe"}}
-
-The templates require a _preferenceName_ variable and a _buttonText_ property.
-IN addition you may define a label, either as text, using _label_, or by specifying the name of a partial to render, using _lableTemplate_
-
 ## JS API
 
 - `init()` Sets up listeners to update all myft buttons (follow, save, preference) to match the user's preferences

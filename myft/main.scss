@@ -10,9 +10,7 @@ $o-overlay-is-silent: false;
 @import 'o-overlay/main';
 $o-overlay-is-silent: true;
 
-@import 'scss/preference';
 
-@include nUiMyftPrefs;
 
 // 'unfollow' button
 .myft-ui__button--manage,
