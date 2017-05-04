@@ -32,6 +32,12 @@
 
 	.n-myft-ui__button {
 		@include oButtons();
+
+		&:focus {
+			outline: 3px solid getColor('teal-1');
+			outline-offset: 3px;
+		}
+
 	}
 
 	.n-myft-ui__button--inverse {
