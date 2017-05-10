@@ -4,8 +4,12 @@
 		data-concept-id="{{conceptId}}"
 		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
 		<input type="hidden" value="{{name}}" name="name">
+		{{#if taxonomy}}
 		<input type="hidden" value="{{taxonomy}}" name="taxonomy">
-		<input type="hidden" value="{{type}}" name="type">
+		{{/if}}
+		{{#if type}}
+			<input type="hidden" value="{{type}}" name="type">
+		{{/if}}
 		<button
 			aria-label="Add {{name}}"
 			aria-pressed="false"
