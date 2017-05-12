@@ -50,14 +50,6 @@ function toggleButton (buttonEl, pressed) {
 	buttonEl.removeAttribute('disabled');
 }
 
-function setButtonToPressed(buttonEl) {
-	toggleButton(buttonEl, true);
-}
-
-function setButtonToUnpressed(buttonEl) {
-	toggleButton(buttonEl, false);
-}
-
 function updateUiForFeature (opts) {
 	if (!uiSelectorsMap.get(opts.myftFeature)) {
 		return;
@@ -318,47 +310,7 @@ function extractMetaData (inputs) {
 	return meta;
 }
 
-function followOrUnfollowMultipleConcepts (action, conceptIds, meta) {
-	let taxonomies = [];
-	if (meta.taxonomy) {
-		taxonomies = meta.taxonomy.split(',');
-	}
-
-	let types = [];
-	if (meta.type) {
-		types = meta.type.split(',');
-	}
-
-	const names = meta.name.split(',');
-
-	Promise.all(conceptIds.map((conceptId, i) => {
-		const thisConceptMeta = Object.assign({}, meta, {
-			name: names[i],
-		});
-
-		if(taxonomies[i]) {
-			thisConceptMeta.taxonomy = taxonomies[i];
-		}
-
-		if(types[i]) {
-			thisConceptMeta.type = types[i];
-		}
-
-		const actionFn = myftClient[action].bind(myftClient);
-		return actionFn('user', actorId, 'followed', 'concept', conceptId, thisConceptMeta);
-	}))
-		.then(() => {
-			if(action === 'add') {
-				setButtonToPressed(activeButton);
-			} else if (action === 'remove') {
-				setButtonToUnpressed(activeButton);
-			} else {
-				throw new Error('Unexpected action passed to changeRelationshipForConcepts: ', action);
-			}
-		});
-}
-
-function getInteractionHandler (relationship) {
+function getInteractionHandler (myftFeature) {
 	return function (ev, el) {
 		ev.preventDefault();
 
@@ -382,25 +334,38 @@ function getInteractionHandler (relationship) {
 			action = (isPressed) ? 'remove' : 'add';
 		}
 
-		const idString = form.getAttribute(idPropertiesMap.get(relationship));
-		const nodeType = typesMap.get(relationship);
+		const id = form.getAttribute(idPropertiesMap.get(myftFeature));
+		const type = typesMap.get(myftFeature);
 		const hiddenFields = $$('input[type="hidden"]', form);
 		const metaFields = (buttonWithValTriggered) ? [activeButton, ...hiddenFields] : hiddenFields;
-		const meta = extractMetaData(metaFields);
 
-		if (action === 'add' || action === 'remove') {
+		let meta = extractMetaData(metaFields);
+
+		if (~['add', 'remove'].indexOf(action)) {
 			const actorId = form.getAttribute('data-actor-id');
 
-			if (nodeType === 'concept' && idString.includes(',')) {
-				followOrUnfollowMultipleConcepts(action, idString.split(','), meta)
+			if (type === 'concept') {
+				const conceptIds = id.split(',');
+				const taxonomies = meta.taxonomy.split(',');
+				const names = meta.name.split(',');
+
+				const followPromises = conceptIds.map((conceptId, i) => {
+					const singleMeta = Object.assign({}, meta, {
+						name: names[i],
+						taxonomy: taxonomies[i]
+					});
+					return myftClient[action](actorsMap.get(myftFeature), actorId, myftFeature, type, conceptId, singleMeta);
+				});
+
+				Promise.all(followPromises)
+					.then(() => toggleButton(activeButton, action === 'add'));
+
 			} else {
-				const actionFn = myftClient[action].bind(myftClient);
-				const actor = actorsMap.get(relationship);
-				actionFn(actor, actorId, relationship, nodeType, idString, meta);
+				myftClient[action](actorsMap.get(myftFeature), actorId, myftFeature, type, id, meta);
 			}
 
 		} else {
-			myftClient[action](relationship, nodeType, idString, meta);
+			myftClient[action](myftFeature, type, id, meta);
 		}
 	};
 }
@@ -466,7 +431,7 @@ export function updateUi (el, ignoreLinks) {
 		personaliseLinks(el);
 	}
 
-	for (let relationship of uiSelectorsMap.values()) {
+	for (let relationship of uiSelectorsMap.keys()) {
 		if (!results[relationship]) {
 			return;
 		}
