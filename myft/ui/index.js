@@ -1,6 +1,6 @@
 //TODO: refactor the massive out of this
 
-const nextButtons = require('../myft-common');
+const nextButtons = require('../../myft-common');
 const nNotification = require('n-notification');
 const Overlay = require('o-overlay');
 const myftClient = require('next-myft-client');
@@ -24,12 +24,7 @@ const types = {
 	contained: 'content'
 };
 
-const actors = {
-	saved: 'user',
-	followed: 'user',
-	preferred: 'user',
-	contained: 'list'
-};
+const actorsMap = require('./relationshipMaps/actors');
 
 const uiSelectors = {
 	saved: '[data-myft-ui="saved"]',
@@ -64,15 +59,22 @@ function getUuid (item) {
 	return item.UUID || item.uuid;
 }
 
-function toggleButton (buttonEl, state) {
-	const isPressed = buttonEl.getAttribute('aria-pressed') === 'true';
+function toggleButton (buttonEl, pressed) {
+	const alreadyPressed = buttonEl.getAttribute('aria-pressed') === 'true';
 
-	if (state !== isPressed) {
+	if (pressed !== alreadyPressed) {
 		nextButtons.toggleState(buttonEl);
 	}
 	buttonEl.removeAttribute('disabled');
 }
 
+function setButtonToPressed(buttonEl) {
+	toggleButton(buttonEl, true);
+}
+
+function setButtonToUnpressed(buttonEl) {
+	toggleButton(buttonEl, false);
+}
 
 function updateUiForFeature (opts) {
 	if (!uiSelectors[opts.myftFeature]) {
@@ -142,7 +144,7 @@ function setUpSaveToExistingListListeners (overlay, contentId) {
 		saveToExistingListButton.addEventListener('click', ev => {
 			ev.preventDefault();
 
-			if(!listSelect.value) {
+			if (!listSelect.value) {
 				const nameFormGroup = overlay.content.querySelector('.js-uuid-group');
 				nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
 				return;
@@ -167,7 +169,7 @@ function setUpNewListListeners (overlay, contentId) {
 	createListButton.addEventListener('click', ev => {
 		ev.preventDefault();
 
-		if(!nameInput.value) {
+		if (!nameInput.value) {
 			const nameFormGroup = overlay.content.querySelector('.js-name-group');
 			nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
 			return;
@@ -180,7 +182,7 @@ function setUpNewListListeners (overlay, contentId) {
 
 		myftClient.add('user', null, 'created', 'list', uuid(), createListData)
 			.then(detail => {
-				if(contentId) {
+				if (contentId) {
 					return myftClient.add('list', detail.subject, 'contained', 'content', contentId);
 				} else {
 					return detail;
@@ -188,7 +190,7 @@ function setUpNewListListeners (overlay, contentId) {
 
 			})
 			.then(detail => {
-				if(contentId){
+				if (contentId) {
 					updateAfterIO('contained', detail);
 				}
 				overlay.close();
@@ -238,20 +240,20 @@ function getMessage (relationship, detail, href) {
 
 	const messages = {
 		followed:
-			`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
+		`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
 			${detail.results ? 'You are following' : 'You unfollowed'} <b>${detail.data.name}</b>.
 			<a href="${href}" data-trackable="alerts">Manage topics</a>`,
 		saved:
-			`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
+		`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
 			${detail.results ? 'Article added to your' : 'Article removed from your'}
 			<a href="${href}" data-trackable="saved-cta">saved articles</a>`,
 		contained:
-			`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
+		`<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
 			${detail.results ? `Article added to your list.
 			<a href="${href}" data-trackable="alerts">View list</a>` : 'Article removed from your list'}`
 	};
 
-	return (messages.hasOwnProperty(relationship)) ? messages[relationship]: '';
+	return (messages.hasOwnProperty(relationship)) ? messages[relationship] : '';
 }
 
 function getPersonaliseUrlPromise (page, relationship, detail) {
@@ -280,7 +282,7 @@ function updateAfterIO (myftFeature, detail) {
 					.then(createdLists => {
 						if (createdLists.length) {
 							showArticleSavedOverlay(detail.subject);
-							return {message: null};
+							return { message: null };
 						}
 						return {};
 					});
@@ -292,7 +294,7 @@ function updateAfterIO (myftFeature, detail) {
 	}
 
 	messagePromise
-		.then(({message = null, type = null}) => {
+		.then(({ message = null, type = null }) => {
 			if (!message) {
 				return;
 			}
@@ -334,7 +336,47 @@ function extractMetaData (inputs) {
 	return meta;
 }
 
-function getInteractionHandler (myftFeature) {
+function followOrUnfollowMultipleConcepts (action, conceptIds, meta) {
+	let taxonomies = [];
+	if (meta.taxonomy) {
+		taxonomies = meta.taxonomy.split(',');
+	}
+
+	let types = [];
+	if (meta.type) {
+		types = meta.type.split(',');
+	}
+
+	const names = meta.name.split(',');
+
+	Promise.all(conceptIds.map((conceptId, i) => {
+		const thisConceptMeta = Object.assign({}, meta, {
+			name: names[i],
+		});
+
+		if(taxonomies[i]) {
+			thisConceptMeta.taxonomy = taxonomies[i];
+		}
+
+		if(types[i]) {
+			thisConceptMeta.type = types[i];
+		}
+
+		const actionFn = myftClient[action].bind(myftClient);
+		return actionFn('user', actorId, 'followed', 'concept', conceptId, thisConceptMeta);
+	}))
+		.then(() => {
+			if(action === 'add') {
+				setButtonToPressed(activeButton);
+			} else if (action === 'remove') {
+				setButtonToUnpressed(activeButton);
+			} else {
+				throw new Error('Unexpected action passed to changeRelationshipForConcepts: ', action);
+			}
+		});
+}
+
+function getInteractionHandler (relationship) {
 	return function (ev, el) {
 		ev.preventDefault();
 
@@ -358,38 +400,25 @@ function getInteractionHandler (myftFeature) {
 			action = (isPressed) ? 'remove' : 'add';
 		}
 
-		const id = form.getAttribute(idProperties[myftFeature]);
-		const type = types[myftFeature];
+		const idString = form.getAttribute(idProperties[relationship]);
+		const nodeType = types[relationship];
 		const hiddenFields = $$('input[type="hidden"]', form);
 		const metaFields = (buttonWithValTriggered) ? [activeButton, ...hiddenFields] : hiddenFields;
+		const meta = extractMetaData(metaFields);
 
-		let meta = extractMetaData(metaFields);
-
-		if (~['add', 'remove'].indexOf(action)) {
+		if (action === 'add' || action === 'remove') {
 			const actorId = form.getAttribute('data-actor-id');
 
-			if (type === 'concept') {
-				const conceptIds = id.split(',');
-				const taxonomies = meta.taxonomy.split(',');
-				const names = meta.name.split(',');
-
-				const followPromises = conceptIds.map((conceptId, i) => {
-					const singleMeta = Object.assign({}, meta, {
-						name: names[i],
-						taxonomy: taxonomies[i]
-					});
-					return myftClient[action](actors[myftFeature], actorId, myftFeature, type, conceptId, singleMeta);
-				});
-
-				Promise.all(followPromises)
-					.then(() => toggleButton(activeButton, action === 'add'));
-
+			if (nodeType === 'concept' && idString.includes(',')) {
+				followOrUnfollowMultipleConcepts(action, idString.split(','), meta)
 			} else {
-				myftClient[action](actors[myftFeature], actorId, myftFeature, type, id, meta);
+				const actionFn = myftClient[action].bind(myftClient);
+				const actor = actorsMap.get(relationship);
+				actionFn(actor, actorId, relationship, nodeType, idString, meta);
 			}
 
 		} else {
-			myftClient[action](myftFeature, type, id, meta);
+			myftClient[action](relationship, nodeType, idString, meta);
 		}
 	};
 }
@@ -428,9 +457,9 @@ export function init (opts) {
 				document.body.addEventListener(`myft.user.${myftFeature}.${types[myftFeature]}.load`, onLoad);
 			}
 
-			document.body.addEventListener(`myft.${actors[myftFeature]}.${myftFeature}.${types[myftFeature]}.add`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actors[myftFeature]}.${myftFeature}.${types[myftFeature]}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actors[myftFeature]}.${myftFeature}.${types[myftFeature]}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.add`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
 
 			delegate.on('submit', uiSelectors[myftFeature], getInteractionHandler(myftFeature));
 		});
@@ -450,7 +479,7 @@ export function init (opts) {
 	}
 }
 
-export function	updateUi (el, ignoreLinks) {
+export function updateUi (el, ignoreLinks) {
 	if (!ignoreLinks) {
 		personaliseLinks(el);
 	}
