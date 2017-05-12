@@ -26,13 +26,7 @@ const types = {
 
 const actorsMap = require('./relationshipMaps/actors');
 const uiSelectorsMap = require('./relationshipMaps/ui-selectors');
-
-const idProperties = {
-	saved: 'data-content-id',
-	followed: 'data-concept-id',
-	preferred: 'data-preference-name',
-	contained: 'data-content-id'
-};
+const idPropertiesMap = require('./relationshipMaps/id-properties');
 
 const nNotificationMsgs = {
 	followAnon: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
@@ -76,7 +70,7 @@ function updateUiForFeature (opts) {
 	}
 
 	const featureForms = $$(uiSelectorsMap.get(opts.myftFeature), opts.context);
-	const idProperty = idProperties[opts.myftFeature];
+	const idProperty = idPropertiesMap.get(opts.myftFeature);
 	const uuids = opts.subjects.map(getUuid);
 
 	// if there are multiple buttons, use the button with the same value as the rel property
@@ -394,7 +388,7 @@ function getInteractionHandler (relationship) {
 			action = (isPressed) ? 'remove' : 'add';
 		}
 
-		const idString = form.getAttribute(idProperties[relationship]);
+		const idString = form.getAttribute(idPropertiesMap.get(relationship));
 		const nodeType = types[relationship];
 		const hiddenFields = $$('input[type="hidden"]', form);
 		const metaFields = (buttonWithValTriggered) ? [activeButton, ...hiddenFields] : hiddenFields;
