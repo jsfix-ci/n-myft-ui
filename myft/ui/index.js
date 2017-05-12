@@ -28,7 +28,7 @@ const nNotificationMsgs = {
 	opted: 'You‘ve opted into our new site. You can return to FT.com at any time.'
 };
 
-function myFtFeatureFromEvent (ev) {
+function getRelationshipFromEvent (ev) {
 	return ev.type.replace('myft.', '').split('.')[1];
 }
 
@@ -50,13 +50,13 @@ function toggleButton (buttonEl, pressed) {
 	buttonEl.removeAttribute('disabled');
 }
 
-function updateUiForFeature (opts) {
-	if (!uiSelectorsMap.get(opts.myftFeature)) {
+function updateUiForRelationship (opts) {
+	if (!uiSelectorsMap.get(opts.relationship)) {
 		return;
 	}
 
-	const featureForms = $$(uiSelectorsMap.get(opts.myftFeature), opts.context);
-	const idProperty = idPropertiesMap.get(opts.myftFeature);
+	const featureForms = $$(uiSelectorsMap.get(opts.relationship), opts.context);
+	const idProperty = idPropertiesMap.get(opts.relationship);
 	const uuids = opts.subjects.map(getUuid);
 
 	// if there are multiple buttons, use the button with the same value as the rel property
@@ -83,7 +83,7 @@ function updateUiForFeature (opts) {
 			});
 
 			// add a BEM modifier for on/off-only styling of the form (e.g. show RSS link if RSS pref is on)
-			form.classList.toggle(`myft-ui--${opts.myftFeature}-on`, !!opts.state);
+			form.classList.toggle(`myft-ui--${opts.relationship}-on`, !!opts.state);
 		}
 	});
 }
@@ -238,17 +238,17 @@ function getPersonaliseUrlPromise (page, relationship, detail) {
 		}));
 }
 
-function updateAfterIO (myftFeature, detail) {
+function updateAfterIO (relationship, detail) {
 
-	updateUiForFeature({
-		myftFeature,
+	updateUiForRelationship({
+		relationship,
 		subjects: [{ uuid: detail.subject, '_rel': detail.data && detail.data._rel }],
 		state: !!detail.results
 	});
 
 	let messagePromise = Promise.resolve({});
 
-	switch (myftFeature) {
+	switch (relationship) {
 		case 'saved':
 			if (flags.get('myftLists') && detail.results) {
 				messagePromise = myftClient.getAll('created', 'list')
@@ -282,12 +282,12 @@ function updateAfterIO (myftFeature, detail) {
 }
 
 function onLoad (ev) {
-	const myftFeature = myFtFeatureFromEvent(ev);
-	results[myftFeature] = ev.detail.Items || ev.detail.items || [];
+	const relationship = getRelationshipFromEvent(ev);
+	results[relationship] = ev.detail.Items || ev.detail.items || [];
 
-	updateUiForFeature({
-		myftFeature,
-		subjects: results[myftFeature],
+	updateUiForRelationship({
+		relationship,
+		subjects: results[relationship],
 		state: true
 	});
 }
@@ -310,7 +310,7 @@ function extractMetaData (inputs) {
 	return meta;
 }
 
-function getInteractionHandler (myftFeature) {
+function getInteractionHandler (relationship) {
 	return function (ev, el) {
 		ev.preventDefault();
 
@@ -334,8 +334,8 @@ function getInteractionHandler (myftFeature) {
 			action = (isPressed) ? 'remove' : 'add';
 		}
 
-		const id = form.getAttribute(idPropertiesMap.get(myftFeature));
-		const type = typesMap.get(myftFeature);
+		const id = form.getAttribute(idPropertiesMap.get(relationship));
+		const type = typesMap.get(relationship);
 		const hiddenFields = $$('input[type="hidden"]', form);
 		const metaFields = (buttonWithValTriggered) ? [activeButton, ...hiddenFields] : hiddenFields;
 
@@ -354,18 +354,18 @@ function getInteractionHandler (myftFeature) {
 						name: names[i],
 						taxonomy: taxonomies[i]
 					});
-					return myftClient[action](actorsMap.get(myftFeature), actorId, myftFeature, type, conceptId, singleMeta);
+					return myftClient[action](actorsMap.get(relationship), actorId, relationship, type, conceptId, singleMeta);
 				});
 
 				Promise.all(followPromises)
 					.then(() => toggleButton(activeButton, action === 'add'));
 
 			} else {
-				myftClient[action](actorsMap.get(myftFeature), actorId, myftFeature, type, id, meta);
+				myftClient[action](actorsMap.get(relationship), actorId, relationship, type, id, meta);
 			}
 
 		} else {
-			myftClient[action](myftFeature, type, id, meta);
+			myftClient[action](relationship, type, id, meta);
 		}
 	};
 }
@@ -390,25 +390,25 @@ export function init (opts) {
 	} else {
 		personaliseLinks();
 
-		for (let [myftFeature, uiSelector] of uiSelectorsMap) {
-			if (myftClient.loaded[`myftFeature.${typesMap.get(myftFeature)}`]) {
-				results[myftFeature] = myftClient.loaded[`myftFeature.${typesMap.get(myftFeature)}`];
+		for (let [relationship, uiSelector] of uiSelectorsMap) {
+			if (myftClient.loaded[`${relationship}.${typesMap.get(relationship)}`]) {
+				results[relationship] = myftClient.loaded[`${relationship}.${typesMap.get(relationship)}`];
 
-				updateUiForFeature({
-					myftFeature,
-					subjects: results[myftFeature],
+				updateUiForRelationship({
+					relationship,
+					subjects: results[relationship],
 					state: true
 				});
 
 			} else {
-				document.body.addEventListener(`myft.user.${myftFeature}.${typesMap.get(myftFeature)}.load`, onLoad);
+				document.body.addEventListener(`myft.user.${relationship}.${typesMap.get(relationship)}.load`, onLoad);
 			}
 
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.add`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(relationship)}.${relationship}.${typesMap.get(relationship)}.add`, ev => updateAfterIO(getRelationshipFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(relationship)}.${relationship}.${typesMap.get(relationship)}.remove`, ev => updateAfterIO(getRelationshipFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(relationship)}.${relationship}.${typesMap.get(relationship)}.update`, ev => updateAfterIO(getRelationshipFromEvent(ev), ev.detail, actionFromEvent(ev)));
 
-			delegate.on('submit', uiSelector, getInteractionHandler(myftFeature));
+			delegate.on('submit', uiSelector, getInteractionHandler(relationship));
 		}
 
 		delegate.on('click', '.n-myft-ui--prefer-group button', getInteractionHandler('preferred'));
@@ -436,8 +436,8 @@ export function updateUi (el, ignoreLinks) {
 			return;
 		}
 
-		updateUiForFeature({
-			myftFeature: relationship,
+		updateUiForRelationship({
+			relationship,
 			subjects: results[relationship],
 			state: true,
 			context: el
