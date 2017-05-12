@@ -17,16 +17,10 @@ let flags;
 let results = {};
 let initialised;
 
-const types = {
-	saved: 'content',
-	followed: 'concept',
-	preferred: 'preference',
-	contained: 'content'
-};
-
 const actorsMap = require('./relationshipMaps/actors');
 const uiSelectorsMap = require('./relationshipMaps/ui-selectors');
 const idPropertiesMap = require('./relationshipMaps/id-properties');
+const typesMap = require('./relationshipMaps/types');
 
 const nNotificationMsgs = {
 	followAnon: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
@@ -389,7 +383,7 @@ function getInteractionHandler (relationship) {
 		}
 
 		const idString = form.getAttribute(idPropertiesMap.get(relationship));
-		const nodeType = types[relationship];
+		const nodeType = typesMap.get(relationship);
 		const hiddenFields = $$('input[type="hidden"]', form);
 		const metaFields = (buttonWithValTriggered) ? [activeButton, ...hiddenFields] : hiddenFields;
 		const meta = extractMetaData(metaFields);
@@ -432,8 +426,8 @@ export function init (opts) {
 		personaliseLinks();
 
 		for (let [myftFeature, uiSelector] of uiSelectorsMap) {
-			if (myftClient.loaded[`myftFeature.${types[myftFeature]}`]) {
-				results[myftFeature] = myftClient.loaded[`myftFeature.${types[myftFeature]}`];
+			if (myftClient.loaded[`myftFeature.${typesMap.get(myftFeature)}`]) {
+				results[myftFeature] = myftClient.loaded[`myftFeature.${typesMap.get(myftFeature)}`];
 
 				updateUiForFeature({
 					myftFeature,
@@ -442,12 +436,12 @@ export function init (opts) {
 				});
 
 			} else {
-				document.body.addEventListener(`myft.user.${myftFeature}.${types[myftFeature]}.load`, onLoad);
+				document.body.addEventListener(`myft.user.${myftFeature}.${typesMap.get(myftFeature)}.load`, onLoad);
 			}
 
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.add`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
-			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.add`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
+			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${typesMap.get(myftFeature)}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
 
 			delegate.on('submit', uiSelector, getInteractionHandler(myftFeature));
 		}
