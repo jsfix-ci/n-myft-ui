@@ -17,10 +17,10 @@ let flags;
 let results = {};
 let initialised;
 
-const actorsMap = require('./relationshipMaps/actors');
-const uiSelectorsMap = require('./relationshipMaps/ui-selectors');
-const idPropertiesMap = require('./relationshipMaps/id-properties');
-const typesMap = require('./relationshipMaps/types');
+const actorsMap = require('./relationship-maps/actors');
+const uiSelectorsMap = require('./relationship-maps/ui-selectors');
+const idPropertiesMap = require('./relationship-maps/id-properties');
+const typesMap = require('./relationship-maps/types');
 
 const nNotificationMsgs = {
 	followAnon: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
