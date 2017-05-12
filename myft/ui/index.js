@@ -25,13 +25,7 @@ const types = {
 };
 
 const actorsMap = require('./relationshipMaps/actors');
-
-const uiSelectors = {
-	saved: '[data-myft-ui="saved"]',
-	followed: '[data-myft-ui="follow"]',
-	preferred: '[data-myft-ui="prefer"]',
-	contained: '[data-myft-ui="contained"]'
-};
+const uiSelectorsMap = require('./relationshipMaps/ui-selectors');
 
 const idProperties = {
 	saved: 'data-content-id',
@@ -77,11 +71,11 @@ function setButtonToUnpressed(buttonEl) {
 }
 
 function updateUiForFeature (opts) {
-	if (!uiSelectors[opts.myftFeature]) {
+	if (!uiSelectorsMap.get(opts.myftFeature)) {
 		return;
 	}
 
-	const featureForms = $$(uiSelectors[opts.myftFeature], opts.context);
+	const featureForms = $$(uiSelectorsMap.get(opts.myftFeature), opts.context);
 	const idProperty = idProperties[opts.myftFeature];
 	const uuids = opts.subjects.map(getUuid);
 
@@ -443,7 +437,7 @@ export function init (opts) {
 	} else {
 		personaliseLinks();
 
-		Object.keys(uiSelectors).forEach(myftFeature => {
+		for (let [myftFeature, uiSelector] of uiSelectorsMap) {
 			if (myftClient.loaded[`myftFeature.${types[myftFeature]}`]) {
 				results[myftFeature] = myftClient.loaded[`myftFeature.${types[myftFeature]}`];
 
@@ -461,8 +455,8 @@ export function init (opts) {
 			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.remove`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
 			document.body.addEventListener(`myft.${actorsMap.get(myftFeature)}.${myftFeature}.${types[myftFeature]}.update`, ev => updateAfterIO(myFtFeatureFromEvent(ev), ev.detail, actionFromEvent(ev)));
 
-			delegate.on('submit', uiSelectors[myftFeature], getInteractionHandler(myftFeature));
-		});
+			delegate.on('submit', uiSelector, getInteractionHandler(myftFeature));
+		}
 
 		delegate.on('click', '.n-myft-ui--prefer-group button', getInteractionHandler('preferred'));
 
@@ -484,18 +478,18 @@ export function updateUi (el, ignoreLinks) {
 		personaliseLinks(el);
 	}
 
-	Object.keys(uiSelectors).forEach(myftFeature => {
-		if (!results[myftFeature]) {
+	for (let relationship of uiSelectorsMap.values()) {
+		if (!results[relationship]) {
 			return;
 		}
 
 		updateUiForFeature({
-			myftFeature,
-			subjects: results[myftFeature],
+			myftFeature: relationship,
+			subjects: results[relationship],
 			state: true,
 			context: el
 		});
-	});
+	}
 }
 
 export function personaliseLinks (el) {
