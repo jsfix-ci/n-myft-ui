@@ -2,7 +2,7 @@
 
 const getDataFromInputs = require('../../../ui/myft-buttons/get-data-from-inputs');
 
-describe.only('Get data from inputs', () => {
+describe('Get data from inputs', () => {
 
 	let container;
 

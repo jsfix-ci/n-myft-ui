@@ -20,12 +20,12 @@ function getConceptsData (formEl, rawFormData) {
 }
 
 export function formIsFollowCollection (relationshipName, formEl) {
-	return formEl.getAttribute(idProperty).includes(',');
+	return relationshipName === 'followed' && formEl.getAttribute(idProperty).includes(',');
 }
 
-export function doAction (action, actorId, formEl, rawFormData) {
+export function doAction (action, userId, formEl, rawFormData) {
 	return Promise.all(getConceptsData(formEl, rawFormData).map(concept => {
-		return myFtClient[action]('user', actorId, 'followed', 'concept', concept.id, concept.formData);
+		return myFtClient[action]('user', userId, 'followed', 'concept', concept.id, concept.formData);
 	}))
 		// usually, buttons states are updated on e.g. a `myft.user.followed.concept.add` event, but for
 		// collections, this must be triggered manually
