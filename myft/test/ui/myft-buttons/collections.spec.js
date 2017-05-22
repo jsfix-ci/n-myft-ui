@@ -1,6 +1,6 @@
 /* global expect sinon*/
 
-describe.only('Collections', () => {
+describe('Collections', () => {
 
 	let collections;
 	let container;

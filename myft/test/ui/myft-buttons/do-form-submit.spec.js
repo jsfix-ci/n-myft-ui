@@ -1,4 +1,4 @@
-/* global expect sinon*/
+/* global expect sinon */
 
 describe('Do form submit', () => {
 
@@ -96,7 +96,7 @@ describe('Do form submit', () => {
 
 	it('should make a myFT client call with all the right data', () => {
 		container.innerHTML = `
-			<form 
+			<form
 				data-followed-subject-id="some-subject-id"
 				data-actor-id="some-actor-id"
 			>

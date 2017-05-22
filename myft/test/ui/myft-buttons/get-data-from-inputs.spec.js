@@ -1,4 +1,4 @@
-/* global expect sinon*/
+/* global expect */
 
 const getDataFromInputs = require('../../../ui/myft-buttons/get-data-from-inputs');
 
