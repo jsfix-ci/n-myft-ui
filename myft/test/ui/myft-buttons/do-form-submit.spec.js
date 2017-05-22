@@ -1,6 +1,6 @@
 /* global expect sinon*/
 
-describe.only('Do form submit', () => {
+describe('Do form submit', () => {
 
 	let doFormSubmit;
 	let container;
@@ -13,6 +13,7 @@ describe.only('Do form submit', () => {
 			myFtClientAddStub: sinon.stub(),
 			myFtClientRemoveStub: sinon.stub(),
 			formIsFollowCollectionStub: sinon.stub().returns(false),
+			collectionsDoActionStub: sinon.stub(),
 			getDataFromInputsStub: sinon.stub().returns({
 				prop1: 'foo',
 				prop2: 'bar'
@@ -33,7 +34,8 @@ describe.only('Do form submit', () => {
 				remove: stubs.myFtClientRemoveStub
 			},
 			'./collections': {
-				formIsFollowCollection: stubs.formIsFollowCollectionStub
+				formIsFollowCollection: stubs.formIsFollowCollectionStub,
+				doAction: stubs.collectionsDoActionStub
 			},
 			'./get-data-from-inputs': stubs.getDataFromInputsStub,
 			'../lib/relationship-config': mockRelationshipConfig
@@ -133,4 +135,26 @@ describe.only('Do form submit', () => {
 			container.querySelector('input[name="hiddenProp2"]')
 		]);
 	});
+
+	it('should call `collections.doAction` with all the right params instead of directly calling the myFT client if the form is for a concept collection', () => {
+		container.innerHTML = `
+			<form
+				data-followed-subject-id="some-subject-id"
+				data-actor-id="some-actor-id"
+			>
+				<button></button>
+			</form>
+		`;
+
+		stubs.formIsFollowCollectionStub.returns(true);
+
+		doFormSubmit('followed', container.querySelector('form'));
+		expect(stubs.myFtClientAddStub).to.have.not.been.called;
+		expect(stubs.myFtClientRemoveStub).to.have.not.been.called;
+		expect(stubs.collectionsDoActionStub).to.have.been.calledWith('add', 'some-actor-id', container.querySelector('form'), {
+			prop1: 'foo',
+			prop2: 'bar'
+		});
+	});
+
 });
