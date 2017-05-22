@@ -12,7 +12,11 @@ describe.only('Do form submit', () => {
 		stubs = {
 			myFtClientAddStub: sinon.stub(),
 			myFtClientRemoveStub: sinon.stub(),
-			formIsFollowCollectionStub: sinon.stub().returns(false)
+			formIsFollowCollectionStub: sinon.stub().returns(false),
+			getDataFromInputsStub: sinon.stub().returns({
+				prop1: 'foo',
+				prop2: 'bar'
+			}),
 		}
 
 		mockRelationshipConfig = {
@@ -31,6 +35,7 @@ describe.only('Do form submit', () => {
 			'./collections': {
 				formIsFollowCollection: stubs.formIsFollowCollectionStub
 			},
+			'./get-data-from-inputs': stubs.getDataFromInputsStub,
 			'../lib/relationship-config': mockRelationshipConfig
 		})
 
@@ -65,37 +70,67 @@ describe.only('Do form submit', () => {
 		expect(theButton.hasAttribute('disabled')).to.be.true;
 	});
 
-	it.skip('should do an add if the button is not already pressed', () => {
-		throw new Error('todo');
+	it('should do an add if the button is not already pressed', () => {
+		container.innerHTML = `
+			<form data-followed-subject-id="some-subject-id">
+				<button></button>
+			</form>
+		`;
+
+		doFormSubmit('followed', container.querySelector('form'));
+		expect(stubs.myFtClientAddStub).to.have.been.called;
 	});
 
-	it.skip('should do a remove if the button is already pressed', () => {
-		throw new Error('todo');
+	it('should do a remove if the button is already pressed', () => {
+		container.innerHTML = `
+			<form data-followed-subject-id="some-subject-id">
+				<button aria-pressed="true"></button>
+			</form>
+		`;
+
+		doFormSubmit('followed', container.querySelector('form'));
+		expect(stubs.myFtClientRemoveStub).to.have.been.called;
 	});
 
 	it('should make a myFT client call with all the right data', () => {
 		container.innerHTML = `
-			<form data-followed-subject-id="some-subject-id">
-				<input type="hidden" name="hiddenProp1" value="foo">
-				<input type="hidden" name="hiddenProp2" value="bar">
-				<button name="buttonProp" value="hello">
-				</button>
+			<form 
+				data-followed-subject-id="some-subject-id"
+				data-actor-id="some-actor-id"
+			>
+				<button></button>
 			</form>
 		`;
 
 		doFormSubmit('followed', container.querySelector('form'));
 		expect(stubs.myFtClientAddStub).to.have.been.calledWith(
 			'followed-actor-type',
-			null, // null actor ID to be filled in by myFT client (eesh)
+			'some-actor-id',
 			'followed',
 			'followed-subject-type',
 			'some-subject-id',
 			{
-				hiddenProp1: 'foo',
-				hiddenProp2: 'bar',
-				buttonProp: 'hello'
+				prop1: 'foo',
+				prop2: 'bar'
 			}
 		);
 
+	});
+
+	it('should pass all hidden inputs and the button to `getDataFromInputs`', () => {
+		container.innerHTML = `
+			<form data-followed-subject-id="some-subject-id">
+				<input type="hidden" name="hiddenProp1" value="foo">
+				<input type="hidden" name="hiddenProp2" value="bar">
+				<button name="buttonProp" value="hello"></button>
+			</form>
+		`;
+
+		doFormSubmit('followed', container.querySelector('form'));
+		expect(stubs.getDataFromInputsStub).to.have.been.calledWith([
+			container.querySelector('button'),
+			container.querySelector('input[name="hiddenProp1"]'),
+			container.querySelector('input[name="hiddenProp2"]')
+		]);
 	});
 });
