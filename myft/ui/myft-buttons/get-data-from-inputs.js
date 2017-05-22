@@ -7,7 +7,7 @@ export default function (inputs) {
 			meta._rel = meta._rel || {};
 			meta._rel[key] = input.value;
 
-		} else if (input.type === 'hidden') {
+		} else {
 			meta[input.name] = input.value;
 		}
 	});
