@@ -9,6 +9,7 @@ function getConceptsData (formEl, rawFormData) {
 	const subjectIds = formEl.getAttribute(idProperty).split(',');
 	const names = rawFormData.name.split(',');
 
+	// CAPI2_CLEANUP
 	let taxonomies = [];
 	if (rawFormData.taxonomy) {
 		taxonomies = rawFormData.taxonomy.split(',');
@@ -22,13 +23,14 @@ function getConceptsData (formEl, rawFormData) {
 	return subjectIds.map((id, i) => {
 
 		delete rawFormData.name;
-		delete rawFormData.taxonomy;
+		delete rawFormData.taxonomy; // CAPI2_CLEANUP
 		delete rawFormData.type;
 
 		const formData = Object.assign({
 			name: names[i]
 		}, rawFormData);
 
+		// CAPI2_CLEANUP
 		if(taxonomies[i]) {
 			formData.taxonomy = taxonomies[i];
 		}
