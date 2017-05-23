@@ -18,7 +18,7 @@
 					<input type="hidden" name="taxonomy" value="{{#concepts}}{{taxonomy}}{{#unless @last}},{{/unless}}{{/concepts}}" />
 				{{/if}}
 				{{#if concepts.0.directType}}
-					<input type="hidden" name="taxonomy" value="{{#concepts}}{{directType}}{{#unless @last}},{{/unless}}{{/concepts}}" />
+					<input type="hidden" name="directType" value="{{#concepts}}{{directType}}{{#unless @last}},{{/unless}}{{/concepts}}" />
 				{{/if}}
 				<input type="hidden" name="name" value="{{#concepts}}{{name}}{{#unless @last}},{{/unless}}{{/concepts}}" />
 				<button type="submit" aria-label="Add all topics in the {{name}} collection to my F T" aria-pressed="false" class="n-myft-ui__button" data-alternate-label="Remove all topics in the {{name}} collection from my F T" data-alternate-text="Added" data-trackable="follow" data-concept-id="{{#concepts}}{{id}}{{#unless @last}},{{/unless}}{{/concepts}}" title="Add all topics in the {{name}} collection to my F T">Add all to myFT</button>
