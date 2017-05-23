@@ -40,4 +40,15 @@ describe('Get data from inputs', () => {
 		});
 	});
 
+	it('should not include a weird empty property if any of the inputs have no name or value', () => {
+		container.innerHTML = `
+			<input type="hidden" name="hiddenProp" value="hiddenVal"></button>
+			<button></button>
+		`;
+
+		expect(getDataFromInputs(Array.from(container.children))).to.deep.equal({
+			hiddenProp: 'hiddenVal'
+		});
+	});
+
 });
