@@ -47,13 +47,12 @@
 }
 
 .myft-hint__content {
-	@include oTypographySans(xs);
+	@include oTypographySans($scale: -2);
 	padding: 0;
 	margin: 8px 12px 8px 8px;
 	width: 100%;
 	text-align: left;
 	text-transform: none;
-	line-height: 120%;
 }
 
 .myft-hint__show {
