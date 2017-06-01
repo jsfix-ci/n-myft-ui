@@ -80,12 +80,12 @@ $o-overlay-is-silent: true;
 	padding: $spacing-unit 20px;
 
 	h3 {
-		@include oTypographySansBold(m);
+		@include oTypographySansBold($scale: 2);
 		margin: 0 5px 0 0;
 	}
 
 	p {
-		@include oTypographySans(m);
+		@include oTypographySans($scale: 2);
 	}
 
 	h3,
@@ -155,7 +155,7 @@ $o-overlay-is-silent: true;
 
 .myft-list-form-divider__inner {
 	padding: 10px;
-	background-color: getColor('white-50');
+	background-color: getColor('white-60');
 
 	@include oGridRespondTo(M) {
 		z-index: 10;

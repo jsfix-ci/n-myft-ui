@@ -63,7 +63,7 @@
 	}
 
 	.n-myft-ui__legend {
-		@include oTypographySans('s', $load-progressively: true);
+		@include oTypographySans(0, $progressive: true);
 		margin-bottom: 10px;
 	}
 
