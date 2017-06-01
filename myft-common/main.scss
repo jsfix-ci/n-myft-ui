@@ -34,7 +34,7 @@
 		@include oButtons();
 
 		&:focus {
-			outline: 3px solid getColor('teal-1');
+			outline: 3px solid getColor('teal-40');
 			outline-offset: 3px;
 		}
 
@@ -70,7 +70,7 @@
 	.n-myft-ui--follow {
 		position: relative;
 		.n-myft-ui__button {
-			@include buttonWithIcon(26, 24, getColor('link-1'), 'plus', 'tick');
+			@include buttonWithIcon(26, 24, getColor('teal-40'), 'plus', 'tick');
 		}
 
 		.n-myft-ui__button--inverse {
@@ -85,10 +85,10 @@
 	.n-myft-ui--instant {
 		position: relative;
 		.n-myft-ui__button {
-			@include buttonWithIcon(26, 24, getColor('link-1'), 'mail');
+			@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail');
 		}
 		.n-myft-ui__button--inverse {
-			@include buttonWithIcon(26, 24, getColor('link-2'), 'mail');
+			@include buttonWithIcon(26, 24, getColor('teal-80'), 'mail');
 		}
 	}
 
