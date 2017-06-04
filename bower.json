@@ -16,7 +16,7 @@
   ],
   "main": "main.js",
   "dependencies": {
-    "n-ui-foundations": "^2.0.0-alpha",
+    "n-ui-foundations": "^2.0.0-beta",
     "n-notification": "^6.0.0-beta",
     "next-myft-client": "^7.0.0",
     "o-overlay": "^1.14.0",
