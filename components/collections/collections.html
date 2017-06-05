@@ -1,4 +1,4 @@
-<section class="card__collection" data-trackable="collection" aria-label="{{name}}">
+<section class="card__collection" data-trackable="collection">
 	<div class="card__collection-stack"></div>
 	<header class="card__collection-header">
 		<h3 class="card__collection-title">{{title}}</h3>
@@ -7,7 +7,7 @@
 	<ul class="card__collection-concepts">
 		{{#concepts}}
 			<li class="card__collection-concept">
-				<a class="card__collection-concept-link" href="{{url}}" data-trackable="concept">{{name}}</a>
+				<a class="card__collection-concept-link" href="{{url}}" data-trackable="concept">{{prefLabel}}</a>
 			</li>
 		{{/concepts}}
 	</ul>
@@ -24,7 +24,7 @@
 					<input type="hidden" name="directType" value="{{#concepts}}{{directType}}{{#unless @last}},{{/unless}}{{/concepts}}" />
 				{{/if}}
 
-				<input type="hidden" name="name" value="{{#concepts}}{{name}}{{#unless @last}},{{/unless}}{{/concepts}}" />
+				<input type="hidden" name="name" value="{{#concepts}}{{prefLabel}}{{#unless @last}},{{/unless}}{{/concepts}}" />
 				<button type="submit" aria-label="Add all topics in the {{name}} collection to my F T" aria-pressed="false" class="n-myft-ui__button" data-alternate-label="Remove all topics in the {{name}} collection from my F T" data-alternate-text="Added" data-trackable="follow" data-concept-id="{{#concepts}}{{id}}{{#unless @last}},{{/unless}}{{/concepts}}" title="Add all topics in the {{name}} collection to my F T">Add all to myFT</button>
 			</form>
 	</div>
