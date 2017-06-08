@@ -49,7 +49,7 @@
 	}
 
 	.n-myft-ui__button--medium {
-		@include oButtonsSize(medium);
+		@include oButtonsSize();
 	}
 
 	.n-myft-ui__button--big {
