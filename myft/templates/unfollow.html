@@ -7,9 +7,12 @@
 	{{! CAPI2_CLEANUP }}
 	{{#if taxonomy}}
 		<input type="hidden" value="{{taxonomy}}" name="taxonomy">
-	{{/if}}
-	{{#if directType}}
-		<input type="hidden" value="{{directType}}" name="directType">
+	{{else}}
+		{{#if directType}}
+			<input type="hidden" value="{{directType}}" name="directType">
+		{{else}}
+			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
+		{{/if}}
 	{{/if}}
 	<button
 		aria-label="Unfollow {{name}}"

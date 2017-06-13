@@ -7,10 +7,14 @@
 		{{! CAPI2_CLEANUP }}
 		{{#if taxonomy}}
 			<input type="hidden" value="{{taxonomy}}" name="taxonomy">
+		{{else}}
+			{{#if directType}}
+				<input type="hidden" value="{{directType}}" name="directType">
+			{{else}}
+				<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
+			{{/if}}
 		{{/if}}
-		{{#if directType}}
-			<input type="hidden" value="{{directType}}" name="directType">
-		{{/if}}
+
 		<button
 			aria-label="Add {{name}}"
 			aria-pressed="false"
