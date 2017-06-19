@@ -8,8 +8,8 @@ export default function (contextEl) {
 	Object.keys(relationshipConfig).forEach(relationshipName => {
 		const relationships = loadedRelationships.getRelationships(relationshipName);
 		if (relationships.length > 0) {
-			const subjectIdsV1 = relationships.map(item => item.uuid); //CAPI2_CLEANUP
-			const subjectIdsV2 = relationships.map(item => item.uuidV2);
+			const subjectIdsV1 = relationships.map(item => item.uuid); // CAPI2_CLEANUP_NEO4J
+			const subjectIdsV2 = relationships.map(item => item.uuidV2); // CAPI2_CLEANUP_NEO4J
 			const subjectIds = subjectIdsV1.concat(subjectIdsV2);
 			buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true, contextEl);
 		}

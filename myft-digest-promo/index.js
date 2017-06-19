@@ -57,13 +57,8 @@ function addToDigest () {
 		name: btn.getAttribute('data-title'),
 	};
 
-	const taxonomy = btn.getAttribute('data-taxonomy');
 	const directType = btn.getAttribute('data-direct-type');
 
-	// CAPI2_CLEANUP
-	if(taxonomy) {
-		metaConcept.taxonomy = taxonomy;
-	}
 	if(directType) {
 		metaConcept.directType = directType;
 	}
