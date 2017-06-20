@@ -45,9 +45,9 @@ function signedInEventListeners () {
 			.then(() => {
 				const relationships = loadedRelationships.getRelationships(relationshipName);
 				if (relationships.length > 0) {
-					const subjectIdV1s = relationships.map(item => item.uuid);
-					const subjectIdV2s = relationships.map(item => item.uuidV2);
-					const subjectIds = subjectIdV1s.concat(subjectIdV2s);
+					const subjectIdV1s = relationships.map(item => item.uuid); // CAPI2_CLEANUP_NEO4J
+					const subjectIdV2s = relationships.map(item => item.uuidV2); // CAPI2_CLEANUP_NEO4J
+					const subjectIds = subjectIdV1s.concat(subjectIdV2s); // CAPI2_CLEANUP_NEO4J
 					buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true);
 				}
 			});

@@ -8,23 +8,16 @@ const idProperty = relationshipConfigs['followed'].idProperty;
 function getConceptsData (formEl, rawFormData) {
 	const subjectIds = formEl.getAttribute(idProperty).split(',');
 	const names = rawFormData.name.split(',');
-	const taxonomies = rawFormData.taxonomy ? rawFormData.taxonomy.split(','): []; // CAPI2_CLEANUP
 	const directTypes = rawFormData.directType ? rawFormData.directType.split(',') : [];
 
 	return subjectIds.map((id, i) => {
 
 		delete rawFormData.name;
-		delete rawFormData.taxonomy; // CAPI2_CLEANUP
 		delete rawFormData.type;
 
 		const formData = Object.assign({
 			name: names[i]
 		}, rawFormData);
-
-		// CAPI2_CLEANUP
-		if(taxonomies[i]) {
-			formData.taxonomy = taxonomies[i];
-		}
 
 		if(directTypes[i]) {
 			formData.directType = directTypes[i];
