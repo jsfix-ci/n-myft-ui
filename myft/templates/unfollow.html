@@ -4,12 +4,10 @@
 	data-concept-id="{{conceptId}}"
 	action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete">
 	<input type="hidden" value="{{name}}" name="name">
-	{{! CAPI2_CLEANUP }}
-	{{#if taxonomy}}
-		<input type="hidden" value="{{taxonomy}}" name="taxonomy">
-	{{/if}}
 	{{#if directType}}
 		<input type="hidden" value="{{directType}}" name="directType">
+	{{else}}
+		<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 	{{/if}}
 	<button
 		aria-label="Unfollow {{name}}"
@@ -24,14 +22,30 @@
 		{{#if buttonText}}
 			data-alternate-text="{{buttonText}}"
 		{{else}}
-			data-alternate-text="Follow"
+			data-alternate-text="
+				{{~#ifEquals @root.flags.myFtFollowButtonShorterCopy 'variant'~}}
+					myFT
+				{{~else~}}
+					Follow
+				{{~/ifEquals~}}
+			"
 		{{/if}}
 		{{/if}}
 		data-trackable="follow"
 		data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
 		title="Unfollow {{name}}"
 		type="submit"
-	>{{#if buttonText}}{{buttonText}}{{else}}Following{{/if}}</button>
+	>
+			{{~#if buttonText~}}
+				{{buttonText}}
+			{{~else~}}
+				{{~#ifEquals @root.flags.myFtFollowButtonShorterCopy 'variant'~}}
+					myFT
+				{{~else~}}
+					Following
+				{{~/ifEquals~}}
+			{{~/if~}}
+		</button>
 </form>
 {{else}}
 <!-- Unfollow button hidden due to myFtApiWrite being off -->

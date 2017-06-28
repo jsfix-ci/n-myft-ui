@@ -4,19 +4,18 @@
 		data-concept-id="{{conceptId}}"
 		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
 		<input type="hidden" value="{{name}}" name="name">
-		{{! CAPI2_CLEANUP }}
-		{{#if taxonomy}}
-			<input type="hidden" value="{{taxonomy}}" name="taxonomy">
-		{{/if}}
 		{{#if directType}}
 			<input type="hidden" value="{{directType}}" name="directType">
+		{{else}}
+			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 		{{/if}}
+
 		<button
 			aria-label="Add {{name}}"
 			aria-pressed="false"
 			class="n-myft-ui__button
-				{{#variant}} n-myft-ui__button--{{this}}{{/variant}}
-				{{#size}} n-myft-ui__button--{{this}}{{/size}}"
+				{{~#variant}} n-myft-ui__button--{{this}}{{/variant~}}
+				{{~#size}} n-myft-ui__button--{{this}}{{/size~}}"
 			data-alternate-label="Remove {{name}}"
 			{{#if alternateText}}
 				data-alternate-text="{{alternateText}}"
@@ -24,14 +23,30 @@
 				{{#if buttonText}}
 					data-alternate-text="{{buttonText}}"
 				{{else}}
-					data-alternate-text="Added"
+					data-alternate-text="
+						{{~#ifEquals @root.flags.myFtFollowButtonShorterCopy 'variant'~}}
+							myFT
+						{{~else~}}
+							Added
+						{{~/ifEquals~}}
+					"
 				{{/if}}
 			{{/if}}
 			data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
 			data-trackable="follow"
 			title="Add {{name}}"
 			type="submit"
-		>{{#if buttonText}}{{buttonText}}{{else}}Add to myFT{{/if}}</button>
+		>
+			{{~#if buttonText~}}
+				{{buttonText}}
+			{{~else~}}
+				{{~#ifEquals @root.flags.myFtFollowButtonShorterCopy 'variant'~}}
+					myFT
+				{{~else~}}
+					Add to myFT
+				{{~/ifEquals~}}
+			{{~/if~}}
+		</button>
 	</form>
 {{else}}
 	<!-- Add to myFT button hidden due to myFtApiWrite being off -->

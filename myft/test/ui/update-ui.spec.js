@@ -38,12 +38,12 @@ describe('Update UI', () => {
 	it('should call `setStateOfManyButtons` with an array of subjectIds for each relationship', () => {
 
 		mockRelationships.saved = [
-			{ uuid: 'some-content-id' },
-			{ uuid: 'some-other-content-id' }
+			{ uuid: 'some-content-id', uuidV2: 'v2ID' }, // CAPI2_CLEANUP_NEO4J
+			{ uuid: 'some-other-content-id', uuidV2: 'other-v2ID' } // CAPI2_CLEANUP_NEO4J
 		];
 
 		mockRelationships.danced = [
-			{ uuid: 'some-dance-id' }
+			{ uuid: 'some-dance-id', uuidV2: 'dance-v2' } // CAPI2_CLEANUP_NEO4J
 		];
 
 		updateUi(document.body);
@@ -51,14 +51,14 @@ describe('Update UI', () => {
 
 		expect(stubs.setStateOfManyButtonsStub).to.have.been.calledWithMatch(
 			'saved',
-			sinon.match.array.deepEquals(['some-content-id', 'some-other-content-id']),
+			sinon.match.array.deepEquals(['some-content-id', 'some-other-content-id', 'v2ID', 'other-v2ID']), // CAPI2_CLEANUP_NEO4J
 			true,
 			document.body
 		);
 
 		expect(stubs.setStateOfManyButtonsStub).to.have.been.calledWithMatch(
 			'danced',
-			sinon.match.array.deepEquals(['some-dance-id']),
+			sinon.match.array.deepEquals(['some-dance-id', 'dance-v2']), // CAPI2_CLEANUP_NEO4J
 			true,
 			document.body
 		);

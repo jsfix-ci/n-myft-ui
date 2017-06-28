@@ -18,9 +18,9 @@ function getInteractionHandler (relationshipName) {
 }
 
 function anonEventListeners () {
-
+	const currentPath = window.location.pathname;
 	const subscribeUrl = '/products?segID=400863&segmentID=190b4443-dc03-bd53-e79b-b4b6fbd04e64';
-	const signInLink = '/login';
+	const signInLink = `/login${currentPath.length ? `?location=${currentPath}` : ''}`;
 	const messages = {
 		follow: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
 		save: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to save this article.`
@@ -45,9 +45,9 @@ function signedInEventListeners () {
 			.then(() => {
 				const relationships = loadedRelationships.getRelationships(relationshipName);
 				if (relationships.length > 0) {
-					const subjectIdV1s = relationships.map(item => item.uuid);
-					const subjectIdV2s = relationships.map(item => item.uuidV2);
-					const subjectIds = subjectIdV1s.concat(subjectIdV2s);
+					const subjectIdV1s = relationships.map(item => item.uuid); // CAPI2_CLEANUP_NEO4J
+					const subjectIdV2s = relationships.map(item => item.uuidV2); // CAPI2_CLEANUP_NEO4J
+					const subjectIds = subjectIdV1s.concat(subjectIdV2s); // CAPI2_CLEANUP_NEO4J
 					buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true);
 				}
 			});
