@@ -78,11 +78,5 @@
     "sinon": "^2.2.0",
     "sinon-chai": "^2.10.0"
   },
-  "config": {
-    "pre-git": {
-      "pre-commit": [
-        "node_modules/.bin/secret-squirrel"
-      ]
-    }
-  }
+  "config": {}
 }
