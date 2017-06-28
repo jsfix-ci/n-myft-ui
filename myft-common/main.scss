@@ -6,7 +6,7 @@
 	position: relative;
 	padding-left: #{$iconSpace}px;
 	&:before {
-		@include oIconsGetIcon($iconOff, $colorOff, $iconSize);
+		@include oIconsGetIcon($iconOff, $colorOff, $iconSize, $iconset-version: 1);
 		content: ' ';
 		position: absolute;
 		top: 50%;
@@ -14,7 +14,7 @@
 		margin: $topMargin $horizontalMargin 0 0;
 	}
 	&[aria-pressed="true"]:before {
-		@include oIconsGetIcon($iconOn, $colorOn, $iconSize);
+		@include oIconsGetIcon($iconOn, $colorOn, $iconSize, $iconset-version: 1);
 	}
 }
 
