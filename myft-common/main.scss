@@ -45,7 +45,7 @@
 	}
 
 	.n-myft-ui__button--uncolored {
-		@include oButtonsTheme(uncolored);
+		@include oButtonsTheme(mono);
 	}
 
 	.n-myft-ui__button--medium {
