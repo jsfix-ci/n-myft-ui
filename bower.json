@@ -20,10 +20,7 @@
     "n-notification": "^6.0.0-beta",
     "next-myft-client": "^7.0.0",
     "o-overlay": "^2.0.0",
-    "o-forms": "2",
+    "o-forms": "^4.0.0",
     "o-errors": "^3.5.2"
-  },
-  "resolutions": {
-    "o-colors": "^4.0.1"
   }
 }
