@@ -6,9 +6,10 @@ $icon-width-m: 90px;
 
 	float: none;
 	position: relative;
-	background-color: getColor('black-50');
-	border-bottom: 1px solid getColor('black-80');
-	border-top: 1px solid getColor('black-80');
+	background-color: getColor('white-60');
+	border-bottom: 1px solid getColor('black-20');
+	border-top: 1px solid getColor('black-20');
+	margin-bottom: 20px;
 }
 
 .n-myft-digest-promo--enabled {
