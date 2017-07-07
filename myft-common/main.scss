@@ -75,6 +75,12 @@
 
 		.n-myft-ui__button--inverse {
 			@include buttonWithIcon(26, 24, getColor('white'), 'plus', 'tick', getColor('black'));
+
+			&:hover {
+				&[aria-pressed="true"]:before {
+					@include oIconsGetIcon('tick', getColor('white'), 24, $iconset-version: 1);
+				}
+			}
 		}
 
 		.n-myft-ui__button--uncolored {
