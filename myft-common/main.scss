@@ -32,12 +32,17 @@
 
 	.n-myft-ui__button {
 		@include oButtons();
-
 		&:focus {
 			outline: 3px solid getColor('teal-40');
 			outline-offset: 3px;
 		}
+	}
 
+	.n-myft-ui__button--viewport-large {
+		display: none;
+		@include oGridRespondTo('L') {
+			display: inline-block;
+		}
 	}
 
 	.n-myft-ui__button--inverse {
