@@ -5,6 +5,7 @@ const highlight = chalk.bold.green;
 
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
+	followButtonPlusDigest: require('./fixtures/follow-button-plus-digest'),
 	saveButton: require('./fixtures/save-button'),
 	collections: require('./fixtures/collections')
 };
@@ -48,6 +49,18 @@ app.get('/alternative-copy', (req, res) => {
 		},
 		appIsStreamPage: false
 	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
+});
+
+app.get('/digest-on-follow', (req, res) => {
+	res.render('demo', Object.assign({
+		title: 'n-myft-ui digest on follow',
+		layout: 'demo-layout',
+		flags: {
+			myFtApi: true,
+			myFtApiWrite: true,
+		},
+		appIsStreamPage: false
+	}, fixtures.followButtonPlusDigest));
 });
 
 function runPa11yTests () {

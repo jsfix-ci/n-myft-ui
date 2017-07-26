@@ -2,14 +2,19 @@
 	<form class="n-myft-ui n-myft-ui--follow {{extraClasses}}" method="POST"
 		data-myft-ui="follow"
 		data-concept-id="{{conceptId}}"
-		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
+		{{#if followPlusDigestEmail}}
+		action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
+		data-myft-ui-variant="followPlusDigestEmail"
+		{{else}}
+		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
+		{{/if}}
+		>
 		<input type="hidden" value="{{name}}" name="name">
 		{{#if directType}}
 			<input type="hidden" value="{{directType}}" name="directType">
 		{{else}}
 			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 		{{/if}}
-
 		<button
 			aria-label="Add {{name}}"
 			aria-pressed="false"
