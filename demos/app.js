@@ -44,11 +44,10 @@ app.get('/alternative-copy', (req, res) => {
 		flags: {
 			myFtApi: true,
 			myFtApiWrite: true,
-			myFtFollowButtonShorterCopy: 'variant',
-			myFtSaveButtonLongerCopy: 'variant'
+			myFtFollowButtonShorterCopy: 'variant'
 		},
 		appIsStreamPage: false
-	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
+	}, fixtures.followButton, fixtures.collections));
 });
 
 app.get('/digest-on-follow', (req, res) => {
