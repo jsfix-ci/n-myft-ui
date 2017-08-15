@@ -28,11 +28,9 @@ $o-overlay-is-silent: true;
 	@include oFormsErrorText();
 }
 
-.n-myft-ui__error-message.o-forms-errortext {
+.n-myft-ui__error-message.n-myft-ui__error-message--no-name {
 	display: none;
-}
-.n-myft-ui__error--no-name {
-	.n-myft-ui__error-message--no-name {
+	.n-myft-ui__error--no-name & {
 		display: block;
 	}
 }
