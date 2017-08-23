@@ -5,19 +5,19 @@ describe('Tracking', () => {
 		subjectType: 'concept',
 		action: 'add',
 		subjectId: '1234',
-		data: {}
+		postedData: {}
 	};
 	const unfollowEvent = {
 		subjectType: 'concept',
 		action: 'remove',
 		subjectId: '4321',
-		data: {}
+		postedData: {}
 	};
 	const instantOn = {
 		subjectType: 'concept',
 		action: 'update',
 		subjectId: '5678',
-		data: {
+		postedData: {
 			_rel: {
 				instant: 'true'
 			}
@@ -27,7 +27,7 @@ describe('Tracking', () => {
 		subjectType: 'concept',
 		action: 'update',
 		subjectId: '8765',
-		data: {
+		postedData: {
 			_rel: {
 				instant: 'false'
 			}
@@ -37,19 +37,19 @@ describe('Tracking', () => {
 		subjectType: 'content',
 		action: 'add',
 		subjectId: 'abcd',
-		data: {}
+		postedData: {}
 	};
 	const unsavedArticle = {
 		subjectType: 'content',
 		action: 'remove',
 		subjectId: 'dcba',
-		data: {}
+		postedData: {}
 	};
 	const otherAction = {
 		subjectType: 'foo',
 		action: 'bar',
 		subjectId: '123',
-		data: {}
+		postedData: {}
 	};
 
 	const tracking = require('../../../ui/lib/tracking');
