@@ -16,10 +16,7 @@ const customDataSettings = {
  * @param {Object} customData extra data to send through in the custom event. { action: 'someaction', thingtype_id: 'someid'}
  */
 const sendEvent = (customData) => {
-	const detail = {
-		category: 'myFT'
-	};
-	Object.assign(detail, customData);
+	const detail = Object.assign({}, customData, { category: 'myFT' });
 	document.body.dispatchEvent(new CustomEvent('oTracking.event', { detail, bubbles: true }));
 };
 /**
