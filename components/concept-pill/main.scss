@@ -1,3 +1,6 @@
+//TODO: Remove --added and --disabled
+//FIXME: Fix inversed disabled
+
 @mixin tick-icon($color) {
 	content: '';
 	@include oIconsGetIcon('tick', getColor($color), 16);
