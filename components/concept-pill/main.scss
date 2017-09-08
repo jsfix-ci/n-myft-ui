@@ -30,11 +30,11 @@
 	white-space: nowrap;
 }
 
-.n-myft-concept-pill--add:before {
+.n-myft-concept-pill--add::before {
 	@include plus-icon('claret');
 }
 
-.n-myft-concept-pill--added:before {
+.n-myft-concept-pill--added::before {
 	@include tick-icon('claret');
 }
 
@@ -45,7 +45,7 @@
 		@include plus-icon('black-70');
 	}
 
-	&.n-myft-concept-pill--added:before {
+	&.n-myft-concept-pill--added::before {
 		@include tick-icon('black-70');
 	}
 }
@@ -68,7 +68,7 @@
 	color: getColor('white');
 }
 
-.n-myft-concept-pill--inverse.n-myft-concept-pill--add:before {
+.n-myft-concept-pill--inverse.n-myft-concept-pill--add::before {
 	@include plus-icon('white');
 }
 
@@ -90,11 +90,11 @@
 	color: getColor('white');
 	background-color: oColorsMix('claret-90', 'claret-60', 40);
 
-	&.n-myft-concept-pill--add:before {
+	&.n-myft-concept-pill--add::before {
 		@include plus-icon('white');
 	}
 
-	&.n-myft-concept-pill--added:before {
+	&.n-myft-concept-pill--added::before {
 		@include tick-icon('white');
 	}
 
