@@ -40,14 +40,14 @@
 
 .n-myft-concept-pill:hover {
 	border: 1px solid getColor('claret');
+}
 
-	&.n-myft-concept-pill--add::before {
-		@include plus-icon('black-70');
-	}
+.n-myft-concept-pill--add::before {
+	@include plus-icon('black-70');
+}
 
-	&.n-myft-concept-pill--added::before {
-		@include tick-icon('black-70');
-	}
+.n-myft-concept-pill--added::before {
+	@include tick-icon('black-70');
 }
 
 .n-myft-concept-pill:focus {
