@@ -18,9 +18,13 @@
 		<button
 			aria-label="Add {{name}}"
 			aria-pressed="false"
-			class="n-myft-ui__button
+			class="{{#if buttonClasses}}
+				{{~#buttonClasses}} {{this}}{{/buttonClasses~}}
+			{{else~}}
+				n-myft-ui__button
 				{{~#variant}} n-myft-ui__button--{{this}}{{/variant~}}
-				{{~#size}} n-myft-ui__button--{{this}}{{/size~}}"
+				{{~#size}} n-myft-ui__button--{{this}}{{/size~}}
+			{{/if}}"
 			data-alternate-label="Remove {{name}}"
 			{{#if alternateText}}
 				data-alternate-text="{{alternateText}}"
