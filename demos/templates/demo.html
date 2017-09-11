@@ -4,8 +4,16 @@
 		<div data-o-grid-colspan="12">
 			<h2>Follow button</h2>
 
+			<h3>Standard</h3>
+
 			{{#followButton}}
 				{{> n-myft-ui/myft/templates/follow }}
+			{{/followButton}}
+
+			<h3>Custom (concept pill)</h3>
+
+			{{#followButton}}
+				{{> n-myft-ui/myft/templates/follow buttonText=name buttonClasses=(array 'n-myft-concept-pill' 'n-myft-concept-pill--add') }}
 			{{/followButton}}
 
 			<h2>Unfollow button</h2>
