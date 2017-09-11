@@ -10,7 +10,7 @@
 		<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 	{{/if}}
 	<button
-		aria-label="Unfollow {{name}}"
+		aria-label="Remove {{name}} from myFT"
 		aria-pressed="true"
 		class="{{#if buttonClasses}}
 			{{~#buttonClasses}} {{this}}{{/buttonClasses~}}
@@ -19,25 +19,25 @@
 			{{~#variant}} n-myft-ui__button--{{this}}{{/variant~}}
 			{{~#size}} n-myft-ui__button--{{this}}{{/size~}}
 		{{/if}}"
-		data-alternate-label="Follow {{name}}"
+		data-alternate-label="Add {{name}} to myFT"
 		{{#if alternateText}}
 			data-alternate-text="{{alternateText}}"
 		{{else}}
-		{{#if buttonText}}
-			data-alternate-text="{{buttonText}}"
-		{{else}}
-			data-alternate-text="Follow"
-		{{/if}}
+			{{#if buttonText}}
+				data-alternate-text="{{buttonText}}"
+			{{else}}
+				data-alternate-text="Add {{name}} to myFT"
+			{{/if}}
 		{{/if}}
 		data-trackable="follow"
 		data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
-		title="Unfollow {{name}}"
+		title="Remove {{name}} from myFT"
 		type="submit"
 	>
 			{{~#if buttonText~}}
 				{{buttonText}}
 			{{~else~}}
-				Following
+				Added
 			{{~/if~}}
 		</button>
 </form>

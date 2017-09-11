@@ -16,7 +16,7 @@
 			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 		{{/if}}
 		<button
-			aria-label="Add {{name}}"
+			aria-label="Add {{name}} to myFT"
 			aria-pressed="false"
 			class="{{#if buttonClasses}}
 				{{~#buttonClasses}} {{this}}{{/buttonClasses~}}
@@ -25,7 +25,7 @@
 				{{~#variant}} n-myft-ui__button--{{this}}{{/variant~}}
 				{{~#size}} n-myft-ui__button--{{this}}{{/size~}}
 			{{/if}}"
-			data-alternate-label="Remove {{name}}"
+			data-alternate-label="Remove {{name}} from myFT"
 			{{#if alternateText}}
 				data-alternate-text="{{alternateText}}"
 			{{else}}
@@ -40,7 +40,7 @@
 			data-trackable-context-messaging="add-to-myft-plus-digest-button"
 			{{/if}}
 			data-trackable="follow"
-			title="Add {{name}}"
+			title="Add {{name}} to myFT"
 			type="submit"
 		>
 			{{~#if buttonText~}}
