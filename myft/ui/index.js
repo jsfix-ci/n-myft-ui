@@ -5,9 +5,7 @@ import updateUi from './update-ui';
 
 function init (opts) {
 	myFtButtons.init(opts);
-	if (opts.flags.get('myftLists')) {
-		lists.init();
-	}
+	lists.init();
 }
 
 export {
