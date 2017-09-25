@@ -106,7 +106,9 @@
 	}
 }
 
-.n-myft-concept-pill--inverse:hover {
+.n-myft-concept-pill--inverse:hover,
+.n-myft-concept-pill[disabled].n-myft-concept-pill--add,
+.n-myft-concept-pill[disabled].n-myft-concept-pill--add:hover {
 	border: 1px solid getColor('white');
 	color: getColor('white');
 	background-color: oColorsMix('claret-90', 'claret-60', 40);
