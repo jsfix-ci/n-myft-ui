@@ -16,6 +16,9 @@
 	&[aria-pressed="true"]:before {
 		@include oIconsGetIcon($iconOn, $colorOn, $iconSize, $iconset-version: 1);
 	}
+	&[aria-pressed="true"]:hover:before {
+		@include oIconsGetIcon($iconOn, $colorOff, $iconSize, $iconset-version: 1);
+	}
 }
 
 //TODO this parameter is only necessary up to n-ui@4
@@ -75,7 +78,7 @@
 	.n-myft-ui--follow {
 		position: relative;
 		.n-myft-ui__button {
-			@include buttonWithIcon(26, 24, getColor('teal-40'), 'plus', 'tick');
+			@include buttonWithIcon(26, 24, getColor('teal-40'), 'plus', 'tick', getColor('white'));
 		}
 
 		.n-myft-ui__button--inverse {
@@ -94,10 +97,10 @@
 	.n-myft-ui--instant {
 		position: relative;
 		.n-myft-ui__button {
-			@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail');
+			@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail', 'mail', getColor('white'));
 		}
 		.n-myft-ui__button--inverse {
-			@include buttonWithIcon(26, 24, getColor('teal-80'), 'mail');
+			@include buttonWithIcon(26, 24, getColor('teal-80'), 'mail', 'mail', getColor('white'));
 		}
 	}
 
