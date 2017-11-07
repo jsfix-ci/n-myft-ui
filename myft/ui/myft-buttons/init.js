@@ -39,13 +39,13 @@ function anonEventListeners () {
 	});
 }
 
-function signedInEventListeners () {
+function signedInEventListeners (store) {
 	Object.keys(relationshipConfig).forEach(relationshipName => {
 		const uiSelector = relationshipConfig[relationshipName].uiSelector;
 		loadedRelationships.waitForRelationshipsToLoad(relationshipName)
 			.then(() => {
-				const relationships = loadedRelationships.getRelationships(relationshipName);
-				if (relationships.length > 0) {
+				const relationships = store.getState().relationships[relationshipName];
+				if (relationships && relationships.length > 0) {
 					const subjectIds = relationships.map(item => item.uuid);
 					buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true);
 				}
@@ -82,7 +82,7 @@ export default function (opts) {
 		if (opts && opts.anonymous) {
 			anonEventListeners();
 		} else {
-			signedInEventListeners();
+			signedInEventListeners(opts.store);
 			personaliseLinks();
 		}
 	}

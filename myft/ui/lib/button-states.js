@@ -2,6 +2,7 @@ import oErrors from 'o-errors';
 import relationshipConfig from './relationship-config';
 import * as loadedRelationships from './loaded-relationships';
 import * as nextButtons from '../../../myft-common';
+import RelationshipActions from '../alt/actions/RelationshipActions';
 
 export function toggleButton (buttonEl, pressed) {
 	const alreadyPressed = buttonEl.getAttribute('aria-pressed') === 'true';
@@ -38,10 +39,10 @@ export function setStateOfButton (relationshipName, subjectId, state, context = 
 
 function updateFollowedRelationships (relationshipName, uuid, state, data = {}) {
 	if (relationshipName === 'followed' && true === state && data.subject && data.subject.properties) {
-		loadedRelationships.addRelationship(relationshipName, data.subject.properties);
+		RelationshipActions.addRelationship(relationshipName, data.subject.properties);
 	}
 
 	if (relationshipName === 'followed' && false === state) {
-		loadedRelationships.removeRelationship(relationshipName, uuid);
+		RelationshipActions.removeRelationship(relationshipName, uuid);
 	}
 }
