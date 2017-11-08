@@ -10,8 +10,7 @@ class RelationshipActions {
 	fetchRelationships (relationshipName) {
 		return () => {
 			RelationshipSource.fetch(relationshipName)
-				.then(relationships => this.updateRelationships(relationshipName, relationships))
-				.catch(error => console.log(error));
+				.then(relationships => this.updateRelationships(relationshipName, relationships));
 		};
 	}
 

@@ -1,6 +1,5 @@
 import oErrors from 'o-errors';
 import relationshipConfig from './relationship-config';
-import * as loadedRelationships from './loaded-relationships';
 import * as nextButtons from '../../../myft-common';
 import RelationshipActions from '../alt/actions/RelationshipActions';
 
