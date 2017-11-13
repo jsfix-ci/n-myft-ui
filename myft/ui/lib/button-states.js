@@ -1,4 +1,3 @@
-import oErrors from 'o-errors';
 import relationshipConfig from './relationship-config';
 import * as loadedRelationships from './loaded-relationships';
 import * as nextButtons from '../../../myft-common';
@@ -14,7 +13,6 @@ export function toggleButton (buttonEl, pressed) {
 export function setStateOfManyButtons (relationshipName, subjectIds, state, context = document, data = {}) {
 
 	if (!relationshipConfig[relationshipName]) {
-		oErrors.warn(`Unexpected relationshipName passed to updateButton: ${relationshipName}`);
 		return;
 	}
 
