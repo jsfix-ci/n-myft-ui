@@ -5,7 +5,6 @@ const highlight = chalk.bold.green;
 
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
-	instantAlertButton: require('./fixtures/instant-alert-button'),
 	followButtonPlusDigest: require('./fixtures/follow-button-plus-digest'),
 	saveButton: require('./fixtures/save-button'),
 	collections: require('./fixtures/collections')
@@ -35,7 +34,7 @@ app.get('/', (req, res) => {
 			myFtApi: true,
 			myFtApiWrite: true
 		}
-	}, fixtures.followButton, fixtures.instantAlertButton, fixtures.saveButton, fixtures.collections));
+	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
 });
 
 app.get('/digest-on-follow', (req, res) => {
