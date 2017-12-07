@@ -3,10 +3,12 @@
 		data-myft-ui="follow"
 		data-concept-id="{{conceptId}}"
 		{{#if followPlusDigestEmail}}
-		action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
-		data-myft-ui-variant="followPlusDigestEmail"
+			action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
+			data-myft-ui-variant="followPlusDigestEmail"
+		{{else if setFollowButtonStateToSelected}}
+			action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete"
 		{{else}}
-		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
+			action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
 		{{/if}}
 		>
 		<input type="hidden" value="{{name}}" name="name">
@@ -16,8 +18,36 @@
 			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 		{{/if}}
 		<button
-			aria-label="Add {{name}} to myFT"
-			aria-pressed="false"
+			{{#if setFollowButtonStateToSelected}}
+				aria-label="Remove {{name}} from myFT"
+				title="Remove {{name}} from myFT"
+				data-alternate-label="Add {{name}} to myFT"
+				aria-pressed="true"
+				{{#if alternateText}}
+					data-alternate-text="{{alternateText}}"
+				{{else}}
+					{{#if buttonText}}
+						data-alternate-text="{{buttonText}}"
+					{{else}}
+						data-alternate-text="Add to myFT"
+					{{/if}}
+				{{/if}}
+			{{else}}
+				aria-label="Add {{name}} to myFT"
+				title="Add {{name}} to myFT"
+				data-alternate-label="Remove {{name}} from myFT"
+				aria-pressed="false"
+				{{#if alternateText}}
+					data-alternate-text="{{alternateText}}"
+				{{else}}
+					{{#if buttonText}}
+						data-alternate-text="{{buttonText}}"
+					{{else}}
+						data-alternate-text="Added"
+					{{/if}}
+				{{/if}}
+			{{/if}}
+
 			class="{{#if buttonClasses}}
 				{{~#buttonClasses}} {{this}}{{/buttonClasses~}}
 			{{else~}}
@@ -25,26 +55,17 @@
 				{{~#variant}} n-myft-ui__button--{{this}}{{/variant~}}
 				{{~#size}} n-myft-ui__button--{{this}}{{/size~}}
 			{{/if}}"
-			data-alternate-label="Remove {{name}} from myFT"
-			{{#if alternateText}}
-				data-alternate-text="{{alternateText}}"
-			{{else}}
-				{{#if buttonText}}
-					data-alternate-text="{{buttonText}}"
-				{{else}}
-					data-alternate-text="Added"
-				{{/if}}
-			{{/if}}
 			data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
 			{{#if followPlusDigestEmail}}
 			data-trackable-context-messaging="add-to-myft-plus-digest-button"
 			{{/if}}
 			data-trackable="follow"
-			title="Add {{name}} to myFT"
 			type="submit"
 		>
 			{{~#if buttonText~}}
 				{{buttonText}}
+			{{~else if setFollowButtonStateToSelected~}}
+				Added
 			{{~else~}}
 				Add to myFT
 			{{~/if~}}
