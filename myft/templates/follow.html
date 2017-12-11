@@ -5,10 +5,12 @@
 		{{#if followPlusDigestEmail}}
 			action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
 			data-myft-ui-variant="followPlusDigestEmail"
-		{{else if setFollowButtonStateToSelected}}
-			action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete"
 		{{else}}
-			action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
+			{{#ifAll setFollowButtonStateToSelected @root._locals.cacheablePersonalisedUrl}}
+				action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete"
+			{{else}}
+				action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
+			{{/ifAll}}
 		{{/if}}
 		>
 		<input type="hidden" value="{{name}}" name="name">
@@ -18,7 +20,7 @@
 			<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType">
 		{{/if}}
 		<button
-			{{#if setFollowButtonStateToSelected}}
+			{{#ifAll setFollowButtonStateToSelected @root._locals.cacheablePersonalisedUrl}}
 				aria-label="Remove {{name}} from myFT"
 				title="Remove {{name}} from myFT"
 				data-alternate-label="Add {{name}} to myFT"
@@ -46,7 +48,7 @@
 						data-alternate-text="Added"
 					{{/if}}
 				{{/if}}
-			{{/if}}
+			{{/ifAll}}
 
 			class="{{#if buttonClasses}}
 				{{~#buttonClasses}} {{this}}{{/buttonClasses~}}
@@ -64,10 +66,12 @@
 		>
 			{{~#if buttonText~}}
 				{{buttonText}}
-			{{~else if setFollowButtonStateToSelected~}}
-				Added
 			{{~else~}}
-				Add to myFT
+				{{~#ifAll setFollowButtonStateToSelected @root._locals.cacheablePersonalisedUrl~}}
+					Added
+				{{~else~}}
+					Add to myFT
+				{{~/ifAll~}}
 			{{~/if~}}
 		</button>
 	</form>
