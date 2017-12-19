@@ -11,7 +11,7 @@
 	}
 
 	.experimental-myft-flash {
-		.o-header__top-column--right:before {
+		.o-header__top-column--right::before {
 			content: ' ';
 			position: absolute;
 			display: block;
@@ -20,7 +20,7 @@
 			right: 0;
 			height: 100%;
 			opacity: 0;
-
+			animation: myft-flash linear 1.2s;
 			width: 58px;
 
 			@include oGridRespondTo('M') {
@@ -30,11 +30,9 @@
 			@include oGridRespondTo('L') {
 				width: 100px;
 			}
-
-			animation: myft-flash linear 1.2s;
 		}
 
-		.o-header__top-link--myft:before {
+		.o-header__top-link--myft::before {
 			animation: myft-flash-white linear 1.2s;
 		}
 	}

@@ -2,8 +2,8 @@
 //FIXME: Fix inversed disabled
 
 @mixin tick-icon($color) {
-	content: '';
 	@include oIconsGetIcon('tick', getColor($color), 16);
+	content: '';
 	height: 12px;
 	background-size: 32px;
 	margin-right: 8px;

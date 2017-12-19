@@ -22,6 +22,7 @@
 	position: relative;
 	border-radius: 5px;
 	box-shadow: -1px 1px getColor('black-30');
+
 	&::before {
 		width: 0;
 		height: 0;
@@ -33,6 +34,7 @@
 		top: 33%;
 		left: 100%;
 	}
+
 	&::after {
 		width: 0;
 		height: 0;
