@@ -60,7 +60,7 @@ $icon-width-m: 90px;
 		display: block;
 		width: $icon-width-s;
 		height: 80px;
-		left: 0px;
+		left: 0;
 		background-image: url("https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fwww.ft.com%2F__assets%2Fcreatives%2Fmyft-alerts-prefs%2Fenvelope.svg?source=next&fit=scale-down&compression=best&width=50");
 		background-repeat: no-repeat;
 		background-size: 60px auto;
@@ -72,12 +72,12 @@ $icon-width-m: 90px;
 .n-myft-digest-promo__heading {
 	@include oTypographySansBold($scale: 2);
 
-	margin-top: 0px;
+	margin-top: 0;
 	margin-bottom: 7px;
 }
 
 .n-myft-digest-promo__para {
-	margin-top: 0px;
+	margin-top: 0;
 }
 
 .n-myft-digest-promo__branding {

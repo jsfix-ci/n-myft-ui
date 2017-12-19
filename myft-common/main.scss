@@ -5,7 +5,8 @@
 	$horizontalMargin: #{($iconSpace - $iconSize) / 2}px;
 	position: relative;
 	padding-left: #{$iconSpace}px;
-	&:before {
+
+	&::before {
 		@include oIconsGetIcon($iconOff, $colorOff, $iconSize, $iconset-version: 1);
 		content: ' ';
 		position: absolute;
@@ -13,10 +14,12 @@
 		left: $horizontalMargin;
 		margin: $topMargin $horizontalMargin 0 0;
 	}
-	&[aria-pressed="true"]:before {
+
+	&[aria-pressed="true"]::before {
 		@include oIconsGetIcon($iconOn, $colorOn, $iconSize, $iconset-version: 1);
 	}
-	&[aria-pressed="true"]:hover:before {
+
+	&[aria-pressed="true"]:hover::before {
 		@include oIconsGetIcon($iconOn, $colorOff, $iconSize, $iconset-version: 1);
 	}
 }
@@ -35,6 +38,7 @@
 
 	.n-myft-ui__button {
 		@include oButtons();
+
 		&:focus {
 			outline: 3px solid getColor('teal-40');
 			outline-offset: 3px;
@@ -77,6 +81,7 @@
 
 	.n-myft-ui--follow {
 		position: relative;
+
 		.n-myft-ui__button {
 			@include buttonWithIcon(26, 24, getColor('teal-40'), 'plus', 'tick', getColor('white'));
 		}
@@ -84,7 +89,7 @@
 		.n-myft-ui__button--inverse {
 			@include buttonWithIcon(26, 24, getColor('white'), 'plus', 'tick', getColor('black'));
 
-			&[aria-pressed="true"]:hover:before {
+			&[aria-pressed="true"]:hover::before {
 				@include oIconsGetIcon('tick', getColor('white'), 24, $iconset-version: 1);
 			}
 		}
@@ -96,9 +101,11 @@
 
 	.n-myft-ui--instant {
 		position: relative;
+
 		.n-myft-ui__button {
 			@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail', 'mail', getColor('white'));
 		}
+
 		.n-myft-ui__button--inverse {
 			@include buttonWithIcon(26, 24, getColor('teal-80'), 'mail', 'mail', getColor('white'));
 		}

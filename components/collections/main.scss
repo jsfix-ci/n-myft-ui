@@ -1,8 +1,7 @@
 .card__collection {
 	display: flex;
 	flex: 1 1 auto;
-	flex-direction: column;
-	flex-wrap: nowrap;
+	flex-flow: column nowrap;
 	justify-content: flex-start;
 	position: relative;
 	width: auto;
@@ -18,7 +17,7 @@
 	}
 }
 
-.card__collection-stack:before {
+.card__collection-stack::before {
 	content: '';
 	position: absolute;
 	border: 1px solid rgba(getColorFor('myft'), 0.4);
@@ -30,7 +29,7 @@
 	height: 3px;
 }
 
-.card__collection-stack:after {
+.card__collection-stack::after {
 	content: '';
 	position: absolute;
 	border: 1px solid rgba(getColorFor('myft'), 0.4);

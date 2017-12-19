@@ -6,7 +6,7 @@
 .DS_Store
 .editorconfig
 .eslintrc.js
-.scss-lint.yml
+.stylelintrc
 public/main-without-n-ui.js
 public/main-without-n-ui.js.map
 public/main.css

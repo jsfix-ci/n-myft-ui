@@ -18,7 +18,7 @@ $o-overlay-is-silent: true;
 // 'unfollow' button
 .myft-ui__button--manage,
 .myft-ui__button--myft-manage {
-	&[aria-pressed="true"]:before {
+	&[aria-pressed="true"]::before {
 		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
 	}
 }
@@ -33,6 +33,7 @@ $o-overlay-is-silent: true;
 
 .n-myft-ui__error-message.n-myft-ui__error-message--no-name {
 	display: none;
+
 	.n-myft-ui__error--no-name & {
 		display: block;
 	}
@@ -59,7 +60,7 @@ $o-overlay-is-silent: true;
 	}
 
 	.o-forms {
-		padding: 0px;
+		padding: 0;
 	}
 }
 
@@ -70,6 +71,7 @@ $o-overlay-is-silent: true;
 .myft-list-form__input {
 	@include oFormsCommonFieldBase();
 }
+
 .myft-list-form__select {
 	@include oFormsCommonFieldBase();
 	@include oFormsSelect();
@@ -132,7 +134,7 @@ $o-overlay-is-silent: true;
 	h3 {
 		color: getColor('jade');
 
-		&:before {
+		&::before {
 			@include oIconsGetIcon('tick', getColor('jade'), 14, $iconset-version: 1);
 			content: '';
 			margin-right: 3px;
@@ -153,7 +155,7 @@ $o-overlay-is-silent: true;
 		margin: 0;
 	}
 
-	&:after {
+	&::after {
 		content: '';
 		display: block;
 		border-top: 1px solid getColor('black-20');
