@@ -6,7 +6,7 @@
 	content: '';
 	height: 10px;
 	background-size: 21px;
-	margin-right: 8px;
+	margin-right: 7px;
 }
 
 @mixin plus-icon($color) {
@@ -27,7 +27,7 @@
 	color: getColor('claret');
 	display: block;
 	font-size: 14px;
-	margin: 8px 8px 8px 2px;
+	margin: 6px 4px 6px 2px;
 	max-width: 200px;
 	overflow: hidden;
 	padding: 5px 10px;
