@@ -1,0 +1,10 @@
+@import '../../mixins/pill-button/main';
+
+.n-myft-follow-pill {
+	@include myftPillButton();
+	@include myftAddableButton();
+}
+
+.n-myft-follow-pill--inverse {
+	@include myftAddableButtonTheme($theme: inverse);
+}

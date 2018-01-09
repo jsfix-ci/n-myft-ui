@@ -1,0 +1,45 @@
+<form class="n-myft-ui" method="POST"
+	data-myft-ui="follow"
+	data-concept-id="{{conceptId}}"
+	action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete">
+	<input type="hidden" value="{{name}}" name="name">
+	{{#if directType}}
+		<input
+			type="hidden"
+			value="{{directType}}"
+			name="directType"
+		/>
+	{{else}}
+		<input
+			type="hidden"
+			value="http://www.ft.com/ontology/concept/Concept"
+			name="directType"
+		/>
+	{{/if}}
+	<button
+		aria-label="Remove {{name}} from myFT"
+		aria-pressed="true"
+		class="{{extraButtonClasses}}
+			n-myft-follow-pill
+			{{~#variant}} n-myft-follow-pill--{{this}}{{/variant~}}"
+		data-alternate-label="Add {{name}} to myFT"
+		{{#if alternateText}}
+			data-alternate-text="{{alternateText}}"
+		{{else}}
+			{{#if buttonText}}
+				data-alternate-text="{{buttonText}}"
+			{{else}}
+				data-alternate-text="Add {{name}} to myFT"
+			{{/if}}
+		{{/if}}
+		data-trackable="follow"
+		data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
+		title="Remove {{name}} from myFT"
+		type="submit">
+			{{~#if buttonText~}}
+				{{buttonText}}
+			{{~else~}}
+				Added
+			{{~/if~}}
+		</button>
+</form>
