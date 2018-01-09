@@ -1,0 +1,121 @@
+@import './icons';
+
+@mixin myftPillButtonTheme($theme: standard) {
+	@if $theme == standard {
+		background-color: transparent;
+		border: 1px solid getColor('claret');
+		color: getColor('claret');
+
+		&:focus {
+			border: 2px solid getColor('teal-40');
+			color: getColor('claret');
+		}
+
+		&:hover {
+			border: 1px solid getColor('claret');
+			color: getColor('black-70');
+		}
+
+	} @else if $theme == inverse {
+		border: 1px solid getColor('white');
+		color: getColor('white');
+
+		&:hover {
+			border: 1px solid getColor('white');
+			color: getColor('white');
+			background-color: oColorsMix('claret-90', 'claret-60', 40);
+		}
+
+		&:focus,
+		&:focus[aria-pressed="true"] {
+			&,
+			&:hover {
+				color: getColor('white');
+				border: 2px solid getColor('claret-90');
+			}
+		}
+	}
+}
+
+@mixin myftPillButton($theme: standard) {
+	@include myftPillButtonTheme($theme);
+	@include oTypographySansBold($scale: -1);
+
+	border-radius: 100px;
+	box-sizing: content-box;
+	display: block;
+	font-size: 14px;
+	margin: 6px 4px 6px 2px;
+	max-width: 200px;
+	overflow: hidden;
+	padding: 5px 10px;
+	text-align: left;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	&:focus {
+		outline-style: none;
+		padding: 4px 9px;
+	}
+
+	&[disabled],
+	&[disabled]:hover {
+		border: 1px solid getColor('black-70');
+		color: getColor('black-70');
+	}
+}
+
+@mixin myftAddableButtonTheme($theme: standard) {
+	@if $theme == standard {
+		&::before {
+			@include plus-icon('claret');
+		}
+
+		&:hover::before {
+			@include plus-icon('black-70');
+		}
+
+		&[aria-pressed="true"] {
+			&::before {
+				@include tick-icon('claret');
+			}
+
+			&:hover::before {
+				@include tick-icon('black-70');
+			}
+		}
+	} @else if $theme == inverse {
+		&:focus {
+			border: 2px solid getColor('white');
+		}
+
+		&::before {
+			@include plus-icon('white');
+		}
+
+		&[aria-pressed="true"] {
+			background-color: getColor('claret-90');
+			border: 1px solid getColor('claret-90');
+
+			&::before {
+				@include tick-icon('white');
+			}
+
+			&:hover::before {
+				@include tick-icon('white');
+			}
+		}
+	}
+}
+
+@mixin myftAddableButton($theme: standard) {
+	@include myftAddableButtonTheme($theme);
+
+	// TODO what about inverse?
+	&[disabled],
+	&[disabled]:hover {
+		border: 1px solid getColor('white');
+		color: getColor('white');
+		background-color: oColorsMix('claret-90', 'claret-60', 40);
+	}
+}
