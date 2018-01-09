@@ -1,139 +1,17 @@
-//TODO: Remove --added and --disabled
-//FIXME: Fix inversed disabled
-
-@mixin tick-icon($color) {
-	@include oIconsGetIcon('tick', getColor($color), 10);
-	content: '';
-	height: 10px;
-	background-size: 21px;
-	margin-right: 7px;
-}
-
-@mixin plus-icon($color) {
-	@include oIconsGetIcon('plus', getColor($color), 10);
-	content: '';
-	height: 10px;
-	background-size: 25px;
-	margin-right: 7px;
-	margin-bottom: -1px; // bit of sneaky icon v-alignment tweaking
-}
+@import '../../mixins/pill-button/main';
 
 .n-myft-concept-pill {
-	@include oTypographySansBold($scale: -1);
-	background-color: transparent;
-	border: 1px solid getColor('claret');
-	border-radius: 100px;
-	box-sizing: content-box;
-	color: getColor('claret');
-	display: block;
-	font-size: 14px;
-	margin: 6px 4px 6px 2px;
-	max-width: 200px;
-	overflow: hidden;
-	padding: 5px 10px;
-	text-align: left;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	@include myftPillButton();
 }
 
-.n-myft-concept-pill--add::before {
-	@include plus-icon('claret');
-}
-
-.n-myft-concept-pill--added::before,
-.n-myft-concept-pill--add[aria-pressed="true"]::before, {
-	@include tick-icon('claret');
-}
-
-.n-myft-concept-pill:hover {
-	border: 1px solid getColor('claret');
-}
-
-.n-myft-concept-pill--added:hover,
-.n-myft-concept-pill--add:hover {
-	color: getColor('black-70');
-}
-
-.n-myft-concept-pill--add:hover::before {
-	@include plus-icon('black-70');
-}
-
-.n-myft-concept-pill--added:hover::before,
-.n-myft-concept-pill--add[aria-pressed="true"]:hover::before {
-	@include tick-icon('black-70');
-}
-
-.n-myft-concept-pill:focus {
-	border: 2px solid getColor('teal-40');
-	color: getColor('claret');
-	outline-style: none;
-	padding: 4px 9px;
-}
-
-.n-myft-concept-pill--disabled,
-.n-myft-concept-pill[disabled],
-.n-myft-concept-pill[disabled].n-myft-concept-pill--inverse {
-	&,
-	&:hover {
-		border: 1px solid getColor('black-70');
-		color: getColor('black-70');
-	}
+.n-myft-concept-pill--add {
+	@include myftAddableButton();
 }
 
 .n-myft-concept-pill--inverse {
-	border: 1px solid getColor('white');
-	color: getColor('white');
-}
+	@include myftPillButtonTheme($theme: inverse);
 
-.n-myft-concept-pill--inverse.n-myft-concept-pill--add::before {
-	@include plus-icon('white');
-}
-
-.n-myft-concept-pill--inverse.n-myft-concept-pill--added,
-.n-myft-concept-pill--inverse[aria-pressed="true"] {
-	background-color: getColor('claret-90');
-	border: 1px solid getColor('claret-90');
-}
-
-.n-myft-concept-pill--inverse.n-myft-concept-pill--added,
-.n-myft-concept-pill--inverse.n-myft-concept-pill--add[aria-pressed="true"] {
-	&::before {
-		@include tick-icon('white');
-	}
-
-	&:focus {
-		border: 2px solid getColor('white');
-	}
-}
-
-.n-myft-concept-pill--inverse:hover,
-.n-myft-concept-pill[disabled].n-myft-concept-pill--add,
-.n-myft-concept-pill[disabled].n-myft-concept-pill--add:hover {
-	border: 1px solid getColor('white');
-	color: getColor('white');
-	background-color: oColorsMix('claret-90', 'claret-60', 40);
-
-	&.n-myft-concept-pill--add::before {
-		@include plus-icon('white');
-	}
-
-	&.n-myft-concept-pill--added::before,
-	&.n-myft-concept-pill--add[aria-pressed="true"]::before {
-		@include tick-icon('white');
-	}
-
-	&.n-myft-concept-pill--added,
-	&.n-myft-concept-pill--add[aria-pressed="true"] {
-		border: 1px solid getColor('claret-80');
-		background-color: getColor('claret-80');
-	}
-}
-
-.n-myft-concept-pill--inverse:focus,
-.n-myft-concept-pill--inverse:focus[aria-pressed="true"] {
-	&,
-	&:hover {
-		color: getColor('white');
-		border: 2px solid getColor('claret-90');
+	&.n-myft-concept-pill--add {
+		@include myftAddableButtonTheme($theme: inverse);
 	}
 }
