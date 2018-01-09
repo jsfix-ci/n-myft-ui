@@ -1,0 +1,16 @@
+@mixin tick-icon($color) {
+	@include oIconsGetIcon('tick', getColor($color), 10);
+	content: '';
+	height: 10px;
+	background-size: 21px;
+	margin-right: 7px;
+}
+
+@mixin plus-icon($color) {
+	@include oIconsGetIcon('plus', getColor($color), 10);
+	content: '';
+	height: 10px;
+	background-size: 25px;
+	margin-right: 7px;
+	margin-bottom: -1px; // bit of sneaky icon v-alignment tweaking
+}
