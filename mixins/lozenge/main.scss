@@ -10,32 +10,41 @@
 		border: 1px solid getColor('claret');
 		color: getColor('claret');
 
-		&:hover {
-			background-color: rgba(0, 0, 0, 0.1);
-			border: 1px solid getColor('claret');
+		&:hover,
+		&:focus {
+			background-color: rgba(0, 0, 0, 0.05);
 			color: getColor('claret');
 		}
 
 		&:focus {
-			&,
-			&:hover {
+			border: 2px solid getColor('claret');
+		}
+
+		&:hover {
+			border: 1px solid getColor('claret');
+
+			&:focus {
 				border: 2px solid getColor('claret');
-				color: getColor('claret');
 			}
 		}
 	} @else if $theme == inverse {
 		border: 1px solid getColor('white');
 		color: getColor('white');
 
-		&:hover {
-			border: 1px solid getColor('white');
-			color: getColor('white');
+		&:hover,
+		&:focus {
 			background-color: oColorsMix('claret-90', 'claret-60', 40);
+			color: getColor('white');
 		}
 
 		&:focus {
-			&,
-			&:hover {
+			border: 2px solid getColor('white');
+		}
+
+		&:hover {
+			border: 1px solid getColor('white');
+
+			&:focus {
 				border: 2px solid getColor('white');
 				color: getColor('white');
 			}
