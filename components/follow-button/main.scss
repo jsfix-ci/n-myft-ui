@@ -1,0 +1,10 @@
+@import '../../mixins/lozenge/main';
+
+.n-myft-lozenge {
+	@include myftLozenge();
+  @include myftAddable();
+}
+
+.n-myft-lozenge--inverse {
+  @include myftAddableTheme($theme: inverse);
+}
