@@ -8,10 +8,12 @@
 	@include myftToggleIcon();
 }
 
-.n-myft-concept-pill--inverse {
-	@include myftLozengeTheme($theme: inverse);
+@each $theme in inverse opinion {
+	.n-myft-concept-pill--#{$theme} {
+		@include myftLozengeTheme($theme);
 
-	&.n-myft-concept-pill--add {
-		@include myftToggleIcon($theme: inverse);
+		&.n-myft-concept-pill--add {
+			@include myftToggleIcon($theme);
+		}
 	}
 }
