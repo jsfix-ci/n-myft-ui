@@ -1,4 +1,4 @@
-@mixin tick-icon($color) {
+@mixin tickIcon($color) {
 	@include oIconsGetIcon('tick', getColor($color), 10);
 	content: '';
 	height: 10px;
@@ -6,7 +6,7 @@
 	margin-right: 7px;
 }
 
-@mixin plus-icon($color) {
+@mixin plusIcon($color) {
 	@include oIconsGetIcon('plus', getColor($color), 10);
 	content: '';
 	height: 10px;

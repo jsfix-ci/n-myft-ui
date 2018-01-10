@@ -1,6 +1,6 @@
 @import './icons';
 
-@mixin myftPillButtonTheme($theme: standard) {
+@mixin myftLozengeTheme($theme: standard) {
 	@if $theme == standard {
 		background-color: transparent;
 		border: 1px solid getColor('claret');
@@ -37,9 +37,13 @@
 	}
 }
 
-@mixin myftPillButton($theme: standard) {
-	@include myftPillButtonTheme($theme);
+@mixin myftLozenge($theme: standard, $addable: false) {
+	@include myftLozengeTheme($theme);
 	@include oTypographySansBold($scale: -1);
+
+	@if $addable == true {
+		@include myftAddable($theme);
+	}
 
 	border-radius: 100px;
 	box-sizing: content-box;
@@ -65,23 +69,23 @@
 	}
 }
 
-@mixin myftAddableButtonTheme($theme: standard) {
+@mixin myftAddableTheme($theme: standard) {
 	@if $theme == standard {
 		&::before {
-			@include plus-icon('claret');
+			@include plusIcon('claret');
 		}
 
 		&:hover::before {
-			@include plus-icon('black-70');
+			@include plusIcon('black-70');
 		}
 
 		&[aria-pressed="true"] {
 			&::before {
-				@include tick-icon('claret');
+				@include tickIcon('claret');
 			}
 
 			&:hover::before {
-				@include tick-icon('black-70');
+				@include tickIcon('black-70');
 			}
 		}
 	} @else if $theme == inverse {
@@ -90,7 +94,7 @@
 		}
 
 		&::before {
-			@include plus-icon('white');
+			@include plusIcon('white');
 		}
 
 		&[aria-pressed="true"] {
@@ -98,18 +102,18 @@
 			border: 1px solid getColor('claret-90');
 
 			&::before {
-				@include tick-icon('white');
+				@include tickIcon('white');
 			}
 
 			&:hover::before {
-				@include tick-icon('white');
+				@include tickIcon('white');
 			}
 		}
 	}
 }
 
-@mixin myftAddableButton($theme: standard) {
-	@include myftAddableButtonTheme($theme);
+@mixin myftAddable($theme: standard) {
+	@include myftAddableTheme($theme);
 
 	// TODO what about inverse?
 	&[disabled],
