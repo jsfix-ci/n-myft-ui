@@ -1,10 +1,9 @@
 @import '../../mixins/lozenge/main';
 
-.n-myft-lozenge {
-	@include myftLozenge();
-	@include myftAddable();
+.n-myft-follow-button {
+	@include myftLozenge($addable: true);
 }
 
-.n-myft-lozenge--inverse {
+.n-myft-follow-button--inverse {
 	@include myftAddableTheme($theme: inverse);
 }
