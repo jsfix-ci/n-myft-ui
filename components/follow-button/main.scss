@@ -4,6 +4,8 @@
 	@include myftLozenge($with-toggle-icon: true);
 }
 
-.n-myft-follow-button--inverse {
-	@include myftLozengeTheme($theme: inverse, $with-toggle-icon: true);
+@each $theme in inverse opinion {
+	.n-myft-follow-button--#{theme} {
+		@include myftLozengeTheme($theme, $with-toggle-icon: true);
+	}
 }
