@@ -11,31 +11,29 @@
 			border: 1px solid getColor('claret');
 			color: getColor('white');
 
-			&:focus {
-				border: 2px solid getColor('claret-90');
-				color: getColor('white');
-			}
-
 			&::before {
 				@include tickIcon('white');
 			}
 
+			&:hover,
+			&:focus {
+				background-color: getColor('claret-50');
+				color: getColor('white');
+			}
+
+			&:focus {
+				border: 2px solid getColor('claret-90');
+			}
+
 			&:hover {
 				border: 1px solid getColor('claret-90');
-				background-color: getColor('claret');
-				color: getColor('white');
 
 				&:focus {
 					border: 2px solid getColor('claret-90');
-					color: getColor('white');
 				}
 			}
 		}
 	} @else if $theme == inverse {
-		&:focus {
-			border: 2px solid getColor('white');
-		}
-
 		&::before {
 			@include plusIcon('white');
 		}
