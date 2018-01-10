@@ -1,3 +1,4 @@
+@import './themes';
 @import './toggle-icon';
 
 @mixin myftLozengeTheme($theme: standard, $with-toggle-icon: false) {
@@ -5,62 +6,33 @@
 		@include myftToggleIcon($theme);
 	}
 
-	@if $theme == standard {
-		background-color: getColor('claret');
-		border: 1px solid getColor('claret');
-		color: getColor('white');
+	@include withTheme($theme) {
+		background-color: getThemeColor(background);
+		border: 1px solid getThemeColor(background);
+		color: getThemeColor(text);
 
 		&:hover,
 		&:focus {
-			background-color: getColor('claret-50');
-			border-color: getColor('claret-50');
-			color: getColor('white');
+			background-color: getThemeColor(highlight);
+			border-color: getThemeColor(highlight);
+			color: getThemeColor(text);
 		}
 
 		&[disabled] {
 			background: transparent;
-			border: 1px solid getColor('black-70');
-			color: getColor('black-70');
+			border: 1px solid getThemeColor(disabled);
+			color: getThemeColor(disabled);
 		}
 
 		&[aria-pressed="true"] {
 			background-color: transparent;
-			border: 1px solid getColor('claret');
-			color: getColor('claret');
+			border: 1px solid getThemeColor(background);
+			color: getThemeColor(background);
 
 			&:hover,
 			&:focus {
-				background-color: rgba(black, 0.05);
-				color: getColor('claret');
-			}
-		}
-	} @else if $theme == inverse {
-		border: 1px solid getColor('white');
-		background-color: getColor('white');
-		color: getColor('claret');
-
-		&:hover,
-		&:focus {
-			background-color: rgba(white, 0.8);
-			border-color: rgba(white, 0.8);
-			color: getColor('claret');
-		}
-
-		&[disabled] {
-			background: transparent;
-			border: 1px solid getColor('black-20');
-			color: getColor('black-20');
-		}
-
-		&[aria-pressed="true"] {
-			background-color: transparent;
-			border: 1px solid getColor('white');
-			color: getColor('white');
-
-			&:hover,
-			&:focus {
-				background-color: rgba(white, 0.2);
-				color: getColor('white');
+				background-color: getThemeColor(pressed-highlight);
+				color: getThemeColor(background);
 			}
 		}
 	}

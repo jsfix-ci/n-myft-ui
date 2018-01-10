@@ -1,5 +1,7 @@
+@import './themes';
+
 @mixin plusIcon($color) {
-	@include oIconsGetIcon('plus', getColor($color), 10);
+	@include oIconsGetIcon('plus', $color, 10);
 	content: '';
 	height: 10px;
 	background-size: 25px;
@@ -8,7 +10,7 @@
 }
 
 @mixin tickIcon($color) {
-	@include oIconsGetIcon('tick', getColor($color), 10);
+	@include oIconsGetIcon('tick', $color, 10);
 	content: '';
 	height: 10px;
 	background-size: 21px;
@@ -16,55 +18,31 @@
 }
 
 @mixin myftToggleIcon($theme: standard) {
-	@if $theme == standard {
+	$theme-map: map-get($myft-lozenge-themes, $theme) !global;
+
+	@include withTheme($theme) {
 		&::before {
-			@include plusIcon('white');
+			@include plusIcon(getThemeColor(text));
 		}
 
 		&[aria-pressed="true"] {
 			&::before {
-				@include tickIcon('claret');
+				@include tickIcon(getThemeColor(background));
 			}
 		}
 
 		&[disabled],
 		&[disabled]:hover {
 			background: transparent;
-			border: 1px solid getColor('black-70');
-			color: getColor('black-70');
+			border: 1px solid getThemeColor(disabled);
+			color: getThemeColor(disabled);
 
 			&::before {
-				@include plusIcon('black-70');
+				@include plusIcon(getThemeColor(disabled));
 			}
 
 			&[aria-pressed="true"]::before {
-				@include tickIcon('black-70');
-			}
-		}
-	} @else if $theme == inverse {
-		&::before {
-			@include plusIcon('claret');
-		}
-
-		&[aria-pressed="true"] {
-			&::before {
-				@include tickIcon('white');
-			}
-		}
-
-		// TODO better disabled inverse colours
-		&[disabled],
-		&[disabled]:hover {
-			background: transparent;
-			border: 1px solid getColor('black-20');
-			color: getColor('black-20');
-
-			&::before {
-				@include plusIcon('black-20');
-			}
-
-			&[aria-pressed="true"]::before {
-				@include tickIcon('black-20');
+				@include tickIcon(getThemeColor(disabled));
 			}
 		}
 	}

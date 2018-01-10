@@ -1,0 +1,36 @@
+$myft-lozenge-themes: (
+	standard: (
+		background: getColor('claret'),
+		text: getColor('white'),
+		highlight: getColor('claret-50'),
+		pressed-highlight: rgba(black, 0.05),
+		disabled: getColor('black-70')
+	),
+	inverse: (
+		background: getColor('white'),
+		text: getColor('claret'),
+		highlight: rgba(white, 0.8),
+		pressed-highlight: rgba(white, 0.2),
+		disabled: getColor('black-20')
+	),
+	opinion: (
+		background: getColor('oxford-40'),
+		text: getColor('white'),
+		highlight: getColor('oxford-30'),
+		pressed-highlight: rgba(getColor('oxford-40'), 0.2),
+		disabled: getColor('black-70')
+	)
+);
+
+@function getThemeColor($key) {
+	@return map-get($theme-map, $key);
+}
+
+@mixin withTheme($theme) {
+	$theme-map: map-get($myft-lozenge-themes, $theme) !global;
+
+	@content;
+
+	// stylelint-disable order/order
+	$theme-map: null !global;
+}
