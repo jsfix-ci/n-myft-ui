@@ -1,17 +1,17 @@
-@import '../../mixins/pill-button/main';
+@import '../../mixins/lozenge/main';
 
 .n-myft-concept-pill {
-	@include myftPillButton();
+	@include myftLozenge();
 }
 
 .n-myft-concept-pill--add {
-	@include myftAddableButton();
+	@include myftAddable();
 }
 
 .n-myft-concept-pill--inverse {
-	@include myftPillButtonTheme($theme: inverse);
+	@include myftLozengeTheme($theme: inverse);
 
 	&.n-myft-concept-pill--add {
-		@include myftAddableButtonTheme($theme: inverse);
+		@include myftAddableTheme($theme: inverse);
 	}
 }
