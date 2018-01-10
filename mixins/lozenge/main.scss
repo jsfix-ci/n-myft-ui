@@ -1,6 +1,10 @@
 @import './icons';
 
-@mixin myftLozengeTheme($theme: standard) {
+@mixin myftLozengeTheme($theme: standard, $addable: false) {
+	@if $addable != false {
+		@include myftAddableTheme($theme);
+	}
+
 	@if $theme == standard {
 		background-color: transparent;
 		border: 1px solid getColor('claret');
@@ -38,12 +42,8 @@
 }
 
 @mixin myftLozenge($theme: standard, $addable: false) {
-	@include myftLozengeTheme($theme);
+	@include myftLozengeTheme($theme, $addable);
 	@include oTypographySansBold($scale: -1);
-
-	@if $addable == true {
-		@include myftAddable($theme);
-	}
 
 	border-radius: 100px;
 	box-sizing: content-box;
