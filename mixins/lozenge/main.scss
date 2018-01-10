@@ -10,16 +10,19 @@
 		border: 1px solid getColor('claret');
 		color: getColor('claret');
 
-		&:focus {
-			border: 2px solid getColor('teal-40');
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.1);
+			border: 1px solid getColor('claret');
 			color: getColor('claret');
 		}
 
-		&:hover {
-			border: 1px solid getColor('claret');
-			color: getColor('black-70');
+		&:focus {
+			&,
+			&:hover {
+				border: 2px solid getColor('claret');
+				color: getColor('claret');
+			}
 		}
-
 	} @else if $theme == inverse {
 		border: 1px solid getColor('white');
 		color: getColor('white');
@@ -30,12 +33,11 @@
 			background-color: oColorsMix('claret-90', 'claret-60', 40);
 		}
 
-		&:focus,
-		&:focus[aria-pressed="true"] {
+		&:focus {
 			&,
 			&:hover {
+				border: 2px solid getColor('white');
 				color: getColor('white');
-				border: 2px solid getColor('claret-90');
 			}
 		}
 	}

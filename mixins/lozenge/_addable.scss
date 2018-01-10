@@ -6,17 +6,29 @@
 			@include plusIcon('claret');
 		}
 
-		&:hover::before {
-			@include plusIcon('black-70');
-		}
-
 		&[aria-pressed="true"] {
-			&::before {
-				@include tickIcon('claret');
+			background-color: getColor('claret');
+			border: 1px solid getColor('claret');
+			color: getColor('white');
+
+			&:focus {
+				border: 2px solid getColor('claret-90');
+				color: getColor('white');
 			}
 
-			&:hover::before {
-				@include tickIcon('black-70');
+			&::before {
+				@include tickIcon('white');
+			}
+
+			&:hover {
+				border: 1px solid getColor('claret-90');
+				background-color: getColor('claret');
+				color: getColor('white');
+
+				&:focus {
+					border: 2px solid getColor('claret-90');
+					color: getColor('white');
+				}
 			}
 		}
 	} @else if $theme == inverse {
@@ -32,11 +44,11 @@
 			background-color: getColor('claret-90');
 			border: 1px solid getColor('claret-90');
 
-			&::before {
-				@include tickIcon('white');
+			&:focus {
+				border: 2px solid getColor('white');
 			}
 
-			&:hover::before {
+			&::before {
 				@include tickIcon('white');
 			}
 		}
