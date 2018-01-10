@@ -5,13 +5,13 @@
 }
 
 .n-myft-concept-pill--add {
-	@include myftAddable();
+	@include myftToggleIcon();
 }
 
 .n-myft-concept-pill--inverse {
 	@include myftLozengeTheme($theme: inverse);
 
 	&.n-myft-concept-pill--add {
-		@include myftAddableTheme($theme: inverse);
+		@include myftToggleIcon($theme: inverse);
 	}
 }

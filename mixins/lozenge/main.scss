@@ -1,59 +1,73 @@
-@import './addable';
+@import './toggle-icon';
 
-@mixin myftLozengeTheme($theme: standard, $addable: false) {
-	@if $addable != false {
-		@include myftAddableTheme($theme);
+@mixin myftLozengeTheme($theme: standard, $with-toggle-icon: false) {
+	@if $with-toggle-icon != false {
+		@include myftToggleIcon($theme);
 	}
 
 	@if $theme == standard {
-		background-color: transparent;
+		background-color: getColor('claret');
 		border: 1px solid getColor('claret');
-		color: getColor('claret');
-
-		&:hover,
-		&:focus {
-			background-color: rgba(0, 0, 0, 0.05);
-			color: getColor('claret');
-		}
-
-		&:focus {
-			border: 2px solid getColor('claret');
-		}
-
-		&:hover {
-			border: 1px solid getColor('claret');
-
-			&:focus {
-				border: 2px solid getColor('claret');
-			}
-		}
-	} @else if $theme == inverse {
-		border: 1px solid getColor('white');
 		color: getColor('white');
 
 		&:hover,
 		&:focus {
-			background-color: oColorsMix('claret-90', 'claret-60', 40);
+			background-color: getColor('claret-50');
+			border-color: getColor('claret-50');
 			color: getColor('white');
 		}
 
-		&:focus {
-			border: 2px solid getColor('white');
+		&[disabled] {
+			background: transparent;
+			border: 1px solid getColor('black-70');
+			color: getColor('black-70');
 		}
 
-		&:hover {
-			border: 1px solid getColor('white');
+		&[aria-pressed="true"] {
+			background-color: transparent;
+			border: 1px solid getColor('claret');
+			color: getColor('claret');
 
+			&:hover,
 			&:focus {
-				border: 2px solid getColor('white');
+				background-color: rgba(black, 0.05);
+				color: getColor('claret');
+			}
+		}
+	} @else if $theme == inverse {
+		border: 1px solid getColor('white');
+		background-color: getColor('white');
+		color: getColor('claret');
+
+		&:hover,
+		&:focus {
+			background-color: rgba(white, 0.8);
+			border-color: rgba(white, 0.8);
+			color: getColor('claret');
+		}
+
+		&[disabled] {
+			background: transparent;
+			border: 1px solid getColor('black-20');
+			color: getColor('black-20');
+		}
+
+		&[aria-pressed="true"] {
+			background-color: transparent;
+			border: 1px solid getColor('white');
+			color: getColor('white');
+
+			&:hover,
+			&:focus {
+				background-color: rgba(white, 0.2);
 				color: getColor('white');
 			}
 		}
 	}
 }
 
-@mixin myftLozenge($theme: standard, $addable: false) {
-	@include myftLozengeTheme($theme, $addable);
+@mixin myftLozenge($theme: standard, $with-toggle-icon: false) {
+	@include myftLozengeTheme($theme, $with-toggle-icon);
 	@include oTypographySansBold($scale: -1);
 
 	border-radius: 100px;
@@ -62,20 +76,15 @@
 	font-size: 14px;
 	margin: 6px 4px 6px 2px;
 	max-width: 200px;
+	outline-offset: 2px;
 	overflow: hidden;
-	padding: 5px 10px;
+	padding: 5px 12px;
 	text-align: left;
 	text-overflow: ellipsis;
+	transition: border-color, background-color 0.5s ease;
 	white-space: nowrap;
 
 	&:focus {
-		outline-style: none;
-		padding: 4px 9px;
-	}
-
-	&[disabled],
-	&[disabled]:hover {
-		border: 1px solid getColor('black-70');
-		color: getColor('black-70');
+		outline: 2px solid getColor('teal-90');
 	}
 }

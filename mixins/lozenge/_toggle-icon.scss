@@ -1,0 +1,71 @@
+@mixin plusIcon($color) {
+	@include oIconsGetIcon('plus', getColor($color), 10);
+	content: '';
+	height: 10px;
+	background-size: 25px;
+	margin-right: 7px;
+	margin-bottom: -1px; // bit of sneakeroo icon v-alignment tweaking
+}
+
+@mixin tickIcon($color) {
+	@include oIconsGetIcon('tick', getColor($color), 10);
+	content: '';
+	height: 10px;
+	background-size: 21px;
+	margin-right: 7px;
+}
+
+@mixin myftToggleIcon($theme: standard) {
+	@if $theme == standard {
+		&::before {
+			@include plusIcon('white');
+		}
+
+		&[aria-pressed="true"] {
+			&::before {
+				@include tickIcon('claret');
+			}
+		}
+
+		&[disabled],
+		&[disabled]:hover {
+			background: transparent;
+			border: 1px solid getColor('black-70');
+			color: getColor('black-70');
+
+			&::before {
+				@include plusIcon('black-70');
+			}
+
+			&[aria-pressed="true"]::before {
+				@include tickIcon('black-70');
+			}
+		}
+	} @else if $theme == inverse {
+		&::before {
+			@include plusIcon('claret');
+		}
+
+		&[aria-pressed="true"] {
+			&::before {
+				@include tickIcon('white');
+			}
+		}
+
+		// TODO better disabled inverse colours
+		&[disabled],
+		&[disabled]:hover {
+			background: transparent;
+			border: 1px solid getColor('black-20');
+			color: getColor('black-20');
+
+			&::before {
+				@include plusIcon('black-20');
+			}
+
+			&[aria-pressed="true"]::before {
+				@include tickIcon('black-20');
+			}
+		}
+	}
+}
