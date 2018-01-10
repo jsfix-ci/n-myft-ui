@@ -5,5 +5,5 @@
 }
 
 .n-myft-follow-button--inverse {
-	@include myftAddableTheme($theme: inverse);
+	@include myftLozengeTheme($theme: inverse, $addable: true);
 }
