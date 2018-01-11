@@ -1,31 +1,13 @@
 @import './themes';
 @import './toggle-icon';
 
-@mixin myftLozengeTheme($theme: standard, $with-toggle-icon: false) {
+@mixin myftLozengeTheme($theme: standard, $with-toggle-icon: false, $reverse: false) {
 	@if $with-toggle-icon != false {
-		@include myftToggleIcon($theme);
+		@include myftToggleIcon($theme, $reverse);
 	}
 
 	@include withTheme($theme) {
-		background-color: getThemeColor(background);
-		border: 1px solid getThemeColor(background);
-		color: getThemeColor(text);
-
-		&:hover,
-		&:focus {
-			background-color: getThemeColor(highlight);
-			border-color: getThemeColor(highlight);
-			color: getThemeColor(text);
-		}
-
-		&[disabled] {
-			background: transparent;
-			border: 1px solid getThemeColor(disabled);
-			color: getThemeColor(disabled);
-		}
-
-		&:not(button),
-		&[aria-pressed="true"] {
+		@if $reverse == true {
 			background-color: transparent;
 			border: 1px solid getThemeColor(background);
 			color: getThemeColor(background);
@@ -35,12 +17,56 @@
 				background-color: getThemeColor(pressed-highlight);
 				color: getThemeColor(background);
 			}
+
+			&:not(button),
+			&[aria-pressed="true"] {
+				background-color: getThemeColor(background);
+				border: 1px solid getThemeColor(background);
+				color: getThemeColor(text);
+
+				&:hover,
+				&:focus {
+					background-color: getThemeColor(highlight);
+					border-color: getThemeColor(highlight);
+					color: getThemeColor(text);
+				}
+			}
+		} @else {
+			background-color: getThemeColor(background);
+			border: 1px solid getThemeColor(background);
+			color: getThemeColor(text);
+
+			&:hover,
+			&:focus {
+				background-color: getThemeColor(highlight);
+				border-color: getThemeColor(highlight);
+				color: getThemeColor(text);
+			}
+
+			&:not(button),
+			&[aria-pressed="true"] {
+				background-color: transparent;
+				border: 1px solid getThemeColor(background);
+				color: getThemeColor(background);
+
+				&:hover,
+				&:focus {
+					background-color: getThemeColor(pressed-highlight);
+					color: getThemeColor(background);
+				}
+			}
+		}
+
+		&[disabled] {
+			background: transparent;
+			border: 1px solid getThemeColor(disabled);
+			color: getThemeColor(disabled);
 		}
 	}
 }
 
-@mixin myftLozenge($theme: standard, $with-toggle-icon: false) {
-	@include myftLozengeTheme($theme, $with-toggle-icon);
+@mixin myftLozenge($theme: standard, $with-toggle-icon: false, $reverse: false) {
+	@include myftLozengeTheme($theme, $with-toggle-icon, $reverse);
 	@include oTypographySansBold($scale: -1);
 
 	border-radius: 100px;

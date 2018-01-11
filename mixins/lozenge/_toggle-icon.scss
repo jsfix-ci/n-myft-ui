@@ -17,17 +17,29 @@
 	margin-right: 7px;
 }
 
-@mixin myftToggleIcon($theme: standard) {
+@mixin myftToggleIcon($theme: standard, $reverse: false) {
 	$theme-map: map-get($myft-lozenge-themes, $theme) !global;
 
 	@include withTheme($theme) {
-		&::before {
-			@include plusIcon(getThemeColor(text));
-		}
-
-		&[aria-pressed="true"] {
+		@if $reverse == true {
 			&::before {
-				@include tickIcon(getThemeColor(background));
+				@include plusIcon(getThemeColor(background));
+			}
+
+			&[aria-pressed="true"] {
+				&::before {
+					@include tickIcon(getThemeColor(text));
+				}
+			}
+		} @else {
+			&::before {
+				@include plusIcon(getThemeColor(text));
+			}
+
+			&[aria-pressed="true"] {
+				&::before {
+					@include tickIcon(getThemeColor(background));
+				}
 			}
 		}
 
