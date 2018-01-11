@@ -1,11 +1,11 @@
 @import '../../mixins/lozenge/main';
 
 .n-myft-follow-button {
-	@include myftLozenge($with-toggle-icon: true);
+	@include myftLozenge($with-toggle-icon: true, $reverse: true);
 }
 
 @each $theme in inverse opinion {
 	.n-myft-follow-button--#{theme} {
-		@include myftLozengeTheme($theme, $with-toggle-icon: true);
+		@include myftLozengeTheme($theme, $with-toggle-icon: true, $reverse: true);
 	}
 }

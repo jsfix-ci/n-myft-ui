@@ -2,10 +2,10 @@
 
 .n-myft-concept-pill {
 	@include myftLozenge();
-}
 
-.n-myft-concept-pill--add {
-	@include myftToggleIcon();
+	&.n-myft-concept-pill--add {
+		@include myftLozengeTheme($theme: standard, $with-toggle-icon: true, $reverse: true);
+	}
 }
 
 @each $theme in inverse opinion {
@@ -13,7 +13,7 @@
 		@include myftLozengeTheme($theme);
 
 		&.n-myft-concept-pill--add {
-			@include myftToggleIcon($theme);
+			@include myftLozengeTheme($theme, $with-toggle-icon: true, $reverse: true);
 		}
 	}
 }
