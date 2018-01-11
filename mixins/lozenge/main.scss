@@ -24,6 +24,7 @@
 			color: getThemeColor(disabled);
 		}
 
+		&:not(button),
 		&[aria-pressed="true"] {
 			background-color: transparent;
 			border: 1px solid getThemeColor(background);
