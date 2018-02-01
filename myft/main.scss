@@ -196,3 +196,12 @@ $o-overlay-is-silent: true;
 		@include nUiZIndexFor('overlay');
 	}
 }
+
+.myft-ui__button--pin {
+	@include oButtons();
+	@include oButtonsIconButton($icon-name: pin, $is-icon-only: true);
+	margin-left: 2px;
+	&[aria-pressed="true"]::before {
+		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
+	}
+}
