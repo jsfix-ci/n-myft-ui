@@ -196,11 +196,56 @@ $o-overlay-is-silent: true;
 	}
 }
 
-.myft-ui__button--pin {
+.myft-pin-button {
 	@include oButtons();
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	min-width: 28px;
+	&[aria-pressed=true],
+	&:not([disabled]):hover {
+		background-color: transparent;
+		border: 0;
+	}
+}
+
+.myft-pin-button {
+	$icon-width: 36;
 	@include oButtonsIconButton($icon-name: pin, $is-icon-only: true);
-	margin-left: 2px;
+	@include oIconsGetIcon('pin', getColor('black-40'), $icon-width, $iconset-version: 1);
+	&[aria-pressed=true],
+	&:not([disabled]):hover {
+		@include oIconsGetIcon('pin', getColor('claret'), $icon-width, $iconset-version: 1);
+	}
+}
+
+.n-myft-ui__button--instant.n-myft-ui__button--instant-light {
+	$icon-width: 36;
+	border: 0;
+	padding-left: 8px;
+	padding-right: 36px;
+	color: getColor('black');
+	background: transparent;
+	&:not([disabled]):hover,
+	&:not([disabled]):focus {
+		background: transparent;
+		color: getColor('black');
+	}
+	&[aria-pressed="true"] {
+		background: transparent;
+		color: getColor('black');
+	}
+	&::before {
+		@include oIconsGetIcon('mail', getColor('black-30'), $icon-width, $iconset-version: 1);
+		left: auto;
+		right: 1px;
+		margin-top: -18px;
+	}
+	&:not([disabled]):hover:before,
 	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
+		@include oIconsGetIcon('mail', getColor('claret'), $icon-width, $iconset-version: 1);
+		left: auto;
+		right: 1px;
+		margin-top: -18px;
 	}
 }
