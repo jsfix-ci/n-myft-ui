@@ -24,7 +24,7 @@
 				{{#if buttonText}}
 					data-alternate-text="{{buttonText}}"
 				{{else}}
-					data-alternate-text="Instant alerts on"
+					data-alternate-text="Instant alerts"
 				{{/if}}
 			{{/if}}
 			data-concept-id="{{conceptId}}" {{! duplicated here for tracking}}
@@ -33,7 +33,7 @@
 			name="_rel.instant"
 			value="true"
 			type="submit"
-		>{{#if buttonText}}{{buttonText}}{{else}}Instant alerts off{{/if}}</button>
+		>{{#if buttonText}}{{buttonText}}{{else}}Instant alerts{{/if}}</button>
 	</form>
 {{else}}
 	<!-- Instant alert button hidden due to myFtApiWrite being off -->
