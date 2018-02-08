@@ -236,14 +236,14 @@ $o-overlay-is-silent: true;
 		color: getColor('black');
 	}
 	&::before {
-		@include oIconsGetIcon('mail', getColor('black-30'), $icon-width, $iconset-version: 1);
+		@include oIconsGetIcon('notifications', getColor('black-30'), $icon-width, $iconset-version: 1);
 		left: auto;
 		right: 1px;
 		margin-top: -18px;
 	}
 	&:not([disabled]):hover:before,
 	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon('mail', getColor('claret'), $icon-width, $iconset-version: 1);
+		@include oIconsGetIcon('notifications', getColor('claret'), $icon-width, $iconset-version: 1);
 		left: auto;
 		right: 1px;
 		margin-top: -18px;
