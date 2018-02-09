@@ -224,16 +224,17 @@ $o-overlay-is-silent: true;
 	border: 0;
 	padding-left: 8px;
 	padding-right: 36px;
-	color: getColor('black');
+	color: getColor('black-80');
+	font-weight: 400;
 	background: transparent;
 	&:not([disabled]):hover,
 	&:not([disabled]):focus {
 		background: transparent;
-		color: getColor('black');
+		color: getColor('black-80');
 	}
 	&[aria-pressed="true"] {
 		background: transparent;
-		color: getColor('black');
+		color: getColor('black-80');
 	}
 	&::before {
 		@include oIconsGetIcon('notifications', getColor('black-30'), $icon-width, $iconset-version: 1);
@@ -244,8 +245,5 @@ $o-overlay-is-silent: true;
 	&:not([disabled]):hover:before,
 	&[aria-pressed="true"]::before {
 		@include oIconsGetIcon('notifications', getColor('claret'), $icon-width, $iconset-version: 1);
-		left: auto;
-		right: 1px;
-		margin-top: -18px;
 	}
 }
