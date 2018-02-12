@@ -11,17 +11,9 @@ export const findButton = element =>
 		? element
 		: findButton(element.parentNode);
 
-const reloadPage = () => {
-	if (window.location) {
-		location.reload();
-	}
-};
-
 export default node => {
 	const uuid = node.dataset.conceptId;
 	const action =
 		node.dataset.prioritised === 'true' ? unprioritise : prioritise;
-	action(uuid).then(() => {
-		reloadPage();
-	});
+	action(uuid);
 };
