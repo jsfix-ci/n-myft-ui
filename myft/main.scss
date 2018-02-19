@@ -1,5 +1,6 @@
 @import 'o-buttons/main';
 @import './ui/myft-buttons/main';
+@import './ui/myft-buttons/pin-button';
 
 $o-forms-is-silent: false;
 @import 'o-forms/main';
@@ -194,36 +195,6 @@ $o-overlay-is-silent: true;
 		@include oOverlayFullscreen($fill: 'height');
 		@include nUiZIndexFor('overlay');
 	}
-}
-
-.myft-pin-button {
-	@include oButtons();
-	background-color: transparent;
-	border: 0;
-	padding: 0;
-	min-width: 28px;
-	&[aria-pressed=true],
-	&:not([disabled]):hover {
-		background-color: transparent;
-		border: 0;
-	}
-}
-
-.myft-pin-button {
-	$icon-width: 36;
-	@include oButtonsIconButton($icon-name: pin, $is-icon-only: true);
-	@include oIconsGetIcon('pin', getColor('black-40'), $icon-width, $iconset-version: 1);
-	&[aria-pressed=true],
-	&:not([disabled]):hover {
-		@include oIconsGetIcon('pin', getColor('claret'), $icon-width, $iconset-version: 1);
-	}
-}
-
-.myft-pin-divider {
-	height: 18px;
-	width: 1px;
-	background: getColor('black-10');
-	margin: 0 1px;
 }
 
 .n-myft-ui__button--instant.n-myft-ui__button--instant-light {
