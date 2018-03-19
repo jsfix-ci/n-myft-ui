@@ -30,7 +30,7 @@ query MyFT($uuid: String!) {
 const insertMyFtNotification = (myFtIconContainer, tooltipTarget, tooltipEl) => {
 	setNotificationDot(myFtIconContainer, tooltipTarget);
 	setTooltipElementDiv(myFtIconContainer, tooltipEl);
-}
+};
 
 const setNotificationDot = (container, tooltipTarget) => {
 	const div = document.createElement('div');
