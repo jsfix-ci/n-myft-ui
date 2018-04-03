@@ -29,6 +29,7 @@ test-build:
 
 test-unit:
 	karma start karma.conf.js
+	mocha ./myft-notification/test/*.js
 
 a11y: demo-build
 	@node .pa11yci.js

@@ -52,6 +52,7 @@
     "http-server": "^0.9.0",
     "imports-loader": "^0.6.5",
     "inject-loader": "^3.0.0",
+    "jsdom": "^11.7.0",
     "karma": "^0.13.14",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.1",
