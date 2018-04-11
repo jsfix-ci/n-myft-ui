@@ -97,7 +97,9 @@ const createExpander = (data, flags) => {
 	const feedbackEl = oExpanderDiv.querySelector('.myft-notification__feedback');
 
 	if (feedbackEl) {
-		new Feedback(feedbackEl);
+		new Feedback(feedbackEl, {
+			onRespond: () => { closeNotificationContent(); }
+		});
 	}
 };
 

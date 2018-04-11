@@ -1,23 +1,29 @@
 import { broadcast } from 'n-ui-foundations';
 
 class Feedback {
-	constructor (element) {
+	constructor (element, options = {}) {
+		this.options = options;
+
 		this.element = element;
 		if (!this.element) {
 			throw new Error('No element passed to Feedback');
 		}
+
 		this.featureName = element.dataset.feedbackFeature;
 		if (!this.featureName) {
 			throw new Error('Feedback element does not have a feedback-feature attribute');
 		}
 
-		this.addResponderListeners();
+		this.responders = this.element.querySelectorAll('.js-feedback__responder');
+		if (this.responders.length) {
+			this.addResponderListeners();
+		} else {
+			throw new Error('Feedback element does not have any responders');
+		}
 	}
 
 	addResponderListeners () {
-		const responders = this.element.querySelectorAll('.js-feedback__responder');
-
-		responders.forEach(responder => {
+		this.responders.forEach(responder => {
 			responder.addEventListener('click', () => {
 				const data = {
 					category: this.featureName,
@@ -27,6 +33,10 @@ class Feedback {
 				};
 
 				broadcast('oTracking.event', data);
+
+				if (typeof this.options.onRespond === 'function') {
+					this.options.onRespond(responder);
+				}
 			});
 		});
 	}
