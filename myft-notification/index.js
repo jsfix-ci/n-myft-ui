@@ -4,7 +4,7 @@ import oDate from 'o-date';
 import getUuidFromSession from './get-uuid-from-session';
 import { fragments as teaserFragments } from '@financial-times/n-teaser';
 import { json as fetchJson } from 'fetchres';
-import Feedback from '../feedback';
+import Feedback from '../components/feedback';
 import slimQuery from './slim-query';
 import dispatchTrackingEvent from './tracking';
 import templateExpander from './notification-expander.html';

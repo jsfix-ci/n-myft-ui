@@ -1,4 +1,4 @@
-import { broadcast } from 'n-ui-foundations';
+import { broadcast } from 'n-ui-foundations/main';
 
 class Feedback {
 	constructor (element, options = {}) {
