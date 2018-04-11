@@ -144,3 +144,17 @@ $o-expander-is-silent : true;
 		background-color: getColor('claret-40');
 	}
 }
+
+.myft-notification__feedback {
+	margin-bottom: 20px;
+	border-top: 1px solid oColorsMix(black, white, 20);
+	padding: 0 20px;
+}
+
+.myft-notification__feedback-question {
+	font-weight: bold;
+}
+
+.myft-notification__feedback-button {
+	@include oButtons();
+}
