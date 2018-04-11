@@ -6,7 +6,7 @@ import { fragments as teaserFragments } from '@financial-times/n-teaser';
 import { json as fetchJson } from 'fetchres';
 import slimQuery from './slim-query';
 import templateExpander from './notification-expander.html';
-import templateIcon from './notification-icon.html';
+import templateToggleButton from './notification-toggle-button.html';
 
 const fetchDigestData = (uuid) => {
 	const digestQuery = `
@@ -48,7 +48,7 @@ const insertToggleButton = (targetEl, withDot) => {
 		targetEl.classList.add('myft-notification__container');
 		const toggleButtonContainer = document.createElement('div');
 		toggleButtonContainer.setAttribute('class', 'myft-notification');
-		toggleButtonContainer.innerHTML = templateIcon({ withDot });
+		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
 		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleExpander);
 		targetEl.appendChild(toggleButtonContainer);
 	}
