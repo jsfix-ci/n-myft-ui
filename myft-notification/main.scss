@@ -1,5 +1,6 @@
 $o-expander-is-silent : true;
 @import 'o-expander/main';
+@import 'o-typography/main';
 
 .o-header--sticky .myft-notification__container {
 	[data-next-app="article"] & {
@@ -149,10 +150,7 @@ $o-expander-is-silent : true;
 	margin-bottom: 20px;
 	border-top: 1px solid oColorsMix(black, white, 20);
 	padding: 0 20px;
-}
-
-.myft-notification__feedback-question {
-	font-weight: bold;
+	@include oTypographySansBold(0);
 }
 
 .myft-notification__feedback-button {
