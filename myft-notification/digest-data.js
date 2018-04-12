@@ -13,7 +13,7 @@ export default class DigestData {
 	fetch () {
 		const digestQuery = `
 			${teaserFragments.teaserExtraLight}
-	
+
 			query MyFT($uuid: String!) {
 					user(uuid: $uuid) {
 						digest {
@@ -39,26 +39,19 @@ export default class DigestData {
 			});
 	}
 
-	markDigestAsSeen () {
+	dismissNotification () {
 		window.localStorage.setItem(notificationDismissTime, Date.now());
 	}
 
-	turnOffNotifications () {
+	disableNotifications () {
 		window.localStorage.setItem(myftNotificationsEnabled, 'false');
 	}
 
-	hasUserSeenDigest () {
+	hasNotifiableContent () {
 		const notificationsEnabled = window.localStorage.getItem(myftNotificationsEnabled) !== 'false';
 		const timeUserDismissed = window.localStorage.getItem(notificationDismissTime);
+		const newContent = Date.parse(this.data.publishedDate) > Number(timeUserDismissed);
 
-		if (!notificationsEnabled) {
-			return true;
-		}
-
-		if (!timeUserDismissed) {
-			return false;
-		}
-
-		return Date.parse(this.data.publishedDate) < Number(timeUserDismissed);
+		return newContent && notificationsEnabled;
 	}
 }

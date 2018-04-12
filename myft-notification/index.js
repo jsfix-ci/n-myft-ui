@@ -55,10 +55,7 @@ const createDigestContent = (data, flags) => {
 		});
 	});
 
-	oExpanderDiv.querySelector('.myft-notification__collapse').addEventListener('click', () => {
-		digestContentExpander.collapse();
-		dispatchTrackingEvent.digestClosed(document);
-	});
+	oExpanderDiv.querySelector('.myft-notification__collapse').addEventListener('click', closeDigestContent);
 
 	oDate.init(oExpanderDiv);
 
@@ -73,7 +70,8 @@ const createDigestContent = (data, flags) => {
 		new Feedback(feedbackEl, {
 			onRespond: (response) => {
 				if (response.dataset.answer === 'negative') {
-					digestData.turnOffNotifications();
+					digestData.disableNotifications();
+					closeDigestContent();
 				}
 			}
 		});
@@ -82,7 +80,7 @@ const createDigestContent = (data, flags) => {
 
 const dismissNotification = () => {
 	if (!hasExpand) {
-		digestData.markDigestAsSeen();
+		digestData.dismissNotification();
 		document.querySelectorAll('.myft-notification__icon').forEach(icon => {
 			icon.classList.remove('myft-notification__icon--with-dot');
 		});
@@ -111,7 +109,7 @@ export default async (flags) => {
 			const stickyHeader = document.querySelector('.o-header--sticky');
 			const stickyHeaderMyFtIconContainer = stickyHeader.querySelector('.o-header__top-column--right');
 			const ftHeaderMyFtIconContainer = document.querySelector('.o-header__top-wrapper .o-header__top-link--myft__container');
-			const withDot = !digestData.hasUserSeenDigest();
+			const withDot = digestData.hasNotifiableContent();
 
 			insertDigestContentToggleButton(stickyHeaderMyFtIconContainer, withDot);
 			insertDigestContentToggleButton(ftHeaderMyFtIconContainer, withDot);
