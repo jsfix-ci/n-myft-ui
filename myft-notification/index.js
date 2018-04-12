@@ -71,6 +71,8 @@ const createNotificationContent = (data, flags) => {
 			onRespond: (response) => {
 				if (response.answer === 'negative') {
 					digestData.disableNotifications();
+				} else {
+					digestData.enableNotifications();
 				}
 			}
 		});

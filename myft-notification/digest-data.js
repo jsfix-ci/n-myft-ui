@@ -47,6 +47,10 @@ export default class DigestData {
 		window.localStorage.setItem(myftNotificationsEnabled, 'false');
 	}
 
+	enableNotifications () {
+		window.localStorage.removeItem(myftNotificationsEnabled);
+	}
+
 	hasNotifiableContent () {
 		const notificationsEnabled = window.localStorage.getItem(myftNotificationsEnabled) !== 'false';
 		const timeUserDismissed = window.localStorage.getItem(notificationDismissTime);
