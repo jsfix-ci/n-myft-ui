@@ -69,9 +69,8 @@ const createDigestContent = (data, flags) => {
 	if (feedbackEl) {
 		new Feedback(feedbackEl, {
 			onRespond: (response) => {
-				if (response.dataset.answer === 'negative') {
+				if (response.answer === 'negative') {
 					digestData.disableNotifications();
-					closeDigestContent();
 				}
 			}
 		});
@@ -79,12 +78,11 @@ const createDigestContent = (data, flags) => {
 };
 
 const dismissNotification = () => {
-	if (!hasExpand) {
+	if (digestData.hasNotifiableContent()) {
 		digestData.dismissNotification();
 		document.querySelectorAll('.myft-notification__icon').forEach(icon => {
 			icon.classList.remove('myft-notification__icon--with-dot');
 		});
-		hasExpand = true;
 	}
 };
 
@@ -92,7 +90,6 @@ const moveDigestContentTo = (el) => el.appendChild(digestContentExpander.content
 
 let digestData;
 let digestContentExpander;
-let hasExpand = false;
 
 export default async (flags) => {
 	const myFtIcon = document.querySelector('.o-header__top-link--myft');
@@ -109,10 +106,10 @@ export default async (flags) => {
 			const stickyHeader = document.querySelector('.o-header--sticky');
 			const stickyHeaderMyFtIconContainer = stickyHeader.querySelector('.o-header__top-column--right');
 			const ftHeaderMyFtIconContainer = document.querySelector('.o-header__top-wrapper .o-header__top-link--myft__container');
-			const withDot = digestData.hasNotifiableContent();
+			const showNotification = digestData.hasNotifiableContent();
 
-			insertDigestContentToggleButton(stickyHeaderMyFtIconContainer, withDot);
-			insertDigestContentToggleButton(ftHeaderMyFtIconContainer, withDot);
+			insertDigestContentToggleButton(stickyHeaderMyFtIconContainer, showNotification);
+			insertDigestContentToggleButton(ftHeaderMyFtIconContainer, showNotification);
 
 			if (stickyHeaderMyFtIconContainer && ftHeaderMyFtIconContainer) {
 				stickyHeader.addEventListener('oHeader.Sticky', (e) => {
