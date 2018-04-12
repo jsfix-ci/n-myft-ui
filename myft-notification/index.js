@@ -35,38 +35,38 @@ const fetchDigestData = (uuid) => {
 		.then(({ data = {} } = {}) => data.user.digest);
 };
 
-const openNotificationContent = (targetEl) => {
-	moveExpanderTo(targetEl);
-	notificationExpander.expand();
-	deleteDot();
+const openDigestContent = (targetEl) => {
+	moveDigestContentTo(targetEl);
+	digestContentExpander.expand();
+	dismissNotification();
 	dispatchTrackingEvent.digestOpened(document);
 };
 
-const closeNotificationContent = () => {
-	notificationExpander.collapse();
+const closeDigestContent = () => {
+	digestContentExpander.collapse();
 	dispatchTrackingEvent.digestClosed(document);
 };
 
-const toggleExpander = (e) => {
-	if (notificationExpander.isCollapsed()) {
-		openNotificationContent(e.path[1]);
+const toggleDigestContent = (e) => {
+	if (digestContentExpander.isCollapsed()) {
+		openDigestContent(e.path[1]);
 	} else {
-		closeNotificationContent();
+		closeDigestContent();
 	}
 };
 
-const insertToggleButton = (targetEl, withDot) => {
+const insertDigestContentToggleButton = (targetEl, withDot) => {
 	if (targetEl) {
 		targetEl.classList.add('myft-notification__container');
 		const toggleButtonContainer = document.createElement('div');
 		toggleButtonContainer.setAttribute('class', 'myft-notification');
 		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
-		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleExpander);
+		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleDigestContent);
 		targetEl.appendChild(toggleButtonContainer);
 	}
 };
 
-const createExpander = (data, flags) => {
+const createDigestContent = (data, flags) => {
 	const publishedDate = new Date(Date.parse(data.publishedDate));
 	const publishedDateFormatted = oDate.format(publishedDate, 'd/M/yyyy');
 	const oExpanderDiv = document.createElement('div');
@@ -83,13 +83,13 @@ const createExpander = (data, flags) => {
 	});
 
 	oExpanderDiv.querySelector('.myft-notification__collapse').addEventListener('click', () => {
-		notificationExpander.collapse();
+		digestContentExpander.collapse();
 		dispatchTrackingEvent.digestClosed(document);
 	});
 
 	oDate.init(oExpanderDiv);
 
-	notificationExpander = oExpander.init(oExpanderDiv, {
+	digestContentExpander = oExpander.init(oExpanderDiv, {
 		expandedToggleText: '',
 		collapsedToggleText: ''
 	});
@@ -98,30 +98,22 @@ const createExpander = (data, flags) => {
 
 	if (feedbackEl) {
 		new Feedback(feedbackEl, {
-			onRespond: () => { closeNotificationContent(); }
+			onRespond: () => { closeDigestContent(); }
 		});
 	}
 };
 
-// const hasUserDismissedNotification = (data) => {
-// 	const timeUserDismissed = window.localStorage.getItem('timeUserDismissedMyftNotification');
-// 	if (!timeUserDismissed) {
-// 		return false;
-// 	}
-// 	return Date.parse(data.publishedDate) < Number(timeUserDismissed);
-// };
-
 const localStorageKey = 'timeUserClickedMyftNotification';
 
-const hasUserClickedNotification = (data) => {
-	const timeUserClicked = window.localStorage.getItem(localStorageKey);
-	if (!timeUserClicked) {
+const hasUserDismissedNotification = (data) => {
+	const timeUserDismissed = window.localStorage.getItem(localStorageKey);
+	if (!timeUserDismissed) {
 		return false;
 	}
-	return Date.parse(data.publishedDate) < Number(timeUserClicked);
+	return Date.parse(data.publishedDate) < Number(timeUserDismissed);
 };
 
-const deleteDot = () => {
+const dismissNotification = () => {
 	if (!hasExpand) {
 		window.localStorage.setItem(localStorageKey, Date.now());
 		document.querySelectorAll('.myft-notification__icon').forEach(icon => {
@@ -131,9 +123,9 @@ const deleteDot = () => {
 	}
 };
 
-const moveExpanderTo = (el) => el.appendChild(notificationExpander.contentEl);
+const moveDigestContentTo = (el) => el.appendChild(digestContentExpander.contentEl);
 
-let notificationExpander;
+let digestContentExpander;
 let hasExpand = false;
 
 export default async (flags) => {
@@ -151,21 +143,21 @@ export default async (flags) => {
 			// 	return;
 			// };
 
-			createExpander(data, flags);
+			createDigestContent(data, flags);
 			const stickyHeader = document.querySelector('.o-header--sticky');
 			const stickyHeaderMyFtIconContainer = stickyHeader.querySelector('.o-header__top-column--right');
 			const ftHeaderMyFtIconContainer = document.querySelector('.o-header__top-wrapper .o-header__top-link--myft__container');
-			const withDot = !hasUserClickedNotification(data);
+			const withDot = !hasUserDismissedNotification(data);
 
-			insertToggleButton(stickyHeaderMyFtIconContainer, withDot);
-			insertToggleButton(ftHeaderMyFtIconContainer, withDot);
+			insertDigestContentToggleButton(stickyHeaderMyFtIconContainer, withDot);
+			insertDigestContentToggleButton(ftHeaderMyFtIconContainer, withDot);
 
 			if (stickyHeaderMyFtIconContainer && ftHeaderMyFtIconContainer) {
 				stickyHeader.addEventListener('oHeader.Sticky', (e) => {
 					const isSticky = e.detail && e.detail.isActive;
 					const buttonContainer = isSticky ? stickyHeaderMyFtIconContainer : ftHeaderMyFtIconContainer;
-					if (!notificationExpander.isCollapsed()) {
-						moveExpanderTo(buttonContainer.querySelector('.myft-notification'));
+					if (!digestContentExpander.isCollapsed()) {
+						moveDigestContentTo(buttonContainer.querySelector('.myft-notification'));
 					}
 				});
 			}
