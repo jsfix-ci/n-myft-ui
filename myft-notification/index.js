@@ -2,38 +2,11 @@
 import oExpander from 'o-expander';
 import oDate from 'o-date';
 import getUuidFromSession from './get-uuid-from-session';
-import { fragments as teaserFragments } from '@financial-times/n-teaser';
-import { json as fetchJson } from 'fetchres';
 import Feedback from '../components/feedback';
-import slimQuery from './slim-query';
+import fetchDigestData from './digest-data';
 import dispatchTrackingEvent from './tracking';
 import templateExpander from './notification-expander.html';
 import templateToggleButton from './notification-toggle-button.html';
-
-const fetchDigestData = (uuid) => {
-	const digestQuery = `
-		${teaserFragments.teaserExtraLight}
-
-		query MyFT($uuid: String!) {
-				user(uuid: $uuid) {
-					digest {
-						type
-						publishedDate
-						articles {
-							...TeaserExtraLight
-						}
-					}
-				}
-			}
-		`;
-	const variables = { uuid };
-	const url = `https://next-api.ft.com/v2/query?query=${slimQuery(digestQuery)}&variables=${JSON.stringify(variables)}&source=next-front-page-myft`;
-	const options = { credentials: 'include', timeout: 5000 };
-
-	return fetch(url, options)
-		.then(fetchJson)
-		.then(({ data = {} } = {}) => data.user.digest);
-};
 
 const openDigestContent = (targetEl) => {
 	moveDigestContentTo(targetEl);
@@ -138,11 +111,6 @@ export default async (flags) => {
 
 	fetchDigestData(userId)
 		.then(data => {
-			// TODO add a function to set when user dismissed notification.
-			// if (hasUserDismissedNotification(data)) {
-			// 	return;
-			// };
-
 			createDigestContent(data, flags);
 			const stickyHeader = document.querySelector('.o-header--sticky');
 			const stickyHeaderMyFtIconContainer = stickyHeader.querySelector('.o-header__top-column--right');
