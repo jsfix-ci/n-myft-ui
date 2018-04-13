@@ -1,6 +1,6 @@
 import { broadcast } from 'n-ui-foundations/main';
 
-class Feedback {
+export default class Feedback {
 	constructor (element, options = {}) {
 		this.options = options;
 
@@ -14,32 +14,41 @@ class Feedback {
 			throw new Error('Feedback element does not have a feedback-feature attribute');
 		}
 
-		this.responders = this.element.querySelectorAll('.js-feedback__responder');
-		if (this.responders.length) {
+		this.questionEls = this.element.querySelectorAll('*[data-question]');
+		if (this.questionEls.length) {
 			this.addResponderListeners();
 		} else {
-			throw new Error('Feedback element does not have any responders');
+			throw new Error('Feedback element does not have any questions');
 		}
 	}
 
 	addResponderListeners () {
-		this.responders.forEach(responder => {
-			responder.addEventListener('click', () => {
-				const data = {
-					category: this.featureName,
-					action: 'feedback',
-					question: responder.dataset.question,
-					answer: responder.dataset.answer
-				};
+		this.questionEls.forEach(questionEl => {
+			const responderEls = questionEl.querySelectorAll('.js-feedback__responder');
 
-				broadcast('oTracking.event', data);
-
-				if (typeof this.options.onRespond === 'function') {
-					this.options.onRespond(responder);
-				}
+			responderEls.forEach(responder => {
+				responder.addEventListener('click', () => {
+					this.handleResponse(questionEl.dataset.question, responder.dataset.answer);
+				});
 			});
 		});
 	}
-}
 
-module.exports = Feedback;
+	handleResponse (question, answer) {
+		const data = {
+			category: this.featureName,
+			action: 'feedback',
+			question,
+			answer
+		};
+
+		broadcast('oTracking.event', data);
+
+		this.questionEls.forEach(questionEl => questionEl.style.display = 'none');
+		this.element.querySelector('.js-feedback__complete').style.display = 'block';
+
+		if (typeof this.options.onRespond === 'function') {
+			this.options.onRespond(data);
+		}
+	};
+}
