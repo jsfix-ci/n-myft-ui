@@ -5,6 +5,26 @@ import slimQuery from './slim-query';
 const notificationDismissTime = 'timeUserClickedMyftNotification';
 const myftNotificationsEnabled = 'myftNotificationsEnabled';
 
+const hasBeenRead = (targetArticle, readArticles) => readArticles.find(readArticle => readArticle.id === targetArticle.id);
+
+const orderByUnreadFirst = ({ data = {} } = {}) => {
+	const digestData = data.user.digest;
+	const result = digestData;
+
+	// reading history for past 7 days
+	const articlesUserRead = data.user.articlesFromReadingHistory ? data.user.articlesFromReadingHistory.articles : [];
+	if (articlesUserRead.length > 0) {
+		const readArticles = [];
+		const unreadArticles = [];
+		digestData.articles.forEach(article => {
+			hasBeenRead(article, articlesUserRead) ? readArticles.push(article) : unreadArticles.push(article);
+		});
+		result.articles = unreadArticles.concat(readArticles);
+	}
+
+	return result;
+}
+
 export default class DigestData {
 	constructor (uuid) {
 		this.uuid = uuid;
@@ -16,6 +36,11 @@ export default class DigestData {
 
 			query MyFT($uuid: String!) {
 					user(uuid: $uuid) {
+						articlesFromReadingHistory {
+							articles {
+								...TeaserExtraLight
+							}
+						}
 						digest {
 							type
 							publishedDate
@@ -32,9 +57,9 @@ export default class DigestData {
 
 		return fetch(url, options)
 			.then(fetchJson)
-			.then(({ data = {} } = {}) => {
-				this.data = data.user.digest;
-
+			.then(orderByUnreadFirst)
+			.then(data => {
+				this.data = data;
 				return this.data;
 			});
 	}
