@@ -23,6 +23,7 @@ $o-expander-is-silent : true;
 
 .myft-notification {
 	align-self: center;
+	margin-left: 6px;
 
 	.o-expander__toggle {
 		@include oExpanderToggle;
