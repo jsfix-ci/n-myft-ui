@@ -25,6 +25,11 @@ $o-teaser-is-silent: true;
 
 .myft-notification {
 	align-self: center;
+	margin-left: 6px;
+
+	&.myft-notification--large {
+		margin-left: 2px;
+	}
 
 	.o-expander__toggle {
 		@include oExpanderToggle;
@@ -39,9 +44,20 @@ $o-teaser-is-silent: true;
 	position: relative;
 	@include oIconsGetIcon('notifications', getColor('black'), 32);
 	border: 0;
+
+	.myft-notification--large & {
+		padding: 1px;
+	}
 }
 
 .myft-notification__icon--with-dot {
+	.myft-notification--large & {
+		@include oIconsGetIcon('notifications', getColor('white'), 28);
+		background-color: getColor('claret-80');
+		border-radius: 32px;
+		margin-left: 4px;
+	}
+
 	&:after {
 		content: '';
 		background: getColor('claret');
@@ -52,6 +68,10 @@ $o-teaser-is-silent: true;
 		position: absolute;
 		right: 4px;
 		top: 2px;
+
+		.myft-notification--large & {
+			content: none;
+		}
 	}
 }
 

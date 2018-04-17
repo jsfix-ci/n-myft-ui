@@ -28,11 +28,12 @@ const toggleNotificationContent = (e) => {
 	}
 };
 
-const insertToggleButton = (targetEl, withDot) => {
+const insertToggleButton = (targetEl, withDot, isLargeNotification) => {
 	if (targetEl) {
 		targetEl.classList.add('myft-notification__container');
 		const toggleButtonContainer = document.createElement('div');
 		toggleButtonContainer.setAttribute('class', 'myft-notification');
+		isLargeNotification && toggleButtonContainer.classList.add('myft-notification--large');
 		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
 		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent);
 		targetEl.appendChild(toggleButtonContainer);
@@ -93,7 +94,7 @@ const moveNotificationContentTo = (el) => el.appendChild(notificationContentExpa
 let digestData;
 let notificationContentExpander;
 
-export default async (flags) => {
+export default async (flags = {}) => {
 	const myFtIcon = document.querySelector('.o-header__top-link--myft');
 	const userId = await getUuidFromSession();
 
@@ -109,9 +110,10 @@ export default async (flags) => {
 			const stickyHeaderMyFtIconContainer = stickyHeader.querySelector('.o-header__top-column--right');
 			const ftHeaderMyFtIconContainer = document.querySelector('.o-header__top-wrapper .o-header__top-link--myft__container');
 			const showNotification = digestData.hasNotifiableContent();
+			const isLargeNotification = flags.myFtDigestArticles === 'notificationLarge';
 
-			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification);
-			insertToggleButton(ftHeaderMyFtIconContainer, showNotification);
+			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification, isLargeNotification);
+			insertToggleButton(ftHeaderMyFtIconContainer, showNotification, isLargeNotification);
 
 			if (stickyHeaderMyFtIconContainer && ftHeaderMyFtIconContainer) {
 				stickyHeader.addEventListener('oHeader.Sticky', (e) => {
