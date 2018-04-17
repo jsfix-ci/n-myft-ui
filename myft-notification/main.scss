@@ -24,8 +24,15 @@ $o-teaser-is-silent: true;
 }
 
 .myft-notification {
+	display: none;
 	align-self: center;
 	margin-left: 6px;
+
+	// HACK: None of the o-grid sizes give us the right width for this :-(
+	// Ultimately we need to target iPhone 5 (~320px) upwards
+	@media (min-width: 23em) {
+		display: block;
+	}
 
 	&.myft-notification--large {
 		margin-left: 2px;
