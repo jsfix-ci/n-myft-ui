@@ -51,7 +51,7 @@ $o-expander-is-silent : true;
 .myft-notification__icon--with-dot {
 	.myft-notification--large & {
 		@include oIconsGetIcon('notifications', getColor('white'), 28);
-		background-color: getColor('claret');
+		background-color: getColor('claret-80');
 		border-radius: 32px;
 		margin-left: 4px;
 	}
@@ -68,7 +68,7 @@ $o-expander-is-silent : true;
 		top: 2px;
 
 		.myft-notification--large & {
-			content: '';
+			content: none;
 		}
 	}
 }
