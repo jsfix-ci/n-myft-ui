@@ -7,7 +7,17 @@ const myftNotificationsEnabled = 'myftNotificationsEnabled';
 
 const hasBeenRead = (targetArticle, readArticles) => readArticles.find(readArticle => readArticle.id === targetArticle.id);
 
-const orderByUnreadFirst = ({ data = {} } = {}) => {
+const checkDigestDataExist = ({ data = {} } = {}) => {
+	if (!data || !data.user ||
+		!data.user.digest ||
+		!data.user.digest.articles ||
+		data.user.digest.articles.length === 0) {
+		return Promise.reject(new Error('myFT Digest data is not provided'));
+	}
+	return data;
+};
+
+const orderByUnreadFirst = (data) => {
 	const digestData = data.user.digest;
 	const result = digestData;
 
@@ -57,6 +67,7 @@ export default class DigestData {
 
 		return fetch(url, options)
 			.then(fetchJson)
+			.then(checkDigestDataExist)
 			.then(orderByUnreadFirst)
 			.then(data => {
 				this.data = data;
