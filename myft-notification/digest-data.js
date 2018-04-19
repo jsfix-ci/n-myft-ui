@@ -10,10 +10,16 @@ const hasBeenRead = (targetArticle, readArticles) => readArticles.find(readArtic
 const checkDigestDataExist = ({ data = {} } = {}) => {
 	if (!data || !data.user ||
 		!data.user.digest ||
-		!data.user.digest.articles ||
-		data.user.digest.articles.length === 0) {
+		!data.user.digest.concepts ||
+		data.user.digest.concepts.length === 0 ||
+		data.user.digest.concepts.every(concept => !concept.articles || !concept.articles.length)) {
 		return Promise.reject(new Error('myFT Digest data is not provided'));
 	}
+	return data;
+};
+
+const flattenDigestSections = data => {
+	data.user.digest.articles = data.user.digest.concepts.reduce((acc, curr) => acc.articles.concat(curr.articles));
 	return data;
 };
 
@@ -54,8 +60,13 @@ export default class DigestData {
 						digest {
 							type
 							publishedDate
-							articles {
-								...TeaserExtraLight
+							concepts {
+								id
+								prefLabel
+								url
+								articles {
+									...TeaserExtraLight
+								}
 							}
 						}
 					}
@@ -68,6 +79,7 @@ export default class DigestData {
 		return fetch(url, options)
 			.then(fetchJson)
 			.then(checkDigestDataExist)
+			.then(flattenDigestSections)
 			.then(orderByUnreadFirst)
 			.then(data => {
 				this.data = data;
