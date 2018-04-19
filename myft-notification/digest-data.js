@@ -19,11 +19,7 @@ const checkDigestDataExist = ({ data = {} } = {}) => {
 };
 
 const flattenDigestSections = data => {
-	let articles = [];
-	data.user.digest.concepts.forEach(concept => {
-		articles = articles.concat(concept.articles);
-	});
-	data.user.digest.articles = articles;
+	data.user.digest.articles = data.user.digest.concepts.reduce((acc, curr) => acc.articles.concat(curr.articles));
 	return data;
 };
 
