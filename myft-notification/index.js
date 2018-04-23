@@ -126,8 +126,7 @@ export default async (flags = {}) => {
 			}
 
 		})
-		.catch(() => {
-			// logger.error('event=FOLLOWED_PROMISE_REJECTED ' + err.name);
-			return;
+		.catch(err => {
+			throw err;
 		});
 };

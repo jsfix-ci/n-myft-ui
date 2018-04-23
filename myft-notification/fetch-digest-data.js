@@ -10,11 +10,15 @@ const checkDigestDataExist = ({ data = {} } = {}) => {
 		data.user.digest.concepts.every(concept => !concept.articles || !concept.articles.length)) {
 		return Promise.reject(new Error('myFT Digest data is not provided'));
 	}
+
 	return data;
 };
 
 const flattenDigestSections = data => {
-	data.user.digest.articles = data.user.digest.concepts.reduce((acc, curr) => acc.articles.concat(curr.articles));
+	data.user.digest.articles = data.user.digest.concepts.reduce((flatArticles, concept) => {
+		return flatArticles.concat(concept.articles)
+	}, []);
+
 	return data;
 };
 
