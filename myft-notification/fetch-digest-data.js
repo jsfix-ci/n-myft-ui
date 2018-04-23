@@ -14,10 +14,31 @@ const checkDigestDataExist = ({ data = {} } = {}) => {
 	return data;
 };
 
-const flattenDigestSections = data => {
-	data.user.digest.articles = data.user.digest.concepts.reduce((flatArticles, concept) => {
-		return flatArticles.concat(concept.articles)
-	}, []);
+const extractArticlesFromSections = data => {
+	data.user.digest.articles = data.user.digest.concepts.reduce((flatArticles, concept) =>
+		flatArticles.concat(concept.articles), []);
+
+	return data;
+};
+
+const decorateWithHasBeenRead = data => {
+	const readArticles = data.user.articlesFromReadingHistory ? data.user.articlesFromReadingHistory.articles : [];
+
+	readArticles.forEach(readArticle => {
+		const readArticleInDigest = data.user.digest.articles.find(digestArticle => digestArticle.id === readArticle.id);
+
+		if (readArticleInDigest) {
+			readArticleInDigest.hasBeenRead = true;
+		}
+	});
+
+	return data;
+};
+
+const orderByUnreadFirst = data => {
+	data.user.digest.articles.sort((a, b) => {
+		return (a.hasBeenRead && b.hasBeenRead) ? 0 : a.hasBeenRead ? -1 : 1;
+	});
 
 	return data;
 };
@@ -61,6 +82,7 @@ export default async (uuid) => {
 	return fetch(url, options)
 		.then(fetchJson)
 		.then(checkDigestDataExist)
-		.then(flattenDigestSections);
-
+		.then(extractArticlesFromSections)
+		.then(decorateWithHasBeenRead)
+		.then(orderByUnreadFirst);
 };
