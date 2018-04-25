@@ -119,7 +119,7 @@ export default async (flags = {}, options = {}) => {
 				collapsedToggleText: ''
 			});
 
-			dispatchTrackingEvent.digestLinkRendered(document);
+			dispatchTrackingEvent.digestRendered(document);
 
 			if (stickyHeaderMyFtIconContainer && ftHeaderMyFtIconContainer) {
 				stickyHeader.addEventListener('oHeader.Sticky', (e) => {
