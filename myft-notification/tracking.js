@@ -11,7 +11,7 @@ module.exports = {
 
 	digestRendered: (document) => dispatchEvent(document, {
 		category: 'component',
-		action: 'rendered',
+		action: 'render',
 		messaging: 'myft-digest'
 	}),
 
