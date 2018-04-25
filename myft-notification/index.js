@@ -119,6 +119,8 @@ export default async (flags = {}, options = {}) => {
 				collapsedToggleText: ''
 			});
 
+			dispatchTrackingEvent.digestRendered(document);
+
 			if (stickyHeaderMyFtIconContainer && ftHeaderMyFtIconContainer) {
 				stickyHeader.addEventListener('oHeader.Sticky', (e) => {
 					const isSticky = e.detail && e.detail.isActive;

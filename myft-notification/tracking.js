@@ -9,6 +9,12 @@ function dispatchEvent (document, detail) {
 
 module.exports = {
 
+	digestRendered: (document) => dispatchEvent(document, {
+		category: 'component',
+		action: 'render',
+		messaging: 'myft-digest'
+	}),
+
 	digestOpened: (document) => dispatchEvent(document, {
 		category: 'component',
 		action: 'open',
