@@ -74,7 +74,7 @@ $o-teaser-is-silent: true;
 .myft-notification__icon--with-dot {
 	.myft-notification--large & {
 		@include oIconsGetIcon('notifications', getColor('white'), 28);
-		background-color: getColor('claret-80');
+		background-color: getColor('crimson');
 		border-radius: 32px;
 		margin-left: 4px;
 	}
@@ -89,15 +89,21 @@ $o-teaser-is-silent: true;
 	}
 
 	&:after {
-		content: '';
-		background: getColor('claret');
+		@include oTypographySansBold($scale: -2);
+
+		background: getColor('crimson');
 		border-radius: 50%;
-		width: 8px;
-		height: 8px;
+		color: getColor('white');
+		content: '1';
 		display: block;
+		font-size: 13px;
+		height: 14px;
+		width: 14px;
+		line-height: 14px;
+		padding: 1px;
 		position: absolute;
-		right: 4px;
-		top: 2px;
+		right: 0;
+		top: 0;
 
 		.myft-notification--large & {
 			content: none;
