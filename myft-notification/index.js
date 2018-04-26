@@ -40,8 +40,7 @@ const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimatio
 		withAnimation && toggleButtonContainer.classList.add('myft-notification--animate');
 
 		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
-		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent)
-
+		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent);
 
 		targetEl.appendChild(toggleButtonContainer);
 	}
