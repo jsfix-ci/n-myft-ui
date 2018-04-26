@@ -60,6 +60,17 @@ $o-teaser-is-silent: true;
 	}
 }
 
+.myft-notification--animate {
+	.myft-notification__icon {
+		animation-duration: 2s;
+		animation-delay: 3s;
+		animation-fill-mode: both;
+		animation-name: swing;
+		animation-iteration-count: 3;
+		transform-origin: top center;
+	}
+}
+
 .myft-notification__icon,
 .myft-notification__icon.o-expander__toggle {
 	position: relative;
@@ -204,4 +215,26 @@ $o-teaser-is-silent: true;
 
 .js-feedback__complete {
 	display: none;
+}
+
+@keyframes swing {
+	10% {
+		transform: rotate3d(0, 0, 1, 15deg);
+	}
+
+	20% {
+		transform: rotate3d(0, 0, 1, -10deg);
+	}
+
+	30% {
+		transform: rotate3d(0, 0, 1, 5deg);
+	}
+
+	40% {
+		transform: rotate3d(0, 0, 1, -5deg);
+	}
+
+	50%, 100% {
+		transform: rotate3d(0, 0, 1, 0deg);
+	}
 }
