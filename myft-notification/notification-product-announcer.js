@@ -3,8 +3,9 @@ import Tooltip from 'o-tooltip';
 const myFtNotificationTooltipShowCount = 'myFtNotificationTooltipShowCount';
 
 export default class NotificationProductAnnouncer {
-	constructor (containerEl) {
+	constructor (containerEl, digestFrequency = 'daily') {
 		this.containerEl = containerEl;
+		this.digestFrequency = digestFrequency;
 
 		if (this.getShowCount() < 3) {
 			this.incrementShowCount();
@@ -29,11 +30,15 @@ export default class NotificationProductAnnouncer {
 		});
 	}
 
+	getDigestFrequency () {
+		return this.digestFrequency === 'daily' ? 'daily' : 'weekly';
+	}
+
 	show () {
 		if (!this.tooltip) {
 			this.tooltip = new Tooltip(this.containerEl, {
 				target: 'myft-notification-tooltip',
-				content: 'Click here for your daily digest.',
+				content: `Click here for your ${this.getDigestFrequency()} digest.`,
 				showOnConstruction: true,
 				position: 'below'
 			});
