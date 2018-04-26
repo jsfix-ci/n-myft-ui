@@ -53,7 +53,11 @@ const createNotificationContent = (data, flags) => {
 	oExpanderDiv.setAttribute('class', 'o-expander');
 	oExpanderDiv.setAttribute('data-o-component', 'o-expander');
 	oExpanderDiv.setAttribute('data-o-expander-shrink-to', 'hidden');
-	oExpanderDiv.innerHTML = templateExpander({ items: data.articles, publishedDateFormatted, flags });
+	oExpanderDiv.innerHTML = templateExpander({
+		items: data.articles,
+		digestFrequency: data.type === 'daily' ? 'Daily' : 'Weekly',
+		publishedDateFormatted,
+	flags });
 
 	const digestArticleLinks = [...oExpanderDiv.querySelectorAll('.js-teaser-heading-link')];
 	digestArticleLinks.forEach(link => {
@@ -138,7 +142,7 @@ export default async (flags = {}, options = {}) => {
 			}
 
 			if (options && options.enableAnnouncer) {
-				new NotificationProductAnnouncer(ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon'));
+				new NotificationProductAnnouncer(ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon'), data.type);
 			}
 		})
 		.catch(err => {
