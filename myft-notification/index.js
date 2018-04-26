@@ -11,6 +11,7 @@ import templateToggleButton from './notification-toggle-button.html';
 
 const openNotificationContent = (targetEl) => {
 	moveNotificationContentTo(targetEl);
+	targetEl.classList.remove('myft-notification--animate');
 	notificationContentExpander.expand();
 	dismissNotification();
 	dispatchTrackingEvent.digestOpened(document);
@@ -29,14 +30,18 @@ const toggleNotificationContent = (e) => {
 	}
 };
 
-const insertToggleButton = (targetEl, withDot, isLargeNotification) => {
+const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimation) => {
 	if (targetEl) {
 		targetEl.classList.add('myft-notification__container');
 		const toggleButtonContainer = document.createElement('div');
 		toggleButtonContainer.setAttribute('class', 'myft-notification');
+
 		isLargeNotification && toggleButtonContainer.classList.add('myft-notification--large');
+		withAnimation && toggleButtonContainer.classList.add('myft-notification--animate');
+
 		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
 		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent);
+
 		targetEl.appendChild(toggleButtonContainer);
 	}
 };
@@ -108,9 +113,10 @@ export default async (flags = {}, options = {}) => {
 			const ftHeaderMyFtIconContainer = document.querySelector('.o-header__top-wrapper .o-header__top-link--myft__container');
 			const showNotification = digestData.hasNotifiableContent();
 			const isLargeNotification = flags.myFtDigestArticles === 'notificationLarge';
+			const withAnimation = options && options.animate;
 
-			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification, isLargeNotification);
-			insertToggleButton(ftHeaderMyFtIconContainer, showNotification, isLargeNotification);
+			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation);
+			insertToggleButton(ftHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation);
 
 			// Must append div to DOM before constructing the oExpander, in order for expander events to bubble
 			ftHeaderMyFtIconContainer.querySelector('.myft-notification').appendChild(expanderDiv);
