@@ -141,8 +141,11 @@ export default async (flags = {}, options = {}) => {
 				});
 			}
 
-			if (options && options.enableAnnouncer) {
-				new NotificationProductAnnouncer(ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon'), data.type);
+			if (showNotification && options && options.enableAnnouncer) {
+				const toggleButton = ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon');
+				const expanderContainer = ftHeaderMyFtIconContainer.querySelector('.myft-notification');
+
+				new NotificationProductAnnouncer(toggleButton, data.type, () => openNotificationContent(expanderContainer));
 			}
 		})
 		.catch(err => {

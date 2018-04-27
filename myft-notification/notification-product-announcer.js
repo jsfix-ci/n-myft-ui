@@ -1,11 +1,14 @@
 import Tooltip from 'o-tooltip';
 
-const myFtNotificationTooltipShowCount = 'myFtNotificationTooltipShowCount';
+const countStorageKey = 'myFtNotificationTooltipShowCount';
+
+const getDateToday = () => new Date().toISOString().substring(0, 10);
 
 export default class NotificationProductAnnouncer {
-	constructor (containerEl, digestFrequency = 'daily') {
+	constructor (containerEl, digestFrequency = 'daily', clickHandler) {
 		this.containerEl = containerEl;
 		this.digestFrequency = digestFrequency;
+		this.clickHandler = clickHandler;
 
 		if (this.getShowCount() < 3) {
 			this.incrementShowCount();
@@ -15,13 +18,25 @@ export default class NotificationProductAnnouncer {
 	}
 
 	getShowCount () {
-		const count = Number(window.localStorage.getItem(myFtNotificationTooltipShowCount));
+		const storedValue = window.localStorage.getItem(countStorageKey);
 
-		return typeof count === 'number' ? count : 0;
+		if (!storedValue) {
+			return 0;
+		}
+
+		const dateToday = getDateToday();
+		const [ countStr = 0, date = dateToday ] = storedValue.split('|');
+		const count = Number(countStr);
+
+		if (date !== dateToday || Number.isNaN(count)) {
+			return 0;
+		}
+
+		return count;
 	}
 
 	incrementShowCount () {
-		window.localStorage.setItem(myFtNotificationTooltipShowCount, this.getShowCount() + 1);
+		window.localStorage.setItem(countStorageKey, `${this.getShowCount() + 1}|${getDateToday()}`);
 	}
 
 	listenForNotificationsOpening () {
@@ -38,10 +53,13 @@ export default class NotificationProductAnnouncer {
 		if (!this.tooltip) {
 			this.tooltip = new Tooltip(this.containerEl, {
 				target: 'myft-notification-tooltip',
-				content: `Click here for your ${this.getDigestFrequency()} digest.`,
+				content: `Click the <span class="myft-notification-tooltip__icon">bell</span> for your ${this.getDigestFrequency()} digest.`,
 				showOnConstruction: true,
 				position: 'below'
 			});
+			if (this.clickHandler) {
+				this.tooltip.tooltipEl.addEventListener('click', this.clickHandler);
+			}
 		} else {
 			this.tooltip.show();
 		}
