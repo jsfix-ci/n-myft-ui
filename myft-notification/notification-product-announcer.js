@@ -52,7 +52,7 @@ export default class NotificationProductAnnouncer {
 		if (!this.tooltip) {
 			this.tooltip = new Tooltip(this.containerEl, {
 				target: 'myft-notification-tooltip',
-				content: `Click here for your ${this.getDigestFrequency()} digest.`,
+				content: `Click the <span class="myft-notification-tooltip__icon">bell</span> for your ${this.getDigestFrequency()} digest.`,
 				showOnConstruction: true,
 				position: 'below'
 			});

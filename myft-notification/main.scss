@@ -243,3 +243,16 @@ $o-teaser-is-silent: true;
 		transform: rotate3d(0, 0, 1, 0deg);
 	}
 }
+
+$tooltip-icon-size: 26px;
+
+.myft-notification-tooltip__icon {
+	@include oIconsGetIcon('notifications', getColor('black'), 32);
+	margin-right: -5px;
+	margin-left: -5px;
+	width: $tooltip-icon-size;
+	height: $tooltip-icon-size;
+	vertical-align: middle;
+	text-indent: $tooltip-icon-size;
+	overflow: hidden;
+}
