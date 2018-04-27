@@ -39,7 +39,11 @@ const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimatio
 		isLargeNotification && toggleButtonContainer.classList.add('myft-notification--large');
 		withAnimation && toggleButtonContainer.classList.add('myft-notification--animate');
 
-		toggleButtonContainer.innerHTML = templateToggleButton({ withDot, digestFrequency });
+		toggleButtonContainer.innerHTML = templateToggleButton({
+			withDot,
+			digestFrequency: digestFrequency === 'daily' ? 'Daily' : 'Weekly'
+		});
+
 		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent);
 
 		targetEl.appendChild(toggleButtonContainer);
