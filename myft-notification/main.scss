@@ -64,28 +64,44 @@ $o-teaser-is-silent: true;
 .myft-notification__icon.o-expander__toggle {
 	position: relative;
 	@include oIconsGetIcon('notifications', getColor('black'), 32);
+	background-position: 0 50%;
 	border: 0;
+	min-width: 32px;
+	width: auto;
 
 	.myft-notification--large & {
 		padding: 1px;
 	}
 }
 
+.myft-notification__text-button {
+	display: none;
+}
+
 .myft-notification__icon--with-dot {
+	.myft-notification__text-button {
+		@include oGridRespondTo(L) {
+			@include oTypographySansBold($scale: -1);
+			display: inline-block;
+			position: relative;
+			background: getColor('crimson');
+			color: getColor('white');
+			padding: oTypographySpacingSize(1);
+			margin-left: 30px;
+			top: -2px;
+		}
+	}
+
 	.myft-notification--large & {
 		@include oIconsGetIcon('notifications', getColor('white'), 28);
 		background-color: getColor('crimson');
 		border-radius: 32px;
 		margin-left: 4px;
-	}
+		min-width: 0;
 
-	.myft-notification--animate & {
-		animation-duration: 2s;
-		animation-delay: 3s;
-		animation-fill-mode: both;
-		animation-name: swing;
-		animation-iteration-count: 3;
-		transform-origin: top center;
+		.myft-notification__text-button {
+			display: none;
+		}
 	}
 
 	&:after {
@@ -102,8 +118,17 @@ $o-teaser-is-silent: true;
 		line-height: 14px;
 		padding: 1px;
 		position: absolute;
-		right: 0;
+		left: 16px;
 		top: 0;
+
+		.myft-notification--animate & {
+			animation-duration: 1s;
+			animation-delay: 3s;
+			animation-fill-mode: both;
+			animation-name: bounce;
+			animation-iteration-count: 3;
+			transform-origin: top center;
+		}
 
 		.myft-notification--large & {
 			content: none;
@@ -221,29 +246,6 @@ $o-teaser-is-silent: true;
 	display: none;
 }
 
-@keyframes swing {
-	10% {
-		transform: rotate3d(0, 0, 1, 15deg);
-	}
-
-	20% {
-		transform: rotate3d(0, 0, 1, -10deg);
-	}
-
-	30% {
-		transform: rotate3d(0, 0, 1, 5deg);
-	}
-
-	40% {
-		transform: rotate3d(0, 0, 1, -5deg);
-	}
-
-	50%,
-	100% {
-		transform: rotate3d(0, 0, 1, 0deg);
-	}
-}
-
 $tooltip-icon-size: 26px;
 
 .myft-notification-tooltip__icon {
@@ -255,4 +257,30 @@ $tooltip-icon-size: 26px;
 	vertical-align: middle;
 	text-indent: $tooltip-icon-size;
 	overflow: hidden;
+}
+
+@keyframes bounce {
+	from,
+	20%,
+	53%,
+	80%,
+	to {
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+		transform: translate3d(0, 0, 0);
+	}
+
+	40%,
+	43% {
+		animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+		transform: translate3d(0, -30px, 0);
+	}
+
+	70% {
+		animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+		transform: translate3d(0, -15px, 0);
+	}
+
+	90% {
+		transform: translate3d(0, -4px, 0);
+	}
 }
