@@ -142,7 +142,10 @@ export default async (flags = {}, options = {}) => {
 			}
 
 			if (showNotification && options && options.enableAnnouncer) {
-				new NotificationProductAnnouncer(ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon'), data.type);
+				const toggleButton = ftHeaderMyFtIconContainer.querySelector('.myft-notification__icon');
+				const expanderContainer = ftHeaderMyFtIconContainer.querySelector('.myft-notification');
+
+				new NotificationProductAnnouncer(toggleButton, data.type, () => openNotificationContent(expanderContainer));
 			}
 		})
 		.catch(err => {

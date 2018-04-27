@@ -5,9 +5,10 @@ const countStorageKey = 'myFtNotificationTooltipShowCount';
 const getDateToday = () => new Date().toISOString().substring(0, 10);
 
 export default class NotificationProductAnnouncer {
-	constructor (containerEl, digestFrequency = 'daily') {
+	constructor (containerEl, digestFrequency = 'daily', clickHandler) {
 		this.containerEl = containerEl;
 		this.digestFrequency = digestFrequency;
+		this.clickHandler = clickHandler;
 
 		if (this.getShowCount() < 3) {
 			this.incrementShowCount();
@@ -56,6 +57,9 @@ export default class NotificationProductAnnouncer {
 				showOnConstruction: true,
 				position: 'below'
 			});
+			if (this.clickHandler) {
+				this.tooltip.tooltipEl.addEventListener('click', this.clickHandler);
+			}
 		} else {
 			this.tooltip.show();
 		}
