@@ -1,6 +1,8 @@
 import Tooltip from 'o-tooltip';
 
-const myFtNotificationTooltipShowCount = 'myFtNotificationTooltipShowCount';
+const countStorageKey = 'myFtNotificationTooltipShowCount';
+
+const getDateToday = () => new Date().toISOString().substring(0, 10);
 
 export default class NotificationProductAnnouncer {
 	constructor (containerEl, digestFrequency = 'daily') {
@@ -15,13 +17,25 @@ export default class NotificationProductAnnouncer {
 	}
 
 	getShowCount () {
-		const count = Number(window.localStorage.getItem(myFtNotificationTooltipShowCount));
+		const storedValue = window.localStorage.getItem(countStorageKey);
 
-		return typeof count === 'number' ? count : 0;
+		if (!storedValue) {
+			return 0;
+		}
+
+		const dateToday = getDateToday();
+		const [ countStr = 0, date = dateToday ] = storedValue.split('|');
+		const count = Number(countStr);
+
+		if (date !== dateToday || Number.isNaN(count)) {
+			return 0;
+		}
+
+		return count;
 	}
 
 	incrementShowCount () {
-		window.localStorage.setItem(myFtNotificationTooltipShowCount, this.getShowCount() + 1);
+		window.localStorage.setItem(countStorageKey, `${this.getShowCount() + 1}|${getDateToday()}`);
 	}
 
 	listenForNotificationsOpening () {
