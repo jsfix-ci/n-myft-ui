@@ -30,7 +30,7 @@ const toggleNotificationContent = (e) => {
 	}
 };
 
-const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimation) => {
+const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimation, digestFrequency) => {
 	if (targetEl) {
 		targetEl.classList.add('myft-notification__container');
 		const toggleButtonContainer = document.createElement('div');
@@ -39,7 +39,7 @@ const insertToggleButton = (targetEl, withDot, isLargeNotification, withAnimatio
 		isLargeNotification && toggleButtonContainer.classList.add('myft-notification--large');
 		withAnimation && toggleButtonContainer.classList.add('myft-notification--animate');
 
-		toggleButtonContainer.innerHTML = templateToggleButton({ withDot });
+		toggleButtonContainer.innerHTML = templateToggleButton({ withDot, digestFrequency });
 		toggleButtonContainer.querySelector('.myft-notification__icon').addEventListener('click', toggleNotificationContent);
 
 		targetEl.appendChild(toggleButtonContainer);
@@ -119,8 +119,8 @@ export default async (flags = {}, options = {}) => {
 			const isLargeNotification = flags.myFtDigestArticles === 'notificationLarge';
 			const withAnimation = options && options.animate;
 
-			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation);
-			insertToggleButton(ftHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation);
+			insertToggleButton(stickyHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation, data.type);
+			insertToggleButton(ftHeaderMyFtIconContainer, showNotification, isLargeNotification, withAnimation, data.type);
 
 			// Must append div to DOM before constructing the oExpander, in order for expander events to bubble
 			ftHeaderMyFtIconContainer.querySelector('.myft-notification').appendChild(expanderDiv);
