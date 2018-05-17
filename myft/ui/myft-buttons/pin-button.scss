@@ -5,7 +5,7 @@
 	margin: 0 1px;
 }
 
-.myft-pin-button {
+.myft-pin-button-wrapper .myft-pin-button {
 	$icon-width: 36;
 	@include oButtons();
 	@include oButtonsIconButton($icon-name: pin, $is-icon-only: true);
