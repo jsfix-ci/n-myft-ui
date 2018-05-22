@@ -7,19 +7,24 @@
 
 .myft-pin-button-wrapper .myft-pin-button {
 	$icon-width: 36;
-	@include oButtons();
-	@include oButtonsIconButton($icon-name: pin, $is-icon-only: true);
 	@include oIconsGetIcon('pin', getColor('black-40'), $icon-width, $iconset-version: 1);
-	background-color: transparent;
-	border: 0;
-	padding: 0;
-	min-width: 28px;
 	&[aria-pressed=true],
 	&:not([disabled]):hover {
 		@include oIconsGetIcon('pin', getColor('claret'), $icon-width, $iconset-version: 1);
 		background-color: transparent;
 		border: 0;
 	}
+}
+
+.myft-pin-button__label {
+	@include oNormaliseVisuallyHidden;
+}
+
+.myft-pin-button-wrapper .myft-pin-button {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	min-width: 28px;
 }
 
 .myft-pin-button-wrapper {
