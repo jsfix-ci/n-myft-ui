@@ -87,16 +87,18 @@ const pinButtonEventListeners = () => {
 };
 
 export default function (opts) {
-	if (initialised && opts.reinitialise !== true) {
+	if (!opts.anonymous) {
+		const session = Cookies.get('FTSession_s') || Cookies.get('FTSession');
+		setTokens(session);
+	}
+
+	if (initialised) {
 		return;
 	} else {
 		initialised = true;
-
 		if (opts && opts.anonymous) {
 			anonEventListeners();
 		} else {
-			const session = Cookies.get('FTSession_s') || Cookies.get('FTSession');
-			setTokens(session);
 			signedInEventListeners();
 			personaliseLinks();
 			if (opts.flags && opts.flags.get('myftPrioritiseTopics')) {
