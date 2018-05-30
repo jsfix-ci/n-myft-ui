@@ -50,9 +50,7 @@ module.exports = function (karma) {
 					{
 						test: /\.js$/,
 						loader: 'babel',
-						exclude: [
-							path.resolve('./node_modules')
-						],
+						exclude: /node_modules\/(?!(@financial-times\/n-teaser|@financial-times\/n-display-metadata)\/).*/,
 						query: {
 							cacheDirectory: true,
 							presets: ['es2015'],
