@@ -6,7 +6,6 @@ Client side component for interaction with myFT.
 - myft
 - myft-common
 - myft-digest-promo
-- myft-hint
 
 These subdirectories may contain a README. If not, please speak to the myft team about how to use them.
 
