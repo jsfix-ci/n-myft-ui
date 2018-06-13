@@ -1,11 +1,12 @@
 # n-myft-ui
 Client side component for interaction with myFT.
 
-4 entry points (both for js and scss)
+3 entry points (both for js and scss)
 
 - myft
 - myft-common
-- myft-digest-promo
+- myft-digest-promo **! This entry point is deprecated !**  
+Use path n-myft-ui/components/digest-promo instead.
 
 These subdirectories may contain a README. If not, please speak to the myft team about how to use them.
 
