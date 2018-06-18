@@ -1,8 +1,9 @@
 {{#if @root.flags.myFtApiWrite}}
-<form class="n-myft-ui n-myft-ui--save" method="POST"
+<form class="n-myft-ui n-myft-ui--save" method="GET"
 	data-content-id="{{contentId}}"
 	data-myft-ui="saved"
-	action="/__myft/api/core/saved/content/{{contentId}}?method=put">
+	action="/myft/save/{{conceptId}}"
+	data-js-action="/__myft/api/core/saved/content/{{contentId}}?method=put">
 	{{> n-myft-ui/components/csrf-token/input}}
 	<button
 		type="submit"

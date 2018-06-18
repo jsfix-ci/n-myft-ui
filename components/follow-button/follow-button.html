@@ -1,16 +1,17 @@
 <form
 	class="n-myft-ui n-myft-ui--follow {{extraClasses}}"
-	method="POST"
+	method="GET"
 	data-myft-ui="follow"
 	data-concept-id="{{conceptId}}"
 	{{#if followPlusDigestEmail}}
 		action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
 		data-myft-ui-variant="followPlusDigestEmail"
 	{{else}}
+		action="/myft/add/{{conceptId}}"
 		{{#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl}}
-			action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete"
+			data-js-action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete"
 		{{else}}
-			action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
+			data-js-action="/__myft/api/core/followed/concept/{{conceptId}}?method=put"
 		{{/ifAll}}
 	{{/if}}>
 	{{> n-myft-ui/components/csrf-token/input}}
