@@ -1,7 +1,8 @@
-<form class="n-myft-ui n-myft-ui--follow" method="POST"
+<form class="n-myft-ui n-myft-ui--follow" method="GET"
 	data-myft-ui="follow"
 	data-concept-id="{{conceptId}}"
-	action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete">
+	action="/myft/add/{{conceptId}}"
+	data-js-action="/__myft/api/core/followed/concept/{{conceptId}}?method=delete">
 	<input type="hidden" value="{{name}}" name="name">
 	{{> n-myft-ui/components/csrf-token/input}}
 	<button

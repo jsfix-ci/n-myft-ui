@@ -9,6 +9,7 @@ import Delegate from 'ftdomdelegate';
 import personaliseLinks from '../personalise-links';
 import doFormSubmit from './do-form-submit';
 import initPinButtons from '../../../components/pin-button';
+import enhanceActionUrls from './enhance-action-urls';
 import Cookies from 'js-cookie';
 
 const delegate = new Delegate(document.body);
@@ -85,6 +86,7 @@ export default function (opts) {
 
 	if (!initialised) {
 		initialised = true;
+		enhanceActionUrls();
 		if (opts && opts.anonymous) {
 			anonEventListeners();
 		} else {

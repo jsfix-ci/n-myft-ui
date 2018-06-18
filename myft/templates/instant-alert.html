@@ -1,8 +1,9 @@
 {{#if @root.flags.myFtApiWrite}}
-	<form class="n-myft-ui n-myft-ui--instant {{extraClasses}}" method="POST"
+	<form class="n-myft-ui n-myft-ui--instant {{extraClasses}}" method="GET"
 		data-myft-ui="instant"
 		data-concept-id="{{conceptId}}"
-		action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
+		action="/myft/add/{{conceptId}}?instant=true"
+		data-js-action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
 		{{> n-myft-ui/components/csrf-token/input}}
 		<input type="hidden" value="{{name}}" name="name">
 		{{#if directType}}
