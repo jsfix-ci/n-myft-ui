@@ -10,12 +10,10 @@ import personaliseLinks from '../personalise-links';
 import doFormSubmit from './do-form-submit';
 import initPinButtons from '../../../components/pin-button';
 import enhanceActionUrls from './enhance-action-urls';
-import Cookies from 'js-cookie';
+import getToken from './get-csrf-token'
 
 const delegate = new Delegate(document.body);
 let initialised;
-
-const getToken = () => Cookies.get('FTSession_s') || Cookies.get('FTSession');
 
 function getInteractionHandler (relationshipName) {
 	return (ev, formEl) => {
