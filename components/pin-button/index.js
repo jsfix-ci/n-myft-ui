@@ -15,7 +15,7 @@ const trackPinningAction = ({ action }) =>
 
 const findAncestor = (el, classname) => el.classList.contains(classname)
 	? el
-	: el.parentElement && findAncestor(el.parentElement, classname)
+	: el.parentElement && findAncestor(el.parentElement, classname);
 
 const setLoading = el => el && el.classList.add('loading');
 
