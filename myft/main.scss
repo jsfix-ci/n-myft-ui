@@ -195,6 +195,10 @@ $o-overlay-is-silent: true;
 		@include oOverlayFullscreen($fill: 'height');
 		@include nUiZIndexFor('overlay');
 	}
+
+	.o-overlay-shadow {
+		@include nUiZIndexFor('overlay');
+	}
 }
 
 .n-myft-ui__button--instant.n-myft-ui__button--instant-light {
