@@ -1,11 +1,11 @@
-@import '../../mixins/lozenge/main';
+@import '../../mixins/pill/main';
 
 .n-myft-concept-pill {
-	@include myftLozenge();
+	@include myftPill();
 }
 
-@each $theme in map-keys($myft-lozenge-themes) {
+@each $theme in map-keys($myft-pill-themes) {
 	.n-myft-concept-pill--#{$theme} {
-		@include myftLozengeTheme($theme);
+		@include myftPillTheme($theme);
 	}
 }

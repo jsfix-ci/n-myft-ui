@@ -1,11 +1,11 @@
-@import '../../mixins/lozenge/main';
+@import '../../mixins/pill/main';
 
 .n-myft-follow-button {
-	@include myftLozenge($with-toggle-icon: true);
+	@include myftPill($with-toggle-icon: true);
 }
 
-@each $theme in map-keys($myft-lozenge-themes) {
+@each $theme in map-keys($myft-pill-themes) {
 	.n-myft-follow-button--#{$theme} {
-		@include myftLozengeTheme($theme, $with-toggle-icon: true);
+		@include myftPillTheme($theme, $with-toggle-icon: true);
 	}
 }

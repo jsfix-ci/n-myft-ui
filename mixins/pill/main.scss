@@ -1,7 +1,7 @@
 @import './themes';
 @import './toggle-icon';
 
-@mixin myftLozengeTheme($theme: standard, $with-toggle-icon: false) {
+@mixin myftPillTheme($theme: standard, $with-toggle-icon: false) {
 	@if $with-toggle-icon != false {
 		@include myftToggleIcon($theme);
 	}
@@ -40,8 +40,8 @@
 	}
 }
 
-@mixin myftLozenge($theme: standard, $with-toggle-icon: false) {
-	@include myftLozengeTheme($theme, $with-toggle-icon);
+@mixin myftPill($theme: standard, $with-toggle-icon: false) {
+	@include myftPillTheme($theme, $with-toggle-icon);
 	@include oTypographySansBold($scale: -1);
 
 	border-radius: 100px;
