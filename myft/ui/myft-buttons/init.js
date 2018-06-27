@@ -32,7 +32,7 @@ function anonEventListeners () {
 	const actions = ['follow', 'save'];
 
 	actions.forEach(action => {
-		delegate.on('submit', `.n-myft-ui--${action}`, event => {
+		delegate.on('submit', `.n-myft-ui-form--${action}`, event => {
 			event.preventDefault();
 			nNotification.show({
 				content: messages[action],

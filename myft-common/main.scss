@@ -1,37 +1,13 @@
 @import 'o-buttons/main';
 @import '../components/follow-button/main';
 
-@mixin buttonWithIcon($iconSpace, $iconSize, $colorOff, $iconOff, $iconOn: $iconOff, $colorOn: $colorOff) {
-	$topMargin: #{$iconSize * -0.5}px;
-	$horizontalMargin: #{($iconSpace - $iconSize) / 2}px;
-	position: relative;
-	padding-left: #{$iconSpace}px;
-
-	&::before {
-		@include oIconsGetIcon($iconOff, $colorOff, $iconSize, $iconset-version: 1);
-		content: ' ';
-		position: absolute;
-		top: 50%;
-		left: $horizontalMargin;
-		margin: $topMargin $horizontalMargin 0 0;
-	}
-
-	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon($iconOn, $colorOn, $iconSize, $iconset-version: 1);
-	}
-
-	&[aria-pressed="true"]:hover::before {
-		@include oIconsGetIcon($iconOn, $colorOff, $iconSize, $iconset-version: 1);
-	}
-}
-
-@mixin nUiMyftCommon () {
+@include nUiStylesheetStart('n-myft-ui-core');
 	.myft-ui,
 	.n-myft-ui {
 		display: inline-block;
 	}
 
-	.n-myft-ui__button {
+	.n-myft-ui-button {
 		@include oButtons();
 
 		&:focus {
@@ -40,61 +16,61 @@
 		}
 	}
 
-	.n-myft-ui__button--viewport-large {
+	.n-myft-ui-button--viewport-large {
 		display: none;
 		@include oGridRespondTo('L') {
 			display: inline-block;
 		}
 	}
 
-	.n-myft-ui__button--inverse {
+	.n-myft-ui-button--inverse {
 		@include oButtonsTheme(inverse);
 	}
 
-	.n-myft-ui__button--uncolored {
+	.n-myft-ui-button--uncolored {
 		@include oButtonsTheme(mono);
 	}
 
-	.n-myft-ui__button--medium {
+	.n-myft-ui-button--medium {
 		@include oButtonsSize(default);
 	}
 
-	.n-myft-ui__button--big {
+	.n-myft-ui-button--big {
 		@include oButtonsSize(big);
 	}
 
-	.n-myft-ui__fieldset {
+	.n-myft-ui-fieldset {
 		border: 0;
 		margin: 0;
 		padding: 0;
 	}
 
-	.n-myft-ui__legend {
+	.n-myft-ui-legend {
 		@include oTypographySans(0, $progressive: true);
 		margin-bottom: 10px;
 	}
 
-	.n-myft-ui--instant {
+	.n-myft-ui-form--instant {
 		position: relative;
 
-		.n-myft-ui__button {
+		.n-myft-ui-button {
 			@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail', 'mail', getColor('white'));
 		}
 
-		.n-myft-ui__button--inverse {
+		.n-myft-ui-button--inverse {
 			@include buttonWithIcon(26, 24, getColor('teal-80'), 'mail', 'mail', getColor('white'));
 		}
 	}
 
-	.js .myft-ui__core-text {
+	.js .n-myft-ui-core-text {
 		display: none;
 	}
 
-	.myft-ui__logo {
+	.n-myft-ui-logo {
 		border: 0;
 	}
 
-	.myft-ui__icon {
+	.n-myft-ui-icon {
 		@include nGetImage('logo', 'brand-myft', white, 16);
 		width: 34px;
 		margin: 0 8px -5px;
@@ -103,4 +79,4 @@
 	.n-myft-digest-promo {
 		display: none;
 	}
-}
+@include nUiStylesheetEnd('n-myft-ui-core');

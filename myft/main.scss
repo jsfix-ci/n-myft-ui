@@ -18,25 +18,25 @@ $o-overlay-is-silent: true;
 @include myftHeaderIconFlash;
 
 // 'unfollow' button
-.myft-ui__button--manage,
-.myft-ui__button--myft-manage {
+.n-myft-ui-button--manage,
+.n-myft-ui-button--myft-manage {
 	&[aria-pressed="true"]::before {
 		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
 	}
 }
 
-.n-myft-ui--article-saved__list-select {
+.n-myft-ui-form--article-saved__list-select {
 	margin-bottom: 10px;
 }
 
-.n-myft-ui__error-message {
+.n-myft-ui-error-message {
 	@include oFormsErrorText();
 }
 
-.n-myft-ui__error-message.n-myft-ui__error-message--no-name {
+.n-myft-ui-error-message.n-myft-ui-error-message--no-name {
 	display: none;
 
-	.n-myft-ui__error--no-name & {
+	.n-myft-ui-error--no-name & {
 		display: block;
 	}
 }

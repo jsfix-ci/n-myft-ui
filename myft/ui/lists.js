@@ -27,7 +27,7 @@ function updateAfterAddToList (listId, contentId, wasAdded) {
 	return myFtClient.personaliseUrl(`/myft/list/${listId}`)
 		.then(personalisedUrl => {
 			const message = `
-				<a href="/myft" class="myft-ui__logo" data-trackable="myft-logo"><abbr title="myFT" class="myft-ui__icon"></abbr></a>
+				<a href="/myft" class="n-myft-ui-logo" data-trackable="myft-logo"><abbr title="myFT" class="n-myft-ui-icon"></abbr></a>
 					${wasAdded ? `Article added to your list.
 				<a href="${personalisedUrl}" data-trackable="alerts">View list</a>` : 'Article removed from your list'}
 			`;
@@ -55,7 +55,7 @@ function setUpSaveToExistingListListeners (overlay, contentId) {
 
 			if (!listSelect.value) {
 				const nameFormGroup = overlay.content.querySelector('.js-uuid-group');
-				nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
+				nameFormGroup.className += ' o-forms--error n-myft-ui-error--no-name';
 				return;
 			}
 
@@ -79,7 +79,7 @@ function setUpCreateListListeners (overlay, contentId) {
 
 		if (!nameInput.value) {
 			const nameFormGroup = overlay.content.querySelector('.js-name-group');
-			nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
+			nameFormGroup.className += ' o-forms--error n-myft-ui-error--no-name';
 			return;
 		}
 
