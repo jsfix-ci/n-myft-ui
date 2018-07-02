@@ -105,20 +105,20 @@ describe('chronology', () => {
 		const mockArticles = [
 			{
 				id: BEFORE_DISMISS_AND_UNREAD,
-				publishedDate: TODAY_0600
+				contentTimeStamp: TODAY_0600
 			},
 			{
 				id: BEFORE_DISMISS_AND_READ,
-				publishedDate: TODAY_0600,
+				contentTimeStamp: TODAY_0600,
 				hasBeenRead: true
 			},
 			{
 				id: AFTER_DISMISS_AND_UNREAD,
-				publishedDate: TODAY_1000
+				contentTimeStamp: TODAY_1000
 			},
 			{
 				id: AFTER_DISMISS_AND_READ,
-				publishedDate: TODAY_1000,
+				contentTimeStamp: TODAY_1000,
 				hasBeenRead: true
 			}
 		];

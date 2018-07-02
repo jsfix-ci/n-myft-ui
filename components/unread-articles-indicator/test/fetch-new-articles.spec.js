@@ -29,19 +29,19 @@ const mockPersonalisedFeedData = {
 	results: [
 		{
 			id: READ_ARTICLE_AFTER_SINCE,
-			publishedDate: ARTICLE_PUBLISH_AFTER_SINCE
+			contentTimeStamp: ARTICLE_PUBLISH_AFTER_SINCE
 		},
 		{
 			id: UNREAD_ARTICLE_AFTER_SINCE,
-			publishedDate: ARTICLE_PUBLISH_AFTER_SINCE
+			contentTimeStamp: ARTICLE_PUBLISH_AFTER_SINCE
 		},
 		{
 			id: READ_ARTICLE_BEFORE_SINCE,
-			publishedDate: ARTICLE_PUBLISH_BEFORE_SINCE
+			contentTimeStamp: ARTICLE_PUBLISH_BEFORE_SINCE
 		},
 		{
 			id: UNREAD_ARTICLE_BEFORE_SINCE,
-			publishedDate: ARTICLE_PUBLISH_BEFORE_SINCE
+			contentTimeStamp: ARTICLE_PUBLISH_BEFORE_SINCE
 		}
 	]
 }

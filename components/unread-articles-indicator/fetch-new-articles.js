@@ -18,9 +18,9 @@ const decorateWithHasBeenRead = (readingHistory, allArticles) => {
 	return allArticles;
 };
 
-const contentFromPeronalisedFeed = uuid => {
+const contentFromPersonalisedFeed = uuid => {
 	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h`;
-	const options = { credentials: 'include', timeout: 5000 };
+	const options = { credentials: 'include' };
 
 	return fetch(url, options)
 		.then(fetchJson)
@@ -41,7 +41,7 @@ const readingHistory = uuid => {
 		`;
 	const variables = { uuid };
 	const url = `https://next-api.ft.com/v2/query?query=${removeLineBreaks(gqlQuery)}&variables=${JSON.stringify(variables)}&source=next-myft`;
-	const options = { credentials: 'include', timeout: 5000 };
+	const options = { credentials: 'include' };
 
 	return fetch(url, options)
 		.then(fetchJson)
@@ -50,11 +50,11 @@ const readingHistory = uuid => {
 };
 
 const extractArticlesFromSinceTime = (articles, since) => {
-	return articles.filter(article => isAfter(article.publishedDate, since));
+	return articles.filter(article => isAfter(article.contentTimeStamp, since));
 };
 
 export default function (uuid, since) {
-	return Promise.all([readingHistory(uuid), contentFromPeronalisedFeed(uuid)])
+	return Promise.all([readingHistory(uuid), contentFromPersonalisedFeed(uuid)])
 		.then(([readingHistory, userFeedLast24Hours]) => decorateWithHasBeenRead(readingHistory, userFeedLast24Hours))
 		.then(articles => extractArticlesFromSinceTime(articles, since));
 };
