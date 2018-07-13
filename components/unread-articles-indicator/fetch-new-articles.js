@@ -1,65 +1,61 @@
 import { json as fetchJson } from 'fetchres';
+import { isAfter } from 'date-fns';
 
 const removeLineBreaks = str => encodeURIComponent(str.replace(/\s+/g, ' '));
 
-const extractFollowedArticles = data => {
-	const followedConcepts = data.user.followed.reduce((acc, concept) => acc.concat(concept.id), []);
-
-	data.articles = data.latestContent.reduce((articles, article) => {
-		const articleConceptIsFollowed = article.annotations.some(annotation => followedConcepts.includes(annotation.id));
-
-		return articleConceptIsFollowed ? articles.concat(article) : articles;
-	}, []);
-
-	return data;
-};
-
 // read state in articlesFromReadingHistory will be delayed by up to ~1 minute
-const decorateWithHasBeenRead = data => {
-	const allReadArticles = data.user.articlesFromReadingHistory ? data.user.articlesFromReadingHistory.articles : [];
+const decorateWithHasBeenRead = (readingHistory, allArticles) => {
+	const allReadArticles = readingHistory ? readingHistory.articles : [];
 
 	allReadArticles.forEach(readArticle => {
-		const readNewArticle = data.articles.find(article => article.id === readArticle.id);
+		const readNewArticle = allArticles.find(article => article.id === readArticle.id);
 
 		if (readNewArticle) {
 			readNewArticle.hasBeenRead = true;
 		}
 	});
 
-	return data;
+	return allArticles;
 };
 
-export default function (uuid, since) {
+const contentFromPersonalisedFeed = uuid => {
+	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h`;
+	const options = { credentials: 'include' };
+
+	return fetch(url, options)
+		.then(fetchJson)
+		.then(body => body.results);
+};
+
+const readingHistory = uuid => {
 	const gqlQuery = `
-		query newMyFTContentSince($uuid: String!, $since: String!) {
+		query newMyFTContentSince($uuid: String!) {
 			user(uuid: $uuid) {
-				followed {
-					id
-				}
 				articlesFromReadingHistory {
 					articles {
 						id
 					}
 				}
 			}
-
-			latestContent(since: $since, limit: 250) {
-				id
-				publishedDate
-				annotations {
-					id
-				}
-			}
 		}
 		`;
-	const variables = { uuid, since };
+	const variables = { uuid };
 	const url = `https://next-api.ft.com/v2/query?query=${removeLineBreaks(gqlQuery)}&variables=${JSON.stringify(variables)}&source=next-myft`;
-	const options = { credentials: 'include', timeout: 5000 };
+	const options = { credentials: 'include' };
 
 	return fetch(url, options)
 		.then(fetchJson)
 		.then(body => body.data)
-		.then(extractFollowedArticles)
-		.then(decorateWithHasBeenRead)
-		.then(data => data.articles);
+		.then(data => data.user.articlesFromReadingHistory)
+		.catch(() => Promise.resolve({ articles: [] }));
+};
+
+const extractArticlesFromSinceTime = (articles, since) => {
+	return articles.filter(article => isAfter(article.contentTimeStamp, since));
+};
+
+export default function (uuid, since) {
+	return Promise.all([readingHistory(uuid), contentFromPersonalisedFeed(uuid)])
+		.then(([readingHistory, userFeedLast24Hours]) => decorateWithHasBeenRead(readingHistory, userFeedLast24Hours))
+		.then(articles => extractArticlesFromSinceTime(articles, since));
 };

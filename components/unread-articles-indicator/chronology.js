@@ -29,6 +29,6 @@ export const determineNewArticlesSinceTime = (userLastVisitedAt, userNewArticles
 
 export const filterArticlesToNewSinceTime = (articles, publishedAfterTime) => {
 	return articles.filter(article => {
-		return article.hasBeenRead !== true && isAfter(article.publishedDate, publishedAfterTime);
+		return article.hasBeenRead !== true && isAfter(article.contentTimeStamp, publishedAfterTime);
 	});
 };

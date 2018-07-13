@@ -5,62 +5,54 @@ import fetchNewArticles from '../fetch-new-articles';
 
 const USER_UUID = '0-0-0-0';
 const SINCE = '2018-06-05T06:48:26.635Z';
-const FOLLOWED_CONCEPT = 'followed-concept';
-const UNFOLLOWED_CONCEPT = 'unfollowed-concept';
-const READ_AND_FOLLOWED_ARTICLE = 'read-followed-article';
-const UNREAD_AND_FOLLOWED_ARTICLE = 'unread-followed-article';
-const READ_AND_UNFOLLOWED_ARTICLE = 'read-unfollowed-article';
-const UNREAD_AND_UNFOLLOWED_ARTICLE = 'unread-unfollowed-article';
-const mockData = {
+
+const ARTICLE_PUBLISH_BEFORE_SINCE = '2018-06-04T06:48:26.635Z'
+const ARTICLE_PUBLISH_AFTER_SINCE = '2018-06-05T07:48:26.635Z';
+
+const READ_ARTICLE_AFTER_SINCE = 'read-followed-article-after-since';
+const UNREAD_ARTICLE_AFTER_SINCE = 'unread-followed-article-after-since';
+const READ_ARTICLE_BEFORE_SINCE = 'read-followed-article-before-since';
+const UNREAD_ARTICLE_BEFORE_SINCE = 'unread-followed-article-before-since';
+const mockReadingHistoryData = {
 	data: {
 		user: {
-			followed: [
-				{ id: FOLLOWED_CONCEPT }
-			],
 			articlesFromReadingHistory: {
 				articles: [
-					{ id: READ_AND_FOLLOWED_ARTICLE },
-					{ id: READ_AND_UNFOLLOWED_ARTICLE }
+					{ id: READ_ARTICLE_AFTER_SINCE },
+					{ id: READ_ARTICLE_BEFORE_SINCE }
 				]
 			}
-		},
-		latestContent: [
-			{
-				id: READ_AND_FOLLOWED_ARTICLE,
-				annotations: [
-					{ id: FOLLOWED_CONCEPT },
-					{ id: UNFOLLOWED_CONCEPT }
-				]
-			},
-			{
-				id: UNREAD_AND_FOLLOWED_ARTICLE,
-				annotations: [
-					{ id: FOLLOWED_CONCEPT },
-					{ id: UNFOLLOWED_CONCEPT }
-				]
-			},
-			{
-				id: READ_AND_UNFOLLOWED_ARTICLE,
-				annotations: [
-					{ id: UNFOLLOWED_CONCEPT }
-				]
-			},
-			{
-				id: UNREAD_AND_UNFOLLOWED_ARTICLE,
-				annotations: [
-					{ id: UNFOLLOWED_CONCEPT }
-				]
-			}
-		]
+		}
 	}
 };
+const mockPersonalisedFeedData = {
+	results: [
+		{
+			id: READ_ARTICLE_AFTER_SINCE,
+			contentTimeStamp: ARTICLE_PUBLISH_AFTER_SINCE
+		},
+		{
+			id: UNREAD_ARTICLE_AFTER_SINCE,
+			contentTimeStamp: ARTICLE_PUBLISH_AFTER_SINCE
+		},
+		{
+			id: READ_ARTICLE_BEFORE_SINCE,
+			contentTimeStamp: ARTICLE_PUBLISH_BEFORE_SINCE
+		},
+		{
+			id: UNREAD_ARTICLE_BEFORE_SINCE,
+			contentTimeStamp: ARTICLE_PUBLISH_BEFORE_SINCE
+		}
+	]
+}
 
 describe('fetch-new-articles', () => {
 	let data;
 
 	beforeEach(() => {
 		data = null;
-		fetchMock.get('*', mockData);
+		fetchMock.get('begin:https://next-api.ft.com/v2/', mockReadingHistoryData);
+		fetchMock.get('begin:/__myft/api/onsite/feed/', mockPersonalisedFeedData);
 
 		return fetchNewArticles(USER_UUID, SINCE)
 			.then(resolvedValue => {
@@ -71,21 +63,21 @@ describe('fetch-new-articles', () => {
 	afterEach(fetchMock.reset);
 
 	it('should fetch', () => {
-		expect(fetchMock.calls().matched.length).to.equal(1);
+		expect(fetchMock.calls().matched.length).to.equal(2);
 	});
 
 	it('should return an array of articles', () => {
 		expect(data).to.be.an('array');
 	});
 
-	it('should return only the followed articles', () => {
+	it('should return only the articles after the since date', () => {
 		expect(data.length).to.equal(2);
-		expect(data.some(article => article.id === READ_AND_FOLLOWED_ARTICLE)).to.equal(true);
-		expect(data.some(article => article.id === UNREAD_AND_FOLLOWED_ARTICLE)).to.equal(true);
+		expect(data.some(article => article.id === READ_ARTICLE_AFTER_SINCE)).to.equal(true);
+		expect(data.some(article => article.id === UNREAD_ARTICLE_AFTER_SINCE)).to.equal(true);
 	});
 
 	it('should decorate read articles with hasBeenRead = true', () => {
-		expect(data.find(article => article.id === READ_AND_FOLLOWED_ARTICLE).hasBeenRead).to.equal(true);
-		expect(data.find(article => article.id === UNREAD_AND_FOLLOWED_ARTICLE).hasBeenRead).not.to.equal(true);
+		expect(data.find(article => article.id === READ_ARTICLE_AFTER_SINCE).hasBeenRead).to.equal(true);
+		expect(data.find(article => article.id === UNREAD_ARTICLE_AFTER_SINCE).hasBeenRead).not.to.equal(true);
 	});
 });
