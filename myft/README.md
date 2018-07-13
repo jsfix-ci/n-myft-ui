@@ -10,7 +10,6 @@ Client-side module to handle display of generic myft ui e.g. add to myft buttons
 ### Following
 
 	{{>n-ui/myft/templates/follow}}
-	{{>n-ui/myft/templates/unfollow}}
 
 The templates require a _conceptId_ variable. You can also override the button text by providing a _buttonText_ property.
 
