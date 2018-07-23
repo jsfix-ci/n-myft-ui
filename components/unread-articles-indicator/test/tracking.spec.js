@@ -6,7 +6,6 @@ describe('unread-articles-indicator tracking', () => {
 		let dispatchedEvent;
 		const COUNT = 3;
 		const NEW_ARTICLES_SINCE_TIME = '2018-06-18T14:22:51.098Z';
-		const CAUSE = 'the-cause';
 
 		beforeEach(() => {
 			dispatchedEvent = null;
@@ -14,14 +13,13 @@ describe('unread-articles-indicator tracking', () => {
 		});
 
 		it('should should dispatch the event', () => {
-			tracking.countShown(COUNT, NEW_ARTICLES_SINCE_TIME, CAUSE);
+			tracking.countShown(COUNT, NEW_ARTICLES_SINCE_TIME);
 
 			expect(dispatchedEvent.detail).to.deep.equal({
 				category: 'unread-articles-indicator',
 				action: 'render',
 				count: COUNT,
-				newArticlesSinceTime: NEW_ARTICLES_SINCE_TIME,
-				cause: CAUSE
+				newArticlesSinceTime: NEW_ARTICLES_SINCE_TIME
 			});
 		});
 	});

@@ -8,7 +8,7 @@ import * as ui from './ui';
 const MAX_UPDATE_FREQUENCY = 1000 * 60 * 5;
 let canUpdate = true;
 
-const showUnreadArticlesCount = (uuid, newArticlesSinceTime, cause) => {
+const showUnreadArticlesCount = ({ uuid, newArticlesSinceTime, withTracking = false }) => {
 	if (canUpdate && uuid) {
 		canUpdate = false;
 		setTimeout(() => canUpdate = true, MAX_UPDATE_FREQUENCY);
@@ -19,7 +19,10 @@ const showUnreadArticlesCount = (uuid, newArticlesSinceTime, cause) => {
 				const count = newArticles.length;
 
 				ui.setCount(count);
-				tracking.countShown(count, newArticlesSinceTime, cause);
+
+				if (withTracking) {
+					tracking.countShown(count, newArticlesSinceTime);
+				}
 			})
 			.catch(() => {
 				canUpdate = true;
@@ -52,11 +55,18 @@ export default () => {
 	});
 
 	return getUserId
-		.then(uuid => showUnreadArticlesCount(uuid, getNewArticlesSinceTime(), 'initial-render'))
+		.then(uuid => showUnreadArticlesCount({
+			uuid,
+			newArticlesSinceTime: getNewArticlesSinceTime(),
+			withTracking: true
+		}))
 		.then(() => {
 			document.addEventListener('visibilitychange', () => {
 				if (document.visibilityState === 'visible') {
-					getUserId.then(uuid => showUnreadArticlesCount(uuid, getNewArticlesSinceTime(), 'page-visibility-change'));
+					getUserId.then(uuid => showUnreadArticlesCount({
+						uuid,
+						newArticlesSinceTime: getNewArticlesSinceTime()
+					}));
 				}
 			});
 		});
