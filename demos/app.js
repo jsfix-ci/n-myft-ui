@@ -37,18 +37,6 @@ app.get('/', (req, res) => {
 	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
 });
 
-app.get('/digest-on-follow', (req, res) => {
-	res.render('digest-on-follow', Object.assign({
-		title: 'n-myft-ui digest on follow',
-		layout: 'demo-layout',
-		flags: {
-			myFtApi: true,
-			myFtApiWrite: true,
-		},
-		appIsStreamPage: false
-	}, fixtures.followButtonPlusDigest));
-});
-
 function runPa11yTests () {
 	const spawn = require('child_process').spawn;
 	const pa11y = spawn('pa11y-ci');
