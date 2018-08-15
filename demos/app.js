@@ -1,14 +1,12 @@
+const Handlebars = require('handlebars');
+const helpers = require('./helpers');
 const express = require('@financial-times/n-internal-tool');
 const chalk = require('chalk');
+const fixtures = require('./fixtures');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
 
-const fixtures = {
-	followButton: require('./fixtures/follow-button'),
-	followButtonPlusDigest: require('./fixtures/follow-button-plus-digest'),
-	saveButton: require('./fixtures/save-button'),
-	collections: require('./fixtures/collections')
-};
+Handlebars.registerHelper(helpers);
 
 const app = module.exports = express({
 	name: 'public',
@@ -20,7 +18,10 @@ const app = module.exports = express({
 	hasHeadCss: false,
 	layoutsDir: 'demos/templates',
 	viewsDirectory: '/demos/templates',
-	partialsDirectory: process.cwd(),
+	partialsDirectory: [
+		process.cwd(),
+		'demos/templates'
+	],
 	directory: process.cwd(),
 	demo: true,
 	s3o: false
