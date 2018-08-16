@@ -1,5 +1,6 @@
 @import 'o-buttons/main';
 @import './ui/myft-buttons/main';
+@import './ui/lists';
 @import '../components/pin-button/main';
 @import '../components/instant-alert/main';
 
@@ -13,6 +14,11 @@ $n-notification-is-silent: false;
 $o-overlay-is-silent: false;
 @import 'o-overlay/main';
 $o-overlay-is-silent: true;
+
+.myft-ui,
+.n-myft-ui {
+	display: inline-block;
+}
 
 // experimental flash animation on header icon
 @include myftHeaderIconFlash;
