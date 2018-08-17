@@ -9,10 +9,20 @@
 	<ul class="collection__concepts">
 		{{#concepts}}
 			<li class="collection__concept">
-				{{>	n-myft-ui/myft/templates/follow
-					variant="inverse"
-					buttonText=name
-				}}
+				{{#if @root.flags.xFollowButton}}
+					{{{
+						x local="../x-dash/components/x-follow-button"
+						component="FollowButton"
+						variant="inverse"
+						buttonText=name
+						altButtonText=name
+					}}}
+				{{else}}
+					{{>	n-myft-ui/myft/templates/follow
+						variant="inverse"
+						buttonText=name
+					}}
+				{{/if}}
 			</li>
 		{{/concepts}}
 	</ul>
