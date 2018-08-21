@@ -19,10 +19,13 @@ function bindListeners () {
 	const dismissBtn = document.querySelector(CLASSES.dismissBtn);
 
 	btn.addEventListener('click', addToDigest, false);
-	dismissBtn.addEventListener('click', () => {
-		hidePromo();
-		setDismissState();
-	}, false);
+
+	if (dismissBtn) {
+		dismissBtn.addEventListener('click', () => {
+			hidePromo();
+			setDismissState();
+		}, false);
+	}
 }
 
 function shouldShowPromo (conceptId){
