@@ -114,6 +114,12 @@ $icon-width-m: 90px;
 		width: 55px;
 	}
 
+	.n-myft-digest-promo--generic &,
+	.n-myft-digest-promo--generic &[disabled] {
+		width: auto;
+		min-width: auto;
+	}
+
 	@include oGridRespondTo('M') {
 		margin-left: 0;
 		float: right;
