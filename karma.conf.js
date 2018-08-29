@@ -34,14 +34,12 @@ module.exports = function (karma) {
 				'NodeList.prototype.@@iterator',
 				'Array.prototype.@@iterator'
 			].join(','),
-			'components/unread-articles-indicator/test/*.spec.js',
 			'test/**/*.spec.js'
 		],
 
 		// preprocess matching files before serving them to	the browser
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
-			'components/unread-articles-indicator/test/*.spec.js': ['webpack', 'sourcemap'],
 			'test/**/*.spec.js': ['webpack', 'sourcemap']
 		},
 		webpack: {
