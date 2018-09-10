@@ -7,7 +7,7 @@
 	{{> n-myft-ui/components/csrf-token/input}}
 	<button
 		type="submit"
-		class="n-myft-ui__button{{#variant}} n-myft-ui__button--{{this}}{{/variant}}"
+		class="{{#if saveButtonWithIcon}}n-myft-ui__save-button-with-icon{{else}}n-myft-ui__button{{#variant}} n-myft-ui__button--{{this}}{{/variant}}{{/if}}"
 		data-trackable="save-for-later"
 		data-alternate-label="Save to myFT"
 		data-alternate-text="Save"
@@ -15,7 +15,13 @@
 		aria-label="Saved to myFT"
 		title="Saved to myFT"
 		aria-pressed="true"
-	>{{#if buttonText}}{{buttonText}}{{else}}Saved{{/if}}</button>
+	>
+		{{#if saveButtonWithIcon}}
+			<span>{{#if buttonText}}{{buttonText}}{{else}}Saved{{/if}}</span>
+		{{else}}
+			{{#if buttonText}}{{buttonText}}{{else}}Saved{{/if}}
+		{{/if}}
+	</button>
 </form>
 {{else}}
 <!-- Unsave button hidden due to myFtApiWrite being off -->
