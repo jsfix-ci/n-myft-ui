@@ -2,7 +2,6 @@
 
 import sinon from 'sinon';
 import { addMinutes } from 'date-fns';
-import { determineNewArticlesSinceTime, filterArticlesToNewSinceTime } from '../../components/unread-articles-indicator/chronology';
 
 const clientTimezoneOffset = new Date().getTimezoneOffset();
 const toLocal = date => addMinutes(date, clientTimezoneOffset).toISOString();
@@ -20,22 +19,33 @@ describe('chronology', () => {
 	let timeNow;
 	let userLastVisitedAt;
 	let userNewArticlesSince;
+	let myftClientResponse;
+
+	const myftClientStub = { fetchJson: sinon.stub().callsFake(() => myftClientResponse)};
+	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/chronology');
+	const subject = subjectInjector({
+		'next-myft-client': myftClientStub
+	});
+
+	const determineNewArticlesSinceTime = subject.determineNewArticlesSinceTime;
+	const filterArticlesToNewSinceTime = subject.filterArticlesToNewSinceTime;
 
 	afterEach(() => {
+		myftClientResponse = undefined;
 		clock.restore();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
 		describe('given the user is visiting for the first time today', () => {
 			beforeEach(() => {
-				userLastVisitedAt = SOME_TIME_YESTERDAY;
+				myftClientResponse = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
 				timeNow = new Date(TODAY_0800);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(userLastVisitedAt, userNewArticlesSince);
+				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
 
 				expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
 			});
@@ -43,7 +53,7 @@ describe('chronology', () => {
 
 		describe('given the user has visited today and returns within the same-visit threshold', () => {
 			beforeEach(() => {
-				userLastVisitedAt = TODAY_0800;
+				myftClientResponse = TODAY_0800;
 				userNewArticlesSince = TODAY_0700;
 				timeNow = new Date(TODAY_0801);
 				clock = sinon.useFakeTimers(timeNow);
@@ -51,7 +61,7 @@ describe('chronology', () => {
 
 			describe('and there is a valid userNewArticlesSince time set', () => {
 				it('should return the userNewArticlesSince time', () => {
-					const newArticlesSinceTime = determineNewArticlesSinceTime(userLastVisitedAt, userNewArticlesSince);
+					const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
 
 					expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
 				});
@@ -59,7 +69,7 @@ describe('chronology', () => {
 
 			describe('and there is no (or an invalid) userNewArticlesSince time set', () => {
 				it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-					const newArticlesSinceTime = determineNewArticlesSinceTime(userLastVisitedAt, null);
+					const newArticlesSinceTime = determineNewArticlesSinceTime(null);
 
 					expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
 				});
@@ -68,14 +78,14 @@ describe('chronology', () => {
 
 		describe('given the user has visited today and returns after the same-visit threshold', () => {
 			beforeEach(() => {
-				userLastVisitedAt = TODAY_0800;
+				myftClientResponse = TODAY_0800;
 				userNewArticlesSince = TODAY_0600;
 				timeNow = new Date(TODAY_1000);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the userLastVisitedAt time', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(userLastVisitedAt, userNewArticlesSince);
+				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
 
 				expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
 			});
@@ -84,13 +94,14 @@ describe('chronology', () => {
 
 		describe('given there is an invalid userLastVisited time set', () => {
 			beforeEach(() => {
+				myftClientResponse = null;
 				userNewArticlesSince = TODAY_0600;
 				timeNow = new Date(TODAY_1000);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(null, userNewArticlesSince);
+				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
 
 				expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
 			});
