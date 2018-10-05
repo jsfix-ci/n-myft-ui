@@ -3,6 +3,8 @@ const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
 
+const xHandlebars = require('@financial-times/x-handlebars');
+
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
 	followButtonPlusDigest: require('./fixtures/follow-button-plus-digest'),
@@ -13,7 +15,7 @@ const fixtures = {
 const app = module.exports = express({
 	name: 'public',
 	systemCode: 'n-myft-ui-demo',
-	withFlags: false,
+	withFlags: true,
 	withHandlebars: true,
 	withNavigation: false,
 	withAnonMiddleware: false,
@@ -23,7 +25,10 @@ const app = module.exports = express({
 	partialsDirectory: process.cwd(),
 	directory: process.cwd(),
 	demo: true,
-	s3o: false
+	s3o: false,
+	helpers: {
+		x: xHandlebars()
+	}
 });
 
 app.get('/', (req, res) => {
@@ -32,7 +37,8 @@ app.get('/', (req, res) => {
 		layout: 'demo-layout',
 		flags: {
 			myFtApi: true,
-			myFtApiWrite: true
+			myFtApiWrite: true,
+			xFollowButton: res.locals.flags.xFollowButton
 		}
 	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
 });
