@@ -1,0 +1,53 @@
+@import 'o-buttons/main';
+
+.n-myft-ui__button {
+	@include oButtons();
+
+	&:focus {
+		outline: 3px solid getColor('teal-40');
+		outline-offset: 3px;
+	}
+}
+
+.n-myft-ui__button--inverse {
+	@include oButtonsTheme(inverse);
+}
+
+.n-myft-ui__button--viewport-large {
+	display: none;
+
+	@include oGridRespondTo('L') {
+		display: inline-block;
+	}
+}
+
+.n-myft-ui__save-button-with-icon {
+	$icon-size: 38px;
+
+	@include oIconsGetIcon('bookmark-outline', oColorsGetPaletteColor('black'), $icon-size, $iconset-version: 1);
+	color: oColorsGetPaletteColor('black');
+	background-position: 0 0;
+	border: 0;
+	min-height: $icon-size;
+	width: $icon-size;
+	position: relative;
+
+	.save-button-with-icon-copy {
+		position: absolute;
+		top: $icon-size - 5px;
+		left: 0;
+		right: 0;
+		@include oTypographySans($scale: -2);
+	}
+
+	&:not([disabled]):hover {
+		@include oIconsGetIcon('bookmark', oColorsGetPaletteColor('black-50'), $icon-size, $iconset-version: 1);
+		background-position: 0 0;
+	}
+
+	&[aria-selected=true],
+	&[aria-pressed=true] {
+		@include oIconsGetIcon('bookmark', oColorsGetPaletteColor('claret'), $icon-size, $iconset-version: 1);
+		background-position: 0 0;
+	}
+}

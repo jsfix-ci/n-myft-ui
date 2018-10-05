@@ -12,22 +12,37 @@
 				</h2>
 
 				{{#followButton}}
-					{{> n-myft-ui/myft/templates/follow }}
+					{{> n-myft-ui/components/follow-button/follow-button}}
 				{{/followButton}}
 
 				{{#saveButton}}
 					<h2 class="demo-section__title">
 						Save button
 					</h2>
-					{{> n-myft-ui/myft/templates/save-for-later }}
+					{{> n-myft-ui/components/save-for-later/save-for-later }}
 				{{/saveButton}}
 
 				{{#saveButton}}
 					<h2 class="demo-section__title">
 						Unsave button
 					</h2>
-					{{> n-myft-ui/myft/templates/unsave-for-later }}
+					{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true }}
 				{{/saveButton}}
+
+				{{#saveButton}}
+					<h2 class="demo-section__title">
+						Save button with icon
+					</h2>
+					{{> n-myft-ui/components/save-for-later/save-for-later saveButtonWithIcon=true }}
+				{{/saveButton}}
+
+				{{#saveButton}}
+					<h2 class="demo-section__title">
+						Unsave button with icon
+					</h2>
+					{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
+				{{/saveButton}}
+
 			</div>
 		</div>
 	</section>
@@ -65,7 +80,7 @@
 							<button
 								class="n-myft-follow-button">
 								Theo Leanse
-							</a>
+							</button>
 						</li>
 						<li>
 							<button
@@ -74,7 +89,7 @@
 								class="n-myft-follow-button">
 								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
 								say that they were perfectly normal, thank you very much.
-							</a>
+							</button>
 						</li>
 					</ul>
 				</div>

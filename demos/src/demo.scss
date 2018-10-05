@@ -1,9 +1,11 @@
 @import 'n-ui-foundations/main';
-@import '../../myft-common/main';
-@include nUiMyftCommon();
+// @import '../../myft-common/main';
+// @include nUiMyftCommon();
 @import '../../myft/main';
 @import '../../components/collections/main';
 @import '../../components/concept-pill/main';
+@import '../../components/button/main';
+@import '../../components/follow-button/main';
 @import '../../components/onboarding-cta/main';
 
 @import '../../node_modules/@financial-times/x-follow-button/dist/FollowButton';

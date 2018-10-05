@@ -6,7 +6,7 @@ const delegate = new Delegate(document.body);
 const trackPinningAction = ({ action }) =>
 	new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'component',
+			category: 'n-messaging',
 			messaging: 'myft-onboarding-pinning-promo',
 			action
 		},
@@ -33,13 +33,17 @@ const togglePrioritised = (conceptId, prioritised) => {
 };
 
 export default () => {
-	delegate.on('click', 'button[data-prioritise-button]', event => {
-		event.preventDefault();
+	myftApiClient.init()
+		.then(() => {
+			delegate.off();
+			delegate.on('click', 'button[data-prioritise-button]', event => {
+				event.preventDefault();
 
-		const { conceptId, prioritised } = event.target.dataset;
-		const wrapper = findAncestor(event.target, 'myft-pin-button-wrapper');
+				const { conceptId, prioritised } = event.target.dataset;
+				const wrapper = findAncestor(event.target, 'myft-pin-button-wrapper');
 
-		setLoading(wrapper);
-		togglePrioritised(conceptId, prioritised === 'true');
-	});
+				setLoading(wrapper);
+				togglePrioritised(conceptId, prioritised === 'true');
+			});
+		});
 };
