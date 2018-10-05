@@ -15,7 +15,7 @@ const fixtures = {
 const app = module.exports = express({
 	name: 'public',
 	systemCode: 'n-myft-ui-demo',
-	withFlags: false,
+	withFlags: true,
 	withHandlebars: true,
 	withNavigation: false,
 	withAnonMiddleware: false,
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 		flags: {
 			myFtApi: true,
 			myFtApiWrite: true,
-			xFollowButton: true
+			xFollowButton: res.locals.flags.xFollowButton
 		}
 	}, fixtures.followButton, fixtures.saveButton, fixtures.collections));
 });
