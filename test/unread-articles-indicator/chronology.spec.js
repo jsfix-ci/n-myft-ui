@@ -76,7 +76,7 @@ describe.only('chronology', () => {
 					return determineNewArticlesSinceTime(null, uuid)
 						.then(newArticlesSinceTime => {
 							expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
-						})
+						});
 				});
 			});
 		});
@@ -93,7 +93,7 @@ describe.only('chronology', () => {
 				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 					.then(newArticlesSinceTime => {
 						expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
-					})
+					});
 			});
 
 		});
