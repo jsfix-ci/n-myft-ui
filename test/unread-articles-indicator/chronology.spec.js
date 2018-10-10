@@ -2,6 +2,7 @@
 
 import sinon from 'sinon';
 import { addMinutes } from 'date-fns';
+import dateFnsStub from 'date-fns';
 
 const clientTimezoneOffset = new Date().getTimezoneOffset();
 const toLocal = date => addMinutes(date, clientTimezoneOffset).toISOString();
@@ -14,46 +15,48 @@ const TODAY_0800 = '2018-06-02T08:00:00.000Z';
 const TODAY_0801 = '2018-06-02T08:01:00.000Z';
 const TODAY_1000 = '2018-06-02T10:00:00.000Z';
 
-describe('chronology', () => {
+const uuid = 'user-id';
+
+describe.only('chronology', () => {
 	let clock;
 	let timeNow;
 	let userLastVisitedAt;
 	let userNewArticlesSince;
-	let myftClientResponse;
 
-	const myftClientStub = { fetchJson: sinon.stub().callsFake(() => myftClientResponse)};
 	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/chronology');
 	const subject = subjectInjector({
-		'next-myft-client': myftClientStub
+		'date-fns': dateFnsStub,
+		'./fetch-last-seen-timestamp': sinon.stub().callsFake(() => Promise.resolve(userLastVisitedAt))
 	});
 
 	const determineNewArticlesSinceTime = subject.determineNewArticlesSinceTime;
 	const filterArticlesToNewSinceTime = subject.filterArticlesToNewSinceTime;
 
 	afterEach(() => {
-		myftClientResponse = undefined;
+		userLastVisitedAt = undefined;
 		clock.restore();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
 		describe('given the user is visiting for the first time today', () => {
 			beforeEach(() => {
-				myftClientResponse = SOME_TIME_YESTERDAY;
+				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
 				timeNow = new Date(TODAY_0800);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
-
-				expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+					.then(newArticlesSinceTime => {
+						expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+					});
 			});
 		});
 
 		describe('given the user has visited today and returns within the same-visit threshold', () => {
 			beforeEach(() => {
-				myftClientResponse = TODAY_0800;
+				userLastVisitedAt = TODAY_0800;
 				userNewArticlesSince = TODAY_0700;
 				timeNow = new Date(TODAY_0801);
 				clock = sinon.useFakeTimers(timeNow);
@@ -61,49 +64,53 @@ describe('chronology', () => {
 
 			describe('and there is a valid userNewArticlesSince time set', () => {
 				it('should return the userNewArticlesSince time', () => {
-					const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
-
-					expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
+					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+						.then(newArticlesSinceTime => {
+							expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
+						});
 				});
 			});
 
 			describe('and there is no (or an invalid) userNewArticlesSince time set', () => {
-				it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-					const newArticlesSinceTime = determineNewArticlesSinceTime(null);
-
-					expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+				it('should return the userLastVisitedAt', () => {
+					return determineNewArticlesSinceTime(null, uuid)
+						.then(newArticlesSinceTime => {
+							expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
+						})
 				});
 			});
 		});
 
 		describe('given the user has visited today and returns after the same-visit threshold', () => {
 			beforeEach(() => {
-				myftClientResponse = TODAY_0800;
+				userLastVisitedAt = TODAY_0800;
 				userNewArticlesSince = TODAY_0600;
 				timeNow = new Date(TODAY_1000);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the userLastVisitedAt time', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
-
-				expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
+				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+					.then(newArticlesSinceTime => {
+						expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
+					})
 			});
 
 		});
 
 		describe('given there is an invalid userLastVisited time set', () => {
 			beforeEach(() => {
-				myftClientResponse = null;
+				userLastVisitedAt = null;
 				userNewArticlesSince = TODAY_0600;
 				timeNow = new Date(TODAY_1000);
 				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-				const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince);
-
-				expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+					.then(newArticlesSinceTime => {
+						expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+					});
 			});
 		});
 	});
