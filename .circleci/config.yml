@@ -141,6 +141,7 @@ workflows:
             <<: *filters_ignore_gh_pages
       - test:
           filters:
+            <<: *filters_ignore_tags
             <<: *filters_ignore_gh_pages
           requires:
             - build
