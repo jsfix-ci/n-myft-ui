@@ -1,11 +1,10 @@
 /* global expect */
 
 import sinon from 'sinon';
-import { addMinutes } from 'date-fns';
-import dateFnsStub from 'date-fns';
+import dateFns from 'date-fns';
 
 const clientTimezoneOffset = new Date().getTimezoneOffset();
-const toLocal = date => addMinutes(date, clientTimezoneOffset).toISOString();
+const toLocal = date => dateFns.addMinutes(date, clientTimezoneOffset).toISOString();
 
 const SOME_TIME_YESTERDAY = '2018-06-01T12:00:00.000Z';
 const EARLIEST_NEW_ARTICLES_TIME = '2018-06-02T00:00:00.000Z';
@@ -17,7 +16,7 @@ const TODAY_1000 = '2018-06-02T10:00:00.000Z';
 
 const uuid = 'user-id';
 
-describe.only('chronology', () => {
+describe('chronology', () => {
 	let clock;
 	let timeNow;
 	let userLastVisitedAt;
@@ -25,7 +24,7 @@ describe.only('chronology', () => {
 
 	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/chronology');
 	const subject = subjectInjector({
-		'date-fns': dateFnsStub,
+		'date-fns': dateFns,
 		'./fetch-last-seen-timestamp': sinon.stub().callsFake(() => Promise.resolve(userLastVisitedAt))
 	});
 
