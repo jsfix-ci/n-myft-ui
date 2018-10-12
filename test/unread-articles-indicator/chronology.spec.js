@@ -25,7 +25,7 @@ describe('chronology', () => {
 	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/chronology');
 	const subject = subjectInjector({
 		'date-fns': dateFns,
-		'./fetch-last-seen-timestamp': sinon.stub().callsFake(() => Promise.resolve(userLastVisitedAt))
+		'./fetch-user-last-visited-timestamp': sinon.stub().callsFake(() => Promise.resolve(userLastVisitedAt))
 	});
 
 	const determineNewArticlesSinceTime = subject.determineNewArticlesSinceTime;
