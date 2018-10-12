@@ -34,9 +34,9 @@ const showUnreadArticlesCount = ({ uuid, newArticlesSinceTime, withTracking = fa
 
 let newArticlesSinceTime;
 
-export const getNewArticlesSinceTime = () => {
+export const getNewArticlesSinceTime = (uuid) => {
 	if (!newArticlesSinceTime) {
-		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getLastVisitedAt(), storage.getNewArticlesSinceTime());
+		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid);
 		storage.setNewArticlesSinceTime(newArticlesSinceTime);
 		storage.setLastVisitedAt();
 	}
@@ -61,7 +61,7 @@ export default () => {
 	return getUserId
 		.then(uuid => showUnreadArticlesCount({
 			uuid,
-			newArticlesSinceTime: getNewArticlesSinceTime(),
+			newArticlesSinceTime: getNewArticlesSinceTime(uuid),
 			withTracking: true
 		}))
 		.then(() => {
