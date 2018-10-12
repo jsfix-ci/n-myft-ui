@@ -38,7 +38,6 @@ export const getNewArticlesSinceTime = (uuid) => {
 	if (!newArticlesSinceTime) {
 		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid);
 		storage.setNewArticlesSinceTime(newArticlesSinceTime);
-		storage.setLastVisitedAt();
 	}
 
 	return newArticlesSinceTime;

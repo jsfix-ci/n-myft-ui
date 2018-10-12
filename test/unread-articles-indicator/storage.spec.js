@@ -22,46 +22,6 @@ describe('storage', () => {
 		clock.restore();
 	});
 
-	describe('getLastVisitedAt', () => {
-		describe('given a valid timestamp is stored', () => {
-			beforeEach(() => {
-				mockStorage.lastVisitedAt = String(now.getTime());
-			});
-
-			it('should return the correct iso date', () => {
-				expect(storage.getLastVisitedAt()).to.equal(now.toISOString());
-			});
-		});
-
-		describe('given no value is stored', () => {
-			beforeEach(() => {
-				mockStorage.lastVisitedAt = null;
-			});
-
-			it('should return null', () => {
-				expect(storage.getLastVisitedAt()).to.equal(null);
-			});
-		});
-
-		describe('given an invalid value is stored', () => {
-			beforeEach(() => {
-				mockStorage.lastVisitedAt = 'abc';
-			});
-
-			it('should return null', () => {
-				expect(storage.getLastVisitedAt()).to.equal(null);
-			});
-		});
-	});
-
-	describe('setLastVisitedAt', () => {
-		it('should store the date as a timestamp', () => {
-			storage.setLastVisitedAt();
-
-			expect(mockStorage.lastVisitedAt).to.equal(String(now.getTime()));
-		});
-	});
-
 	describe('getNewArticlesSinceTime', () => {
 		describe('given a valid timestamp is stored', () => {
 			beforeEach(() => {

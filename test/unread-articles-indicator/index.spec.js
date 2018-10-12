@@ -10,7 +10,6 @@ const NEW_UNDISMISSED_ARTICLES = [
 	{ id: 'article-3' }
 ];
 const USER_ID = '123-456';
-const STORED_LAST_VISITED = '2018-06-04T13:00:00.000Z';
 const STORED_NEW_ARTICLES_SINCE_TIME = '2018-06-05T10:00:00.000Z';
 const STORED_INDICATOR_DISMISSED_TIME = '2018-06-05T16:00:00.000Z';
 const DETERMINED_NEW_ARTICLES_SINCE_TIME = '2018-06-05T16:07:37.639Z';
@@ -33,8 +32,6 @@ describe('unread stories indicator', () => {
 		mockStorage = {
 			getIndicatorDismissedTime: sinon.stub().returns(STORED_INDICATOR_DISMISSED_TIME),
 			setIndicatorDismissedTime: sinon.stub(),
-			getLastVisitedAt: sinon.stub().returns(STORED_LAST_VISITED),
-			setLastVisitedAt: sinon.stub(),
 			getNewArticlesSinceTime: sinon.stub().returns(STORED_NEW_ARTICLES_SINCE_TIME),
 			setNewArticlesSinceTime: sinon.stub(),
 			isAvailable: sinon.stub().callsFake(() => isStorageAvailable)
@@ -149,8 +146,6 @@ describe('unread stories indicator', () => {
 
 				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
 				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledOnce;
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
@@ -171,7 +166,6 @@ describe('unread stories indicator', () => {
 				unreadStoriesIndicator.getNewArticlesSinceTime();
 
 				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledOnce;
 			});
 
 			it('should return the the newArticlesSinceTime', () => {

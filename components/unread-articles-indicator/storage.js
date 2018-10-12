@@ -1,4 +1,3 @@
-const LAST_VISITED_AT = 'lastVisitedAt';
 const NEW_ARTICLES_SINCE = 'newArticlesSinceTime';
 const INDICATOR_DISMISSED_AT = 'myFTIndicatorDismissedAt';
 
@@ -10,10 +9,6 @@ const getTimestampItemAsIsoDate = key => {
 
 	return !item || isNaN(timestamp) ? null : timestampToIsoDate(timestamp);
 };
-
-export const getLastVisitedAt = () => getTimestampItemAsIsoDate(LAST_VISITED_AT);
-
-export const setLastVisitedAt = () => window.localStorage.setItem(LAST_VISITED_AT, String(Date.now()));
 
 export const getNewArticlesSinceTime = () => getTimestampItemAsIsoDate(NEW_ARTICLES_SINCE);
 
