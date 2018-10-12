@@ -43,7 +43,7 @@ export const getNewArticlesSinceTime = (uuid) => {
 			});
 	}
 
-	return { uuid, newArticlesSinceTime };
+	return newArticlesSinceTime;
 };
 
 export default () => {
