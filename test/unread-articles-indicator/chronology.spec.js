@@ -10,7 +10,7 @@ const toLocal = date => addMinutes(date, clientTimezoneOffset).toISOString();
 const SOME_TIME_YESTERDAY = '2018-06-01T12:00:00.000Z';
 const EARLIEST_NEW_ARTICLES_TIME = '2018-06-02T00:00:00.000Z';
 const TODAY_0600 = '2018-06-02T06:00:00.000Z';
-const TODAY_0700 = '2018-06-02T07:00:00.000Z';
+const TODAY_0750 = '2018-06-02T07:50:00.000Z';
 const TODAY_0800 = '2018-06-02T08:00:00.000Z';
 const TODAY_0801 = '2018-06-02T08:01:00.000Z';
 const TODAY_1000 = '2018-06-02T10:00:00.000Z';
@@ -34,10 +34,12 @@ describe.only('chronology', () => {
 
 	afterEach(() => {
 		userLastVisitedAt = undefined;
+		userNewArticlesSince = undefined;
 		clock.restore();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
+
 		describe('given the user is visiting for the first time today', () => {
 			beforeEach(() => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
@@ -54,65 +56,72 @@ describe.only('chronology', () => {
 			});
 		});
 
-		describe('given the user has visited today and returns within the same-visit threshold', () => {
+		describe('given the user has visited today', () => {
 			beforeEach(() => {
 				userLastVisitedAt = TODAY_0800;
-				userNewArticlesSince = TODAY_0700;
-				timeNow = new Date(TODAY_0801);
-				clock = sinon.useFakeTimers(timeNow);
+				userNewArticlesSince = TODAY_0750;
 			});
 
-			describe('and there is a valid userNewArticlesSince time set', () => {
+			describe('and returns within the same-visit thresholdand', () => {
 				it('should return the userNewArticlesSince time', () => {
-					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
-						.then(newArticlesSinceTime => {
-							expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
-						});
+					timeNow = new Date(TODAY_0801);
+					clock = sinon.useFakeTimers(timeNow);
+
+					const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince, uuid);
+					expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
 				});
 			});
 
-			describe('and there is no (or an invalid) userNewArticlesSince time set', () => {
-				it('should return the userLastVisitedAt', () => {
-					return determineNewArticlesSinceTime(null, uuid)
+			describe('and returns after the same-visit threshold', () => {
+				beforeEach(() => {
+					timeNow = new Date(TODAY_1000);
+					clock = sinon.useFakeTimers(timeNow);
+				});
+
+				it('should return the userLastVisitedAt time', () => {
+					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 						.then(newArticlesSinceTime => {
 							expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
 						});
 				});
-			});
-		});
 
-		describe('given the user has visited today and returns after the same-visit threshold', () => {
-			beforeEach(() => {
-				userLastVisitedAt = TODAY_0800;
-				userNewArticlesSince = TODAY_0600;
-				timeNow = new Date(TODAY_1000);
-				clock = sinon.useFakeTimers(timeNow);
-			});
+				it('should return the EARLIEST_NEW_ARTICLES_TIME if userLastVisitedAt is invalid', () => {
+					userLastVisitedAt = null;
 
-			it('should return the userLastVisitedAt time', () => {
-				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
-					.then(newArticlesSinceTime => {
-						expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
-					});
-			});
-
-		});
-
-		describe('given there is an invalid userLastVisited time set', () => {
-			beforeEach(() => {
-				userLastVisitedAt = null;
-				userNewArticlesSince = TODAY_0600;
-				timeNow = new Date(TODAY_1000);
-				clock = sinon.useFakeTimers(timeNow);
-			});
-
-			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 					.then(newArticlesSinceTime => {
 						expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
 					});
+				});
+
 			});
 		});
+
+		describe('given there is no (or invalid) userNewArticlesSince time set', () => {
+			beforeEach(() => {
+				timeNow = new Date(TODAY_0801);
+				clock = sinon.useFakeTimers(timeNow);
+			});
+
+			it('should return the userLastVisitedAt time if userLastVisitedAt is today', () => {
+				userLastVisitedAt = TODAY_0800;
+
+				return determineNewArticlesSinceTime(null, uuid)
+				.then(newArticlesSinceTime => {
+					expect(newArticlesSinceTime).to.equal(userLastVisitedAt);
+				});
+			});
+
+			it('should return the EARLIEST_NEW_ARTICLES_TIME if userLastVisitedAt is not today', () => {
+				userLastVisitedAt = SOME_TIME_YESTERDAY;
+
+				return determineNewArticlesSinceTime(null, uuid)
+				.then(newArticlesSinceTime => {
+					expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+				});
+			});
+		});
+
 	});
 
 	describe('filterArticlesToNewSinceTime', () => {
