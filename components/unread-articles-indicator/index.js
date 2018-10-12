@@ -36,11 +36,14 @@ let newArticlesSinceTime;
 
 export const getNewArticlesSinceTime = (uuid) => {
 	if (!newArticlesSinceTime) {
-		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid);
-		storage.setNewArticlesSinceTime(newArticlesSinceTime);
+		return determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid)
+			.then(timestamp => {
+				storage.setNewArticlesSinceTime(timestamp);
+				return { uuid, newArticlesSinceTime: timestamp };
+			});
 	}
 
-	return newArticlesSinceTime;
+	return { uuid, newArticlesSinceTime };
 };
 
 export default () => {
@@ -58,9 +61,10 @@ export default () => {
 	});
 
 	return getUserId
-		.then(uuid => showUnreadArticlesCount({
+		.then(uuid => getNewArticlesSinceTime(uuid))
+		.then(({ uuid, newArticlesSinceTime }) => showUnreadArticlesCount({
 			uuid,
-			newArticlesSinceTime: getNewArticlesSinceTime(uuid),
+			newArticlesSinceTime,
 			withTracking: true
 		}))
 		.then(() => {
