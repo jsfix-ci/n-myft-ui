@@ -26,7 +26,7 @@ describe('unread stories indicator', () => {
 
 	beforeEach(() => {
 		mockChronology = {
-			determineNewArticlesSinceTime: sinon.stub().returns(DETERMINED_NEW_ARTICLES_SINCE_TIME),
+			determineNewArticlesSinceTime: sinon.stub().returns(Promise.resolve(DETERMINED_NEW_ARTICLES_SINCE_TIME)),
 			filterArticlesToNewSinceTime: sinon.stub().returns(NEW_UNDISMISSED_ARTICLES)
 		};
 		mockStorage = {
@@ -142,34 +142,50 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should update the values in storage the first time it is called', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
+				unreadStoriesIndicator.getNewArticlesSinceTime()
+				.then(() => {
+					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
+				});
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
-				expect(unreadStoriesIndicator.getNewArticlesSinceTime()).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+				unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(result => {
+						expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+					});
 			});
 		});
 
 		describe('should not change the values when called subsequent times', () => {
 			it('should not determineNewArticlesSinceTime more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
+				unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(() => {
+								expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
+							});
+					});
 			});
 
 			it('should not update the values in storage more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
+				unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(() => {
+								expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
+							});
+					});
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
-				expect(unreadStoriesIndicator.getNewArticlesSinceTime()).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+				unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(result => {
+								expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+							});
+					});
 			});
 		});
 	});
