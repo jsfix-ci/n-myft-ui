@@ -11,7 +11,7 @@ const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), d
  */
 export const determineNewArticlesSinceTime = (userNewArticlesSince, uuid) => {
 	if (isToday(userNewArticlesSince) && dateIsWithinSameVisitThreshold(userNewArticlesSince)) {
-		return userNewArticlesSince;
+		return Promise.resolve(userNewArticlesSince);
 	}
 
 	const earliestNewArticlesSince = startOfDay(new Date()).toISOString();

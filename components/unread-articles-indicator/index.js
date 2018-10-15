@@ -72,10 +72,11 @@ export default () => {
 		.then(() => {
 			document.addEventListener('visibilitychange', () => {
 				if (document.visibilityState === 'visible') {
-					getUserId.then(uuid => showUnreadArticlesCount({
-						uuid,
-						newArticlesSinceTime: getNewArticlesSinceTime()
-					}));
+					Promise.all([userIdPromise, newArticleSincePromise])
+						.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
+							uuid,
+							newArticlesSinceTime
+						}))
 				}
 			});
 		});

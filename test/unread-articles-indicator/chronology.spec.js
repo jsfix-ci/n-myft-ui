@@ -68,8 +68,10 @@ describe('chronology', () => {
 					timeNow = new Date(TODAY_0801);
 					clock = sinon.useFakeTimers(timeNow);
 
-					const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince, uuid);
-					expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
+					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+						.then(newArticlesSinceTime => {
+							expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
+						});
 				});
 			});
 
