@@ -1,7 +1,7 @@
 import { json as fetchJson } from 'fetchres';
 const removeLineBreaks = str => encodeURIComponent(str.replace(/\s+/g, ' '));
 
-export default function (uuid) {
+export const fetchUserLastVisitedAt = (uuid) => {
 	const gqlQuery = `
 		query newMyFTContentSince($uuid: String!) {
 			user(uuid: $uuid) {

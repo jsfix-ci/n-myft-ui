@@ -1,5 +1,5 @@
 import { differenceInMinutes, isAfter, isToday, startOfDay } from 'date-fns';
-import fetchUserLastVisitedAt from './fetch-user-last-visited-timestamp';
+import { fetchUserLastVisitedAt } from './api';
 
 const SAME_VISIT_THRESHOLD_MINUTES = 30;
 const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), date) <= SAME_VISIT_THRESHOLD_MINUTES;
