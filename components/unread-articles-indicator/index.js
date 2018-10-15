@@ -51,8 +51,6 @@ export default () => {
 		return;
 	}
 
-	const getUserId = sessionClient.uuid().then(({ uuid }) => uuid);
-
 	ui.createIndicators(document.querySelectorAll('.o-header__top-link--myft'), {
 		onClick: () => {
 			ui.setCount(0);
@@ -60,8 +58,8 @@ export default () => {
 		}
 	});
 
-	const userIdPromise = getUserId;
-	const newArticleSincePromise = getUserId.then(getNewArticlesSinceTime);
+	const userIdPromise = sessionClient.uuid().then(({ uuid }) => uuid);
+	const newArticleSincePromise = userIdPromise.then(getNewArticlesSinceTime);
 
 	return Promise.all([userIdPromise, newArticleSincePromise])
 		.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
@@ -76,7 +74,7 @@ export default () => {
 						.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
 							uuid,
 							newArticlesSinceTime
-						}))
+						}));
 				}
 			});
 		});
