@@ -3,7 +3,7 @@ const removeLineBreaks = str => encodeURIComponent(str.replace(/\s+/g, ' '));
 
 export const fetchUserLastVisitedAt = (uuid) => {
 	const gqlQuery = `
-		query newMyFTContentSince($uuid: String!) {
+		query userLastVisitedAt($uuid: String!) {
 			user(uuid: $uuid) {
 				lastSeenTimestamp
 			}
