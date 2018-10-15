@@ -5,8 +5,8 @@ const SAME_VISIT_THRESHOLD_MINUTES = 30;
 const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), date) <= SAME_VISIT_THRESHOLD_MINUTES;
 
 /**
- * @param {string} userLastVisitedAt    ISO date representing when a user last visited ft.com
  * @param {string} userNewArticlesSince  ISO date representing the time we last used to determine if articles are new for the user
+ * @param {string} uuid  User uuid
  * @return {string} ISO date when we now determine articles to be 'new' for the user
  */
 export const determineNewArticlesSinceTime = (userNewArticlesSince, uuid) => {
