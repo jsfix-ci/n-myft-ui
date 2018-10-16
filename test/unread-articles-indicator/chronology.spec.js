@@ -16,7 +16,7 @@ const TODAY_1000 = '2018-06-02T10:00:00.000Z';
 
 const uuid = 'user-id';
 
-describe('chronology', () => {
+describe.only('chronology', () => {
 	let clock;
 	let timeNow;
 	let userLastVisitedAt;

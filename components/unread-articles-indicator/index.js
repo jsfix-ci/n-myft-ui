@@ -67,4 +67,15 @@ export default () => {
 			newArticlesSinceTime,
 			withTracking: true
 		}))
+		.then(() => {
+			document.addEventListener('visibilitychange', () => {
+				if (document.visibilityState === 'visible') {
+					Promise.all([userIdPromise, newArticleSincePromise])
+						.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
+							uuid,
+							newArticlesSinceTime
+						}));
+				}
+			});
+		});
 };
