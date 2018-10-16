@@ -34,7 +34,7 @@
 }
 
 .concept-list__concept {
-	word-break: break-all;
+	word-break: keep-all;
 	@include oTypographyTopic;
 	@include oTypographySans(0);
 	@include oTypographyMargin($top: 1, $bottom: 1);
