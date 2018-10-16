@@ -2,6 +2,7 @@
 
 import sinon from 'sinon';
 import dateFns from 'date-fns';
+import lolex from 'lolex';
 
 const clientTimezoneOffset = new Date().getTimezoneOffset();
 const toLocal = date => dateFns.addMinutes(date, clientTimezoneOffset).toISOString();
@@ -36,7 +37,7 @@ describe('chronology', () => {
 	afterEach(() => {
 		userLastVisitedAt = undefined;
 		userNewArticlesSince = undefined;
-		clock.restore();
+		clock.uninstall();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
@@ -46,7 +47,7 @@ describe('chronology', () => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
 				timeNow = new Date(TODAY_0800);
-				clock = sinon.useFakeTimers(timeNow);
+				clock = lolex.install({ now: timeNow });
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
@@ -66,7 +67,7 @@ describe('chronology', () => {
 			describe('and returns within the same-visit thresholdand', () => {
 				it('should return the userNewArticlesSince time', () => {
 					timeNow = new Date(TODAY_0801);
-					clock = sinon.useFakeTimers(timeNow);
+					clock = lolex.install({ now: timeNow });
 
 					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 						.then(newArticlesSinceTime => {
@@ -78,7 +79,7 @@ describe('chronology', () => {
 			describe('and returns after the same-visit threshold', () => {
 				beforeEach(() => {
 					timeNow = new Date(TODAY_1000);
-					clock = sinon.useFakeTimers(timeNow);
+					clock = lolex.install({ now: timeNow });
 				});
 
 				it('should return the userLastVisitedAt time', () => {
@@ -103,7 +104,7 @@ describe('chronology', () => {
 		describe('given there is no (or invalid) userNewArticlesSince time set', () => {
 			beforeEach(() => {
 				timeNow = new Date(TODAY_0801);
-				clock = sinon.useFakeTimers(timeNow);
+				clock = lolex.install({ now: timeNow });
 			});
 
 			it('should return the userLastVisitedAt time if userLastVisitedAt is today', () => {

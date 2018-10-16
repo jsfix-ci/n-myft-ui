@@ -2,6 +2,7 @@
 
 import sinon from 'sinon';
 import * as storage from '../../components/unread-articles-indicator/storage';
+import lolex from 'lolex';
 
 describe('storage', () => {
 	let clock;
@@ -13,13 +14,13 @@ describe('storage', () => {
 		now = new Date();
 		sinon.stub(window.Storage.prototype, 'getItem').callsFake(key => mockStorage[key]);
 		sinon.stub(window.Storage.prototype, 'setItem').callsFake((key, value) => mockStorage[key] = value);
-		clock = sinon.useFakeTimers(now);
+		clock = lolex.install({ now });
 	});
 
 	afterEach(() => {
 		window.Storage.prototype.getItem.restore();
 		window.Storage.prototype.setItem.restore();
-		clock.restore();
+		clock.uninstall();
 	});
 
 	describe('getNewArticlesSinceTime', () => {
