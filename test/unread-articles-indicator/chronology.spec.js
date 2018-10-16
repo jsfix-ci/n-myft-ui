@@ -41,21 +41,21 @@ describe('chronology', () => {
 
 	describe('determineNewArticlesSinceTime', () => {
 
-		// describe('given the user is visiting for the first time today', () => {
-		// 	beforeEach(() => {
-		// 		userLastVisitedAt = SOME_TIME_YESTERDAY;
-		// 		userNewArticlesSince = SOME_TIME_YESTERDAY;
-		// 		timeNow = new Date(TODAY_0800);
-		// 		clock = sinon.useFakeTimers(timeNow);
-		// 	});
-		//
-		// 	it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
-		// 		return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
-		// 			.then(newArticlesSinceTime => {
-		// 				expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
-		// 			});
-		// 	});
-		// });
+		describe('given the user is visiting for the first time today', () => {
+			beforeEach(() => {
+				userLastVisitedAt = SOME_TIME_YESTERDAY;
+				userNewArticlesSince = SOME_TIME_YESTERDAY;
+				timeNow = new Date(TODAY_0800);
+				clock = sinon.useFakeTimers(timeNow);
+			});
+
+			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
+				return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
+					.then(newArticlesSinceTime => {
+						expect(newArticlesSinceTime).to.equal(toLocal(EARLIEST_NEW_ARTICLES_TIME));
+					});
+			});
+		});
 
 		describe('given the user has visited today', () => {
 			beforeEach(() => {
@@ -67,11 +67,10 @@ describe('chronology', () => {
 				it('should return the userNewArticlesSince time', () => {
 					timeNow = new Date(TODAY_0801);
 					clock = sinon.useFakeTimers(timeNow);
+					const newArticlesSinceTime = determineNewArticlesSinceTime(userNewArticlesSince, uuid);
 
-					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
-						.then(newArticlesSinceTime => {
-							expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
-						});
+					expect(newArticlesSinceTime).to.equal(userNewArticlesSince);
+
 				});
 			});
 
