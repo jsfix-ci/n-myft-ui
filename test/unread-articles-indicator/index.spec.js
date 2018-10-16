@@ -142,7 +142,7 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should update the values in storage the first time it is called', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime()
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
 				.then(() => {
 					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
 					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
@@ -150,7 +150,7 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime()
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(result => {
 						expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
 					});
@@ -159,7 +159,7 @@ describe('unread stories indicator', () => {
 
 		describe('should not change the values when called subsequent times', () => {
 			it('should not determineNewArticlesSinceTime more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime()
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
 						unreadStoriesIndicator.getNewArticlesSinceTime()
 							.then(() => {
@@ -169,7 +169,7 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should not update the values in storage more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime()
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
 						unreadStoriesIndicator.getNewArticlesSinceTime()
 							.then(() => {
@@ -179,7 +179,7 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime()
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
 						unreadStoriesIndicator.getNewArticlesSinceTime()
 							.then(result => {
