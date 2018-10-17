@@ -2,7 +2,6 @@
 
 import sinon from 'sinon';
 import dateFns from 'date-fns';
-import timekeeper from 'timekeeper';
 
 const clientTimezoneOffset = new Date().getTimezoneOffset();
 const toLocal = date => dateFns.addMinutes(date, clientTimezoneOffset).toISOString();
@@ -18,7 +17,8 @@ const TODAY_1000 = '2018-06-02T10:00:00.000Z';
 const uuid = 'user-id';
 
 describe('chronology', () => {
-
+	let clock;
+	let timeNow;
 	let userLastVisitedAt;
 	let userNewArticlesSince;
 
@@ -36,7 +36,7 @@ describe('chronology', () => {
 	afterEach(() => {
 		userLastVisitedAt = undefined;
 		userNewArticlesSince = undefined;
-		timekeeper.reset();
+		clock.restore();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
@@ -45,7 +45,8 @@ describe('chronology', () => {
 			beforeEach(() => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
-				timekeeper.freeze(TODAY_0800);
+				timeNow = new Date(TODAY_0800);
+				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
@@ -64,7 +65,8 @@ describe('chronology', () => {
 
 			describe('and returns within the same-visit thresholdand', () => {
 				it('should return the userNewArticlesSince time', () => {
-					timekeeper.freeze(TODAY_0801);
+					timeNow = new Date(TODAY_0801);
+					clock = sinon.useFakeTimers(timeNow);
 
 					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 						.then(newArticlesSinceTime => {
@@ -75,7 +77,8 @@ describe('chronology', () => {
 
 			describe('and returns after the same-visit threshold', () => {
 				beforeEach(() => {
-					timekeeper.freeze(TODAY_1000);
+					timeNow = new Date(TODAY_1000);
+					clock = sinon.useFakeTimers(timeNow);
 				});
 
 				it('should return the userLastVisitedAt time', () => {
@@ -99,7 +102,8 @@ describe('chronology', () => {
 
 		describe('given there is no (or invalid) userNewArticlesSince time set', () => {
 			beforeEach(() => {
-				timekeeper.freeze(TODAY_0801);
+				timeNow = new Date(TODAY_0801);
+				clock = sinon.useFakeTimers(timeNow);
 			});
 
 			it('should return the userLastVisitedAt time if userLastVisitedAt is today', () => {
