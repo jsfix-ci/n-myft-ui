@@ -39,7 +39,8 @@ export const getNewArticlesSinceTime = (uuid) => {
 		return determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid)
 			.then(timestamp => {
 				storage.setNewArticlesSinceTime(timestamp);
-				return timestamp;
+				newArticlesSinceTime = timestamp;
+				return newArticlesSinceTime;
 			});
 	}
 

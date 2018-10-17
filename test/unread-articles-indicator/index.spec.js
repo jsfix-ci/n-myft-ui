@@ -146,30 +146,24 @@ describe('unread stories indicator', () => {
 			it('should not determineNewArticlesSinceTime more than once', () => {
 				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
-						unreadStoriesIndicator.getNewArticlesSinceTime()
-							.then(() => {
-								expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
-							});
+						unreadStoriesIndicator.getNewArticlesSinceTime();
+						expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
 					});
 			});
 
 			it('should not update the values in storage more than once', () => {
 				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
-						unreadStoriesIndicator.getNewArticlesSinceTime()
-							.then(() => {
-								expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
-							});
+						unreadStoriesIndicator.getNewArticlesSinceTime();
+						expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
 					});
 			});
 
-			it('should return the the newArticlesSinceTime', () => {
+			it('should return the newArticlesSinceTime', () => {
 				return unreadStoriesIndicator.getNewArticlesSinceTime()
 					.then(() => {
-						unreadStoriesIndicator.getNewArticlesSinceTime()
-							.then(result => {
-								expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
-							});
+						const result = unreadStoriesIndicator.getNewArticlesSinceTime();
+						expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
 					});
 			});
 		});
