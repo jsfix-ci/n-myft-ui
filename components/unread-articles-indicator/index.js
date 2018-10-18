@@ -44,7 +44,7 @@ export const getNewArticlesSinceTime = (uuid) => {
 			});
 	}
 
-	return newArticlesSinceTime;
+	return Promise.resolve(newArticlesSinceTime);
 };
 
 export default () => {

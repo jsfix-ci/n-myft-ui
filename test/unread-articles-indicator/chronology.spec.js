@@ -62,7 +62,7 @@ describe('chronology', () => {
 				userNewArticlesSince = TODAY_0750;
 			});
 
-			describe('and returns within the same-visit thresholdand', () => {
+			describe('and returns within the same-visit threshold', () => {
 				it('should return the userNewArticlesSince time', () => {
 					timekeeper.freeze(TODAY_0801);
 
