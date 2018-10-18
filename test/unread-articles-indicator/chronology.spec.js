@@ -21,13 +21,15 @@ describe('chronology', () => {
 
 	let userLastVisitedAt;
 	let userNewArticlesSince;
+	let isNewSession;
 
 	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/chronology');
 	const subject = subjectInjector({
 		'date-fns': dateFns,
 		'./api': {
 			fetchUserLastVisitedAt: sinon.stub().callsFake(() => Promise.resolve(userLastVisitedAt))
-		}
+		},
+		'./device-session': sinon.stub().callsFake(() => ({ isNewSession: () => isNewSession }))
 	});
 
 	const determineNewArticlesSinceTime = subject.determineNewArticlesSinceTime;
@@ -36,6 +38,7 @@ describe('chronology', () => {
 	afterEach(() => {
 		userLastVisitedAt = undefined;
 		userNewArticlesSince = undefined;
+		isNewSession = undefined;
 		timekeeper.reset();
 	});
 
@@ -45,6 +48,7 @@ describe('chronology', () => {
 			beforeEach(() => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
+				isNewSession = true;
 				timekeeper.freeze(TODAY_0800);
 			});
 
@@ -62,8 +66,9 @@ describe('chronology', () => {
 				userNewArticlesSince = TODAY_0750;
 			});
 
-			describe('and returns within the same-visit threshold', () => {
+			describe('and returns within the device session', () => {
 				it('should return the userNewArticlesSince time', () => {
+					isNewSession = false;
 					timekeeper.freeze(TODAY_0801);
 
 					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
@@ -73,8 +78,9 @@ describe('chronology', () => {
 				});
 			});
 
-			describe('and returns after the same-visit threshold', () => {
+			describe('and returns after the device session', () => {
 				beforeEach(() => {
+					isNewSession = true;
 					timekeeper.freeze(TODAY_1000);
 				});
 

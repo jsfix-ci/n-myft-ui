@@ -22,6 +22,48 @@ describe('storage', () => {
 		clock.restore();
 	});
 
+	describe('getDeviceSessionExpiry', () => {
+		describe('given a valid timestamp is stored', () => {
+			beforeEach(() => {
+				mockStorage.deviceSessionExpiry = String(now.getTime());
+			});
+
+			it('should return the correct iso date', () => {
+				expect(storage.getDeviceSessionExpiry()).to.equal(now.toISOString());
+			});
+		});
+
+		describe('given no value is stored', () => {
+			beforeEach(() => {
+				mockStorage.deviceSessionExpiry = null;
+			});
+
+			it('should return null', () => {
+				expect(storage.getDeviceSessionExpiry()).to.equal(null);
+			});
+		});
+
+		describe('given an invalid value is stored', () => {
+			beforeEach(() => {
+				mockStorage.deviceSessionExpiry = 'abc';
+			});
+
+			it('should return null', () => {
+				expect(storage.getDeviceSessionExpiry()).to.equal(null);
+			});
+		});
+	});
+
+	describe('setDeviceSessionExpiry', () => {
+		it('should store the date as a timestamp', () => {
+			const date = new Date(2018, 6, 14, 11, 0, 0);
+
+			storage.setDeviceSessionExpiry(date.toISOString());
+
+			expect(mockStorage.deviceSessionExpiry).to.equal(String(date.getTime()));
+		});
+	});
+
 	describe('getNewArticlesSinceTime', () => {
 		describe('given a valid timestamp is stored', () => {
 			beforeEach(() => {

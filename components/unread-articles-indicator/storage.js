@@ -1,3 +1,4 @@
+const DEVICE_SESSION_EXPIRY = 'deviceSessionExpiry';
 const NEW_ARTICLES_SINCE = 'newArticlesSinceTime';
 const INDICATOR_DISMISSED_AT = 'myFTIndicatorDismissedAt';
 
@@ -9,6 +10,10 @@ const getTimestampItemAsIsoDate = key => {
 
 	return !item || isNaN(timestamp) ? null : timestampToIsoDate(timestamp);
 };
+
+export const getDeviceSessionExpiry = () => getTimestampItemAsIsoDate(DEVICE_SESSION_EXPIRY);
+
+export const setDeviceSessionExpiry = isoDate => window.localStorage.setItem(DEVICE_SESSION_EXPIRY, String(new Date(isoDate).getTime()));
 
 export const getNewArticlesSinceTime = () => getTimestampItemAsIsoDate(NEW_ARTICLES_SINCE);
 

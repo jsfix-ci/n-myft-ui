@@ -1,8 +1,6 @@
-import { differenceInMinutes, isAfter, isToday, startOfDay } from 'date-fns';
+import { isAfter, isToday, startOfDay } from 'date-fns';
 import { fetchUserLastVisitedAt } from './api';
-
-const SAME_VISIT_THRESHOLD_MINUTES = 30;
-const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), date) <= SAME_VISIT_THRESHOLD_MINUTES;
+import DeviceSession from './device-session';
 
 /**
  * @param {string} userNewArticlesSince  ISO date representing the time we last used to determine if articles are new for the user
@@ -10,7 +8,9 @@ const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), d
  * @return {string} ISO date when we now determine articles to be 'new' for the user
  */
 export const determineNewArticlesSinceTime = (userNewArticlesSince, uuid) => {
-	if (isToday(userNewArticlesSince) && dateIsWithinSameVisitThreshold(userNewArticlesSince)) {
+	const deviceSession = new DeviceSession();
+
+	if (isToday(userNewArticlesSince) && !deviceSession.isNewSession()) {
 		return Promise.resolve(userNewArticlesSince);
 	}
 
