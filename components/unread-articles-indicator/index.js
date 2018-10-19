@@ -45,6 +45,10 @@ export const getNewArticlesSinceTime = () => {
 };
 
 export default () => {
+	if (!storage.isAvailable()) {
+		return;
+	}
+
 	const getUserId = sessionClient.uuid().then(({ uuid }) => uuid);
 
 	ui.createIndicators(document.querySelectorAll('.o-header__top-link--myft'), {

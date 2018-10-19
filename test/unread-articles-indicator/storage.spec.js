@@ -103,4 +103,18 @@ describe('storage', () => {
 			expect(mockStorage.newArticlesSinceTime).to.equal(String(date.getTime()));
 		});
 	});
+
+	describe('isAvailable', () => {
+		it('should return true if it is available', () => {
+			sinon.stub(window.Storage.prototype, 'removeItem').callsFake((key) => delete mockStorage[key]);
+
+			expect(storage.isAvailable()).to.be.true;
+		});
+
+		it('should return false if it is not available', () => {
+			mockStorage = null;
+
+			expect(storage.isAvailable()).to.be.false;
+		});
+	});
 });

@@ -22,3 +22,16 @@ export const setNewArticlesSinceTime = isoDate => window.localStorage.setItem(NE
 export const getIndicatorDismissedTime = () => getTimestampItemAsIsoDate(INDICATOR_DISMISSED_AT);
 
 export const setIndicatorDismissedTime = () => window.localStorage.setItem(INDICATOR_DISMISSED_AT, String(Date.now()));
+
+export const isAvailable = () => {
+	try {
+		const storage = window.localStorage;
+		const x = '__storage_test__';
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return true;
+	}
+	catch(e) {
+		return false;
+	}
+};
