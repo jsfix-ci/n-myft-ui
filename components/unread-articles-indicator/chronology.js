@@ -2,13 +2,14 @@ import { isAfter, isToday, startOfDay } from 'date-fns';
 import { fetchUserLastVisitedAt } from './api';
 import DeviceSession from './device-session';
 
+const deviceSession = new DeviceSession();
+
 /**
  * @param {string} userNewArticlesSince  ISO date representing the time we last used to determine if articles are new for the user
  * @param {string} uuid  User uuid
  * @return {string} ISO date when we now determine articles to be 'new' for the user
  */
 export const determineNewArticlesSinceTime = (userNewArticlesSince, uuid) => {
-	const deviceSession = new DeviceSession();
 
 	if (isToday(userNewArticlesSince) && !deviceSession.isNewSession()) {
 		return Promise.resolve(userNewArticlesSince);
