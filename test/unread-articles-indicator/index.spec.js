@@ -22,6 +22,7 @@ describe('unread stories indicator', () => {
 	let mockStorage;
 	let mockTracking;
 	let mockUi;
+	let isStorageAvailable;
 
 	beforeEach(() => {
 		mockChronology = {
@@ -32,7 +33,8 @@ describe('unread stories indicator', () => {
 			getIndicatorDismissedTime: sinon.stub().returns(STORED_INDICATOR_DISMISSED_TIME),
 			setIndicatorDismissedTime: sinon.stub(),
 			getNewArticlesSinceTime: sinon.stub().returns(STORED_NEW_ARTICLES_SINCE_TIME),
-			setNewArticlesSinceTime: sinon.stub()
+			setNewArticlesSinceTime: sinon.stub(),
+			isAvailable: sinon.stub().callsFake(() => isStorageAvailable)
 		};
 		mockTracking = {
 			countShown: sinon.stub()
@@ -53,8 +55,20 @@ describe('unread stories indicator', () => {
 	});
 
 	describe('default export', () => {
+		describe('storage availability', () => {
+			it('should not do anything if storage is not available', () => {
+				isStorageAvailable = false;
+				unreadStoriesIndicator.default();
+				expect(mockUi.createIndicators).to.not.have.been.called;
+				expect(mockUi.setCount).to.not.have.been.called;
+				expect(mockFetchNewArticles).to.not.have.been.called;
+				expect(mockChronology.determineNewArticlesSinceTime).to.not.have.been.called;
+			});
+		});
+
 		describe('initial update', () => {
 			beforeEach(() => {
+				isStorageAvailable = true;
 				return unreadStoriesIndicator.default();
 			});
 
