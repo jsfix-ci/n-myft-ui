@@ -2,10 +2,8 @@
 
 import sinon from 'sinon';
 import dateFns from 'date-fns';
-import timekeeper from 'timekeeper';
 
-const clientTimezoneOffset = new Date().getTimezoneOffset();
-const toLocal = date => dateFns.addMinutes(date, clientTimezoneOffset).toISOString();
+const toLocal = date => dateFns.addMinutes(date, new Date().getTimezoneOffset()).toISOString();
 
 const SOME_TIME_YESTERDAY = '2018-06-01T12:00:00.000Z';
 const EARLIEST_NEW_ARTICLES_TIME = '2018-06-02T00:00:00.000Z';
@@ -18,7 +16,7 @@ const TODAY_1000 = '2018-06-02T10:00:00.000Z';
 const uuid = 'user-id';
 
 describe('chronology', () => {
-
+	let clock;
 	let userLastVisitedAt;
 	let userNewArticlesSince;
 	let isNewSession;
@@ -39,7 +37,7 @@ describe('chronology', () => {
 		userLastVisitedAt = undefined;
 		userNewArticlesSince = undefined;
 		isNewSession = undefined;
-		timekeeper.reset();
+		clock.restore();
 	});
 
 	describe('determineNewArticlesSinceTime', () => {
@@ -49,7 +47,7 @@ describe('chronology', () => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
 				isNewSession = true;
-				timekeeper.freeze(TODAY_0800);
+				clock = sinon.useFakeTimers(new Date(TODAY_0800));
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
@@ -69,7 +67,7 @@ describe('chronology', () => {
 			describe('and returns within the device session', () => {
 				it('should return the userNewArticlesSince time', () => {
 					isNewSession = false;
-					timekeeper.freeze(TODAY_0801);
+					clock = sinon.useFakeTimers(new Date(TODAY_0801));
 
 					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 						.then(newArticlesSinceTime => {
@@ -81,7 +79,7 @@ describe('chronology', () => {
 			describe('and returns after the device session', () => {
 				beforeEach(() => {
 					isNewSession = true;
-					timekeeper.freeze(TODAY_1000);
+					clock = sinon.useFakeTimers(new Date(TODAY_1000));
 				});
 
 				it('should return the userLastVisitedAt time', () => {
@@ -105,7 +103,7 @@ describe('chronology', () => {
 
 		describe('given there is no (or invalid) userNewArticlesSince time set', () => {
 			beforeEach(() => {
-				timekeeper.freeze(TODAY_0801);
+				clock = sinon.useFakeTimers(new Date(TODAY_0801));
 			});
 
 			it('should return the userLastVisitedAt time if userLastVisitedAt is today', () => {
