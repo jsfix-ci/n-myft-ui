@@ -34,23 +34,22 @@ const showUnreadArticlesCount = ({ uuid, newArticlesSinceTime, withTracking = fa
 
 let newArticlesSinceTime;
 
-export const getNewArticlesSinceTime = (uuid) => {
+export const getNewArticlesSinceTime = () => {
 	if (!newArticlesSinceTime) {
-		return determineNewArticlesSinceTime(storage.getNewArticlesSinceTime(), uuid)
-			.then(timestamp => {
-				storage.setNewArticlesSinceTime(timestamp);
-				newArticlesSinceTime = timestamp;
-				return newArticlesSinceTime;
-			});
+		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getLastVisitedAt(), storage.getNewArticlesSinceTime());
+		storage.setNewArticlesSinceTime(newArticlesSinceTime);
+		storage.setLastVisitedAt();
 	}
 
-	return Promise.resolve(newArticlesSinceTime);
+	return newArticlesSinceTime;
 };
 
 export default () => {
 	if (!storage.isAvailable()) {
 		return;
 	}
+
+	const getUserId = sessionClient.uuid().then(({ uuid }) => uuid);
 
 	ui.createIndicators(document.querySelectorAll('.o-header__top-link--myft'), {
 		onClick: () => {
@@ -59,23 +58,19 @@ export default () => {
 		}
 	});
 
-	const userIdPromise = sessionClient.uuid().then(({ uuid }) => uuid);
-	const newArticleSincePromise = userIdPromise.then(getNewArticlesSinceTime);
-
-	return Promise.all([userIdPromise, newArticleSincePromise])
-		.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
+	return getUserId
+		.then(uuid => showUnreadArticlesCount({
 			uuid,
-			newArticlesSinceTime,
+			newArticlesSinceTime: getNewArticlesSinceTime(),
 			withTracking: true
 		}))
 		.then(() => {
 			document.addEventListener('visibilitychange', () => {
 				if (document.visibilityState === 'visible') {
-					Promise.all([userIdPromise, newArticleSincePromise])
-						.then(([uuid, newArticlesSinceTime]) => showUnreadArticlesCount({
-							uuid,
-							newArticlesSinceTime
-						}));
+					getUserId.then(uuid => showUnreadArticlesCount({
+						uuid,
+						newArticlesSinceTime: getNewArticlesSinceTime()
+					}));
 				}
 			});
 		});
