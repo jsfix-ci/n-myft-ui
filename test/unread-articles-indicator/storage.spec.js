@@ -22,43 +22,45 @@ describe('storage', () => {
 		clock.restore();
 	});
 
-	describe('getLastVisitedAt', () => {
+	describe('getDeviceSessionExpiry', () => {
 		describe('given a valid timestamp is stored', () => {
 			beforeEach(() => {
-				mockStorage.lastVisitedAt = String(now.getTime());
+				mockStorage.deviceSessionExpiry = String(now.getTime());
 			});
 
 			it('should return the correct iso date', () => {
-				expect(storage.getLastVisitedAt()).to.equal(now.toISOString());
+				expect(storage.getDeviceSessionExpiry()).to.equal(now.toISOString());
 			});
 		});
 
 		describe('given no value is stored', () => {
 			beforeEach(() => {
-				mockStorage.lastVisitedAt = null;
+				mockStorage.deviceSessionExpiry = null;
 			});
 
 			it('should return null', () => {
-				expect(storage.getLastVisitedAt()).to.equal(null);
+				expect(storage.getDeviceSessionExpiry()).to.equal(null);
 			});
 		});
 
 		describe('given an invalid value is stored', () => {
 			beforeEach(() => {
-				mockStorage.lastVisitedAt = 'abc';
+				mockStorage.deviceSessionExpiry = 'abc';
 			});
 
 			it('should return null', () => {
-				expect(storage.getLastVisitedAt()).to.equal(null);
+				expect(storage.getDeviceSessionExpiry()).to.equal(null);
 			});
 		});
 	});
 
-	describe('setLastVisitedAt', () => {
+	describe('setDeviceSessionExpiry', () => {
 		it('should store the date as a timestamp', () => {
-			storage.setLastVisitedAt();
+			const date = new Date(2018, 6, 14, 11, 0, 0);
 
-			expect(mockStorage.lastVisitedAt).to.equal(String(now.getTime()));
+			storage.setDeviceSessionExpiry(date.toISOString());
+
+			expect(mockStorage.deviceSessionExpiry).to.equal(String(date.getTime()));
 		});
 	});
 
