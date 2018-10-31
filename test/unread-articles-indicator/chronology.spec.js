@@ -32,6 +32,7 @@ describe('chronology', () => {
 
 	const determineNewArticlesSinceTime = subject.determineNewArticlesSinceTime;
 	const filterArticlesToNewSinceTime = subject.filterArticlesToNewSinceTime;
+	const setFakeClock = time => sinon.useFakeTimers({ now: new Date(time), shouldAdvanceTime: true });
 
 	afterEach(() => {
 		userLastVisitedAt = undefined;
@@ -47,7 +48,7 @@ describe('chronology', () => {
 				userLastVisitedAt = SOME_TIME_YESTERDAY;
 				userNewArticlesSince = SOME_TIME_YESTERDAY;
 				isNewSession = true;
-				clock = sinon.useFakeTimers(new Date(TODAY_0800));
+				clock = setFakeClock(TODAY_0800);
 			});
 
 			it('should return the EARLIEST_NEW_ARTICLES_TIME', () => {
@@ -67,7 +68,7 @@ describe('chronology', () => {
 			describe('and returns within the device session', () => {
 				it('should return the userNewArticlesSince time', () => {
 					isNewSession = false;
-					clock = sinon.useFakeTimers(new Date(TODAY_0801));
+					clock = setFakeClock(TODAY_0801);
 
 					return determineNewArticlesSinceTime(userNewArticlesSince, uuid)
 						.then(newArticlesSinceTime => {
@@ -79,7 +80,7 @@ describe('chronology', () => {
 			describe('and returns after the device session', () => {
 				beforeEach(() => {
 					isNewSession = true;
-					clock = sinon.useFakeTimers(new Date(TODAY_1000));
+					clock = setFakeClock(TODAY_1000);
 				});
 
 				it('should return the userLastVisitedAt time', () => {
@@ -103,7 +104,7 @@ describe('chronology', () => {
 
 		describe('given there is no (or invalid) userNewArticlesSince time set', () => {
 			beforeEach(() => {
-				clock = sinon.useFakeTimers(new Date(TODAY_0801));
+				clock = setFakeClock(TODAY_0801);
 			});
 
 			it('should return the userLastVisitedAt time if userLastVisitedAt is today', () => {
