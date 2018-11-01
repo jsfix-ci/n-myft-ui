@@ -9,8 +9,6 @@ const NEW_ARTICLES = [
 const NEW_UNDISMISSED_ARTICLES = [
 	{ id: 'article-3' }
 ];
-const USER_ID = '123-456';
-const STORED_LAST_VISITED = '2018-06-04T13:00:00.000Z';
 const STORED_NEW_ARTICLES_SINCE_TIME = '2018-06-05T10:00:00.000Z';
 const STORED_INDICATOR_DISMISSED_TIME = '2018-06-05T16:00:00.000Z';
 const DETERMINED_NEW_ARTICLES_SINCE_TIME = '2018-06-05T16:07:37.639Z';
@@ -27,14 +25,12 @@ describe('unread stories indicator', () => {
 
 	beforeEach(() => {
 		mockChronology = {
-			determineNewArticlesSinceTime: sinon.stub().returns(DETERMINED_NEW_ARTICLES_SINCE_TIME),
+			determineNewArticlesSinceTime: sinon.stub().returns(Promise.resolve(DETERMINED_NEW_ARTICLES_SINCE_TIME)),
 			filterArticlesToNewSinceTime: sinon.stub().returns(NEW_UNDISMISSED_ARTICLES)
 		};
 		mockStorage = {
 			getIndicatorDismissedTime: sinon.stub().returns(STORED_INDICATOR_DISMISSED_TIME),
 			setIndicatorDismissedTime: sinon.stub(),
-			getLastVisitedAt: sinon.stub().returns(STORED_LAST_VISITED),
-			setLastVisitedAt: sinon.stub(),
 			getNewArticlesSinceTime: sinon.stub().returns(STORED_NEW_ARTICLES_SINCE_TIME),
 			setNewArticlesSinceTime: sinon.stub(),
 			isAvailable: sinon.stub().callsFake(() => isStorageAvailable)
@@ -48,7 +44,6 @@ describe('unread stories indicator', () => {
 		};
 		mockFetchNewArticles = sinon.stub().returns(Promise.resolve(NEW_ARTICLES));
 		unreadStoriesIndicator = require('inject-loader!../../components/unread-articles-indicator')({
-			'next-session-client': { uuid: () => Promise.resolve({ uuid: USER_ID }) },
 			'./chronology': mockChronology,
 			'./fetch-new-articles': mockFetchNewArticles,
 			'./storage': mockStorage,
@@ -62,7 +57,6 @@ describe('unread stories indicator', () => {
 			it('should not do anything if storage is not available', () => {
 				isStorageAvailable = false;
 				unreadStoriesIndicator.default();
-
 				expect(mockUi.createIndicators).to.not.have.been.called;
 				expect(mockUi.setCount).to.not.have.been.called;
 				expect(mockFetchNewArticles).to.not.have.been.called;
@@ -90,7 +84,7 @@ describe('unread stories indicator', () => {
 			});
 
 			it('should fetch the new articles for the user using the determined newArticlesSinceTime', () => {
-				expect(mockFetchNewArticles.calledWith(USER_ID, DETERMINED_NEW_ARTICLES_SINCE_TIME)).to.equal(true);
+				expect(mockFetchNewArticles.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME)).to.equal(true);
 			});
 
 			it('should filter new articles to undismissed ones', () => {
@@ -140,44 +134,55 @@ describe('unread stories indicator', () => {
 			it('should determineNewArticlesSinceTime', () => {
 				unreadStoriesIndicator.getNewArticlesSinceTime();
 
-				expect(mockStorage.getLastVisitedAt).to.have.been.calledOnce;
 				expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
-				expect(mockChronology.determineNewArticlesSinceTime).to.have.been.calledWith(STORED_LAST_VISITED, STORED_NEW_ARTICLES_SINCE_TIME);
+				expect(mockChronology.determineNewArticlesSinceTime).to.have.been.calledWith(STORED_NEW_ARTICLES_SINCE_TIME);
 			});
 
 			it('should update the values in storage the first time it is called', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledOnce;
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
+				.then(() => {
+					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
+				});
 			});
 
 			it('should return the the newArticlesSinceTime', () => {
-				expect(unreadStoriesIndicator.getNewArticlesSinceTime()).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(result => {
+						expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+					});
 			});
 		});
 
 		describe('should not change the values when called subsequent times', () => {
 			it('should not determineNewArticlesSinceTime more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.getLastVisitedAt).to.have.been.calledOnce;
-				expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						return unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(() => {
+								expect(mockStorage.getNewArticlesSinceTime).to.have.been.calledOnce;
+							});
+					});
 			});
 
 			it('should not update the values in storage more than once', () => {
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-				unreadStoriesIndicator.getNewArticlesSinceTime();
-
-				expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
-				expect(mockStorage.setLastVisitedAt).to.have.been.calledOnce;
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						return unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(() => {
+								expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledOnce;
+							});
+					});
 			});
 
-			it('should return the the newArticlesSinceTime', () => {
-				expect(unreadStoriesIndicator.getNewArticlesSinceTime()).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+			it('should return the newArticlesSinceTime', () => {
+				return unreadStoriesIndicator.getNewArticlesSinceTime()
+					.then(() => {
+						return unreadStoriesIndicator.getNewArticlesSinceTime()
+							.then(result => {
+								expect(result).to.equal(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+							});
+					});
 			});
 		});
 	});

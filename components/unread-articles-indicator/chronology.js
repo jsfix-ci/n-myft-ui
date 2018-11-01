@@ -1,30 +1,28 @@
-import { differenceInMinutes, isAfter, startOfDay } from 'date-fns';
+import { isAfter, isToday, startOfDay } from 'date-fns';
+import { fetchUserLastVisitedAt } from './api';
+import DeviceSession from './device-session';
 
-const SAME_VISIT_THRESHOLD_MINUTES = 30;
-
-const isValidPublishedSince = (dateToValidate, defaultPublishedSince) => {
-	return typeof dateToValidate === 'string' && isAfter(dateToValidate, defaultPublishedSince);
-};
-
-const dateIsWithinSameVisitThreshold = date => differenceInMinutes(new Date(), date) <= SAME_VISIT_THRESHOLD_MINUTES;
+const deviceSession = new DeviceSession();
 
 /**
- * @param {string} userLastVisitedAt    ISO date representing when a user last visited ft.com
  * @param {string} userNewArticlesSince  ISO date representing the time we last used to determine if articles are new for the user
+ * @param {string} uuid  User uuid
  * @return {string} ISO date when we now determine articles to be 'new' for the user
  */
-export const determineNewArticlesSinceTime = (userLastVisitedAt, userNewArticlesSince) => {
+export const determineNewArticlesSinceTime = userNewArticlesSince => {
+	if (isToday(userNewArticlesSince) && !deviceSession.isNewSession()) {
+		return Promise.resolve(userNewArticlesSince);
+	}
+
 	const earliestNewArticlesSince = startOfDay(new Date()).toISOString();
 
-	if (!isValidPublishedSince(userLastVisitedAt, earliestNewArticlesSince)) {
-		return earliestNewArticlesSince;
-	}
-
-	if (dateIsWithinSameVisitThreshold(userLastVisitedAt)) {
-		return isValidPublishedSince(userNewArticlesSince, earliestNewArticlesSince) ? userNewArticlesSince : earliestNewArticlesSince;
-	} else {
-		return userLastVisitedAt;
-	}
+	return fetchUserLastVisitedAt()
+		.then(userLastVisitedAt => {
+			return isToday(userLastVisitedAt) ? userLastVisitedAt : earliestNewArticlesSince;
+		})
+		.catch(() => {
+			return earliestNewArticlesSince;
+		});
 };
 
 export const filterArticlesToNewSinceTime = (articles, publishedAfterTime) => {

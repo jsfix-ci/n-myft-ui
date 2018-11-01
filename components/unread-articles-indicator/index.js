@@ -1,4 +1,3 @@
-import sessionClient from 'next-session-client';
 import { determineNewArticlesSinceTime, filterArticlesToNewSinceTime } from './chronology';
 import fetchNewArticles from './fetch-new-articles';
 import * as storage from './storage';
@@ -8,12 +7,12 @@ import * as ui from './ui';
 const MAX_UPDATE_FREQUENCY = 1000 * 60 * 5;
 let canUpdate = true;
 
-const showUnreadArticlesCount = ({ uuid, newArticlesSinceTime, withTracking = false }) => {
-	if (canUpdate && uuid) {
+const showUnreadArticlesCount = (newArticlesSinceTime, withTracking = false) => {
+	if (canUpdate) {
 		canUpdate = false;
 		setTimeout(() => canUpdate = true, MAX_UPDATE_FREQUENCY);
 
-		return fetchNewArticles(uuid, newArticlesSinceTime)
+		return fetchNewArticles(newArticlesSinceTime)
 			.then(articles => filterArticlesToNewSinceTime(articles, storage.getIndicatorDismissedTime()))
 			.then(newArticles => {
 				const count = newArticles.length;
@@ -36,20 +35,21 @@ let newArticlesSinceTime;
 
 export const getNewArticlesSinceTime = () => {
 	if (!newArticlesSinceTime) {
-		newArticlesSinceTime = determineNewArticlesSinceTime(storage.getLastVisitedAt(), storage.getNewArticlesSinceTime());
-		storage.setNewArticlesSinceTime(newArticlesSinceTime);
-		storage.setLastVisitedAt();
+		return determineNewArticlesSinceTime(storage.getNewArticlesSinceTime())
+			.then(timestamp => {
+				storage.setNewArticlesSinceTime(timestamp);
+				newArticlesSinceTime = timestamp;
+				return newArticlesSinceTime;
+			});
 	}
 
-	return newArticlesSinceTime;
+	return Promise.resolve(newArticlesSinceTime);
 };
 
 export default () => {
 	if (!storage.isAvailable()) {
 		return;
 	}
-
-	const getUserId = sessionClient.uuid().then(({ uuid }) => uuid);
 
 	ui.createIndicators(document.querySelectorAll('.o-header__top-link--myft'), {
 		onClick: () => {
@@ -58,19 +58,12 @@ export default () => {
 		}
 	});
 
-	return getUserId
-		.then(uuid => showUnreadArticlesCount({
-			uuid,
-			newArticlesSinceTime: getNewArticlesSinceTime(),
-			withTracking: true
-		}))
+	return getNewArticlesSinceTime()
+		.then(newArticlesSinceTime => showUnreadArticlesCount(newArticlesSinceTime, true))
 		.then(() => {
 			document.addEventListener('visibilitychange', () => {
 				if (document.visibilityState === 'visible') {
-					getUserId.then(uuid => showUnreadArticlesCount({
-						uuid,
-						newArticlesSinceTime: getNewArticlesSinceTime()
-					}));
+					getNewArticlesSinceTime().then(showUnreadArticlesCount);
 				}
 			});
 		});
