@@ -14,10 +14,6 @@ const trackPinningAction = ({ action }) =>
 		bubbles: true
 	});
 
-const findAncestor = (el, selector) => el.classList.contains(selector) || el.dataset[selector] !== undefined
-	? el
-	: el.parentElement && findAncestor(el.parentElement, selector);
-
 const setLoading = el => el && el.classList.add('loading');
 
 const togglePrioritised = (conceptId, prioritised, formData) => {
