@@ -40,7 +40,7 @@ export default () => {
 			delegate.on('click', 'button[data-prioritise-button]', event => {
 				event.preventDefault();
 
-				const form = findAncestor(event.target, 'myftPrioritise');
+				const form = event.target.closest('[data-myft-prioritise]');
 				const formData = form ? serialize(form, { hash: true }) : {};
 				const { conceptId, prioritised } = event.target.dataset;
 				const wrapper = findAncestor(event.target, 'myft-pin-button-wrapper');
