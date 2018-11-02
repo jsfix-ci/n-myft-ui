@@ -43,7 +43,7 @@ export default () => {
 				const form = event.target.closest('[data-myft-prioritise]');
 				const formData = form ? serialize(form, { hash: true }) : {};
 				const { conceptId, prioritised } = event.target.dataset;
-				const wrapper = findAncestor(event.target, 'myft-pin-button-wrapper');
+				const wrapper = event.target.closest('.myft-pin-button-wrapper');
 
 				setLoading(wrapper);
 				togglePrioritised(conceptId, prioritised === 'true', formData);
