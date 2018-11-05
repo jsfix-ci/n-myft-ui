@@ -34,7 +34,7 @@ const readingHistory = uuid => {
 	if (!uuid) {
 		return Promise.resolve(emptyResponse);
 	}
-	
+
 	const gqlQuery = `
 		query newMyFTContentSince($uuid: String!) {
 			user(uuid: $uuid) {
