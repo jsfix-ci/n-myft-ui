@@ -29,6 +29,12 @@ const contentFromPersonalisedFeed = uuid => {
 };
 
 const readingHistory = uuid => {
+	const emptyResponse = { articles: [] };
+
+	if (!uuid) {
+		return Promise.resolve(emptyResponse);
+	}
+	
 	const gqlQuery = `
 		query newMyFTContentSince($uuid: String!) {
 			user(uuid: $uuid) {
@@ -48,7 +54,7 @@ const readingHistory = uuid => {
 		.then(fetchJson)
 		.then(body => body.data)
 		.then(data => data.user.articlesFromReadingHistory)
-		.catch(() => Promise.resolve({ articles: [] }));
+		.catch(() => Promise.resolve(emptyResponse));
 };
 
 const extractArticlesFromSinceTime = (articles, since) => {
