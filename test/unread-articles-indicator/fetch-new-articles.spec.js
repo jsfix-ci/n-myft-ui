@@ -48,13 +48,14 @@ const mockPersonalisedFeedData = {
 describe('fetch-new-articles', () => {
 	let data;
 
+	const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/fetch-new-articles');
+	const subject = subjectInjector({
+		'next-session-client': {
+			uuid: sinon.stub().resolves({ uuid: '3a499586-b2e0-11e4-a058-00144feab7de'})
+		}
+	});
+
 	beforeEach(() => {
-		const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/fetch-new-articles');
-		const subject = subjectInjector({
-			'next-session-client': {
-				uuid: sinon.stub().resolves({ uuid: '3a499586-b2e0-11e4-a058-00144feab7de'})
-			}
-		});
 
 		data = null;
 		fetchMock.get('begin:https://next-api.ft.com/v2/', mockReadingHistoryData);
