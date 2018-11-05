@@ -1,7 +1,7 @@
 /* global expect */
 
 import fetchMock from 'fetch-mock';
-import fetchNewArticles from '../../components/unread-articles-indicator/fetch-new-articles';
+import sinon from 'sinon';
 
 const SINCE = '2018-06-05T06:48:26.635Z';
 
@@ -49,11 +49,18 @@ describe('fetch-new-articles', () => {
 	let data;
 
 	beforeEach(() => {
+		const subjectInjector = require('inject-loader!../../components/unread-articles-indicator/fetch-new-articles');
+		const subject = subjectInjector({
+			'next-session-client': {
+				uuid: sinon.stub().resolves({ uuid: '3a499586-b2e0-11e4-a058-00144feab7de'})
+			}
+		});
+
 		data = null;
 		fetchMock.get('begin:https://next-api.ft.com/v2/', mockReadingHistoryData);
 		fetchMock.get('begin:/__myft/api/onsite/feed/', mockPersonalisedFeedData);
 
-		return fetchNewArticles(SINCE)
+		return subject(SINCE)
 			.then(resolvedValue => {
 				data = resolvedValue;
 			});
