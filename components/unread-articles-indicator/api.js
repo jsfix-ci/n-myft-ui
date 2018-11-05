@@ -7,7 +7,7 @@ export const fetchUserLastVisitedAt = () => {
 		.then(({ uuid }) => uuid)
 		.then(uuid => {
 			if (!uuid) {
-				return Promise.resolve(null);
+				return Promise.reject();
 			}
 
 			const gqlQuery = `
