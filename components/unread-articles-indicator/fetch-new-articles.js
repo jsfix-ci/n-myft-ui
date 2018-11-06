@@ -20,6 +20,13 @@ const decorateWithHasBeenRead = (readingHistory, allArticles) => {
 };
 
 const contentFromPersonalisedFeed = uuid => {
+	const emptyResponse = { results: [], signals: {} };
+
+	if (!uuid) {
+		return Promise.resolve(emptyResponse);
+	}
+
+
 	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h`;
 	const options = { credentials: 'include' };
 
