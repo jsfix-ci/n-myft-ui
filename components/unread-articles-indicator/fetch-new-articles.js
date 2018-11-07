@@ -27,7 +27,7 @@ const contentFromPersonalisedFeed = uuid => {
 	}
 
 
-	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h`;
+	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h&source=myft-ui`;
 	const options = { credentials: 'include' };
 
 	return fetch(url, options)
