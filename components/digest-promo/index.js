@@ -1,5 +1,6 @@
 const myFtClient = require('next-myft-client');
 const buttons = require('../../myft-common');
+const getToken = require('../../myft/ui/lib/get-csrf-token');
 const superstore = require('superstore-sync');
 const STORAGE_KEY = 'n-myft-digest-promo-seen';
 
@@ -28,7 +29,7 @@ function bindListeners () {
 	}
 }
 
-function shouldShowPromo (conceptId){
+function shouldShowPromo (conceptId) {
 	return Promise.all([
 		myFtClient.get('followed', 'concept', conceptId),
 		myFtClient.get('preferred', 'preference', 'email-digest')
@@ -56,6 +57,7 @@ function setDismissState () {
 }
 
 function addToDigest () {
+	const csrfToken = getToken();
 	const metaConcept = {
 		name: btn.getAttribute('data-title'),
 	};
@@ -73,7 +75,7 @@ function addToDigest () {
 		}
 	};
 
-	const promises = [myFtClient.add('user', null, 'preferred', 'preference', 'email-digest', metaEmail)];
+	const promises = [myFtClient.add('user', null, 'preferred', 'preference', 'email-digest', Object.assign({}, {token: csrfToken}), metaEmail)];
 
 	if (conceptId) {
 		promises.push(myFtClient.add('user', null, 'followed', 'concept', conceptId, metaConcept));
