@@ -78,7 +78,7 @@ function addToDigest () {
 	const promises = [myFtClient.add('user', null, 'preferred', 'preference', 'email-digest', Object.assign({}, {token: csrfToken}), metaEmail)];
 
 	if (conceptId) {
-		promises.push(myFtClient.add('user', null, 'followed', 'concept', conceptId, metaConcept));
+		promises.push(myFtClient.add('user', null, 'followed', 'concept', conceptId, Object.assign({}, {token: csrfToken}, metaConcept)));
 	}
 
 	return Promise.all(promises).then(() => {
