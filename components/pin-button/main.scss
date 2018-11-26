@@ -31,6 +31,10 @@
 	.o-tooltip {
 		min-width: 287px;
 	}
+
+	> form {
+		display: flex;
+	}
 }
 
 .myft-pin-button-wrapper.loading {
