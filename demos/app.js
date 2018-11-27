@@ -9,7 +9,8 @@ const fixtures = {
 	followButton: require('./fixtures/follow-button'),
 	saveButton: require('./fixtures/save-button'),
 	collections: require('./fixtures/collections'),
-	conceptList: require('./fixtures/concept-list')
+	conceptList: require('./fixtures/concept-list'),
+	pinButton: require('./fixtures/pin-button')
 };
 
 const app = module.exports = express({
