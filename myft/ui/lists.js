@@ -4,8 +4,11 @@ import Overlay from 'o-overlay';
 import * as myFtUiButtonStates from './lib/button-states';
 import nNotification from 'n-notification';
 import { uuid } from 'n-ui-foundations';
+import getToken from './lib/get-csrf-token';
 
 const delegate = new Delegate(document.body);
+const csrfToken = getToken();
+
 
 function openOverlay (html, { name = 'myft-ui', title = '&nbsp;', shaded = true }) {
 	const overlay = new Overlay(name, {
@@ -59,7 +62,7 @@ function setUpSaveToExistingListListeners (overlay, contentId) {
 			}
 
 			const listId = listSelect.options[listSelect.selectedIndex].value;
-			myFtClient.add('list', listId, 'contained', 'content', contentId)
+			myFtClient.add('list', listId, 'contained', 'content', contentId, {token: csrfToken})
 				.then(detail => {
 					updateAfterAddToList(detail.actorId, detail.subjectId, !!detail.results);
 					overlay.close();
@@ -83,13 +86,14 @@ function setUpCreateListListeners (overlay, contentId) {
 		}
 
 		const createListData = {
+			token: csrfToken,
 			name: nameInput.value
 		};
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), createListData)
 			.then(detail => {
 				if (contentId) {
-					return myFtClient.add('list', detail.subject, 'contained', 'content', contentId);
+					return myFtClient.add('list', detail.subject, 'contained', 'content', contentId, {token: csrfToken});
 				} else {
 					return detail;
 				}
