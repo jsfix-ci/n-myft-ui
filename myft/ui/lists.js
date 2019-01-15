@@ -3,7 +3,7 @@ import Delegate from 'ftdomdelegate';
 import Overlay from 'o-overlay';
 import * as myFtUiButtonStates from './lib/button-states';
 import nNotification from 'n-notification';
-import { uuid } from 'n-ui-foundations';
+import {uuid} from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
 
 const delegate = new Delegate(document.body);
@@ -122,11 +122,24 @@ function showListsOverlay (overlayTitle, formHtmlUrl, contentId) {
 		.then(url => fetch(url, {
 			credentials: 'same-origin'
 		}))
-		.then(res => res.text())
+		.then(res => {
+			if (res.ok) {
+				return res.text();
+			} else {
+				throw new Error(`Unexpected response: ${res.statusText}`);
+			}
+		})
 		.then(html => openOverlay(html, { title: overlayTitle }))
 		.then(overlay => {
 			setUpSaveToExistingListListeners(overlay, contentId);
 			setUpCreateListListeners(overlay, contentId);
+		})
+		.catch(err => {
+			nNotification.show({
+				content: 'Sorry, something went wrong',
+				type: 'error'
+			});
+			throw err;
 		});
 
 }
