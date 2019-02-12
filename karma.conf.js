@@ -92,6 +92,9 @@ module.exports = function (karma) {
 		// possible values: karma.LOG_DISABLE || karma.LOG_ERROR || karma.LOG_WARN || karma.LOG_INFO || karma.LOG_DEBUG
 		logLevel: karma.LOG_INFO,
 
+		// TODO - remove temporary hostname property
+		// Property included as part of ops-cops browserstack investigation
+		hostname: 'bs-local.com',
 
 		// enable / disable watching file and executing tests whenever any file changes
 		autoWatch: false,
@@ -149,8 +152,7 @@ module.exports = function (karma) {
 				browser: 'firefox',
 				browser_version: 'latest',
 				os: 'Windows',
-				os_version: '10',
-				hostname: 'bs-local.com'
+				os_version: '10'
 			},
 			ie11: {
 				base: 'BrowserStack',
