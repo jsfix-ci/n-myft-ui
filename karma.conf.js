@@ -149,7 +149,8 @@ module.exports = function (karma) {
 				browser: 'firefox',
 				browser_version: 'latest',
 				os: 'Windows',
-				os_version: '10'
+				os_version: '10',
+				hostname: 'bs-local.com'
 			},
 			ie11: {
 				base: 'BrowserStack',
