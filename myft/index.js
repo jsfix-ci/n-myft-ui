@@ -1,4 +1,2 @@
-module.exports = {
-	client: require('next-myft-client'),
-	ui: require('./ui')
-};
+export { default as client } from 'next-myft-client'
+export { * as ui } from './ui'
