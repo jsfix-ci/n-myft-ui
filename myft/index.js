@@ -1,2 +1,4 @@
-export { default as client } from 'next-myft-client'
-export { * as ui } from './ui'
+import client from 'next-myft-client';
+import * as ui from './ui';
+
+export { client, ui }
