@@ -10,28 +10,28 @@
         "name": "EU immigration"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000001",
         "prefLabel": "Europe Quantitative Easing",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Europe Quantitative Easing"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000002",
         "prefLabel": "EU financial regulation",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "EU financial regulation"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000003",
         "prefLabel": "EU nothing",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "EU nothing"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000004",
         "prefLabel": "EU trade",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
@@ -43,35 +43,35 @@
     "title": "Butter chicken",
     "concepts": [
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000005",
         "prefLabel": "Noodle",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Noodle"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000006",
         "prefLabel": "Green apples",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Green apples"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000007",
         "prefLabel": "Fox blood",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Fox blood"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000008",
         "prefLabel": "Dog party",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Dog party"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000009",
         "prefLabel": "Fifth thing",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
@@ -83,35 +83,35 @@
     "title": "Reallylongcollectionnamethatisallonewordwithoutspaces",
     "concepts": [
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000010",
         "prefLabel": "Long topic name with spaces in sensible places nobody minds",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Long topic name with spaces in sensible places nobody minds"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000011",
         "prefLabel": "Longtopicnamewithoutspacesthatjustgoesonandonandneverstopspleaseletme",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Longtopicnamewithoutspacesthatjustgoesonandonandneverstopspleaseletme"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000012",
         "prefLabel": "Dog houses",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Dog houses"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000013",
         "prefLabel": "Candlesticks",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Candlesticks"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000014",
         "prefLabel": "Sandwiches for strangers",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
@@ -123,35 +123,35 @@
     "title": "European Union",
     "concepts": [
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000015",
         "prefLabel": "EU immigration",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "EU immigration"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000016",
         "prefLabel": "Europe Quantitative Easing",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "Europe Quantitative Easing"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000017",
         "prefLabel": "EU financial regulation",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "EU financial regulation"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000018",
         "prefLabel": "EU nothing",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
         "name": "EU nothing"
       },
       {
-        "id": "00000000-0000-0000-0000-000000000000",
+        "id": "00000000-0000-0000-0000-000000000019",
         "prefLabel": "EU trade",
         "directType": "http://www.ft.com/ontology/Topic",
         "url": "https://www.ft.com/stream/00000000-0000-0000-0000-000000000000",
