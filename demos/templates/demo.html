@@ -54,19 +54,13 @@
 					{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
 				{{/saveButton}}
 
-				{{#pinButton}}
 				<h2 class="demo-section__title">
 					Pin button
 				</h2>
-				{{> n-myft-ui/components/pin-button/pin-button showPrioritiseButton=true }}
-				{{/pinButton}}
+				{{#each pinButton}}
+					{{> n-myft-ui/components/pin-button/pin-button }}
+				{{/each}}
 
-				{{#pinButton}}
-				<h2 class="demo-section__title">
-					Pin button prioritised
-				</h2>
-				{{> n-myft-ui/components/pin-button/pin-button showPrioritiseButton=true prioritised=true }}
-				{{/pinButton}}
 
 			</div>
 		</div>

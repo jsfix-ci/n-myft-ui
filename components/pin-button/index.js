@@ -1,6 +1,7 @@
 import Delegate from 'ftdomdelegate';
 import myftApiClient from 'next-myft-client';
 import serialize from 'form-serialize';
+import Tooltip from 'o-tooltip';
 
 const delegate = new Delegate(document.body);
 
@@ -44,5 +45,11 @@ export default () => {
 				setLoading(wrapper);
 				togglePrioritised(conceptId, prioritised === 'true', formData);
 			});
+
+
 		});
+
+	[...document.querySelectorAll('.o-tooltip--myft-pin-button')].forEach(element => {
+		new Tooltip(element);
+	});
 };
