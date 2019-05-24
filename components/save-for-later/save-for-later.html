@@ -14,7 +14,7 @@
 			data-alternate-label="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
 			aria-pressed="true"
 		{{else}}
-			data-alternate-label="Saved to myFT"
+			data-alternate-label="{{#if title}}{{title}} is{{/if}} Saved to myFT"
 			aria-pressed="false"
 		{{/if}}
 		{{#unlessEquals appIsStreamPage true}}
