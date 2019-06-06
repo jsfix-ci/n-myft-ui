@@ -25,8 +25,8 @@ function anonEventListeners () {
 	const subscribeUrl = '/products?segID=400863&segmentID=190b4443-dc03-bd53-e79b-b4b6fbd04e64';
 	const signInLink = `/login${currentPath.length ? `?location=${currentPath}` : ''}`;
 	const messages = {
-		followed: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
-		saved: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to save this article.`
+		followed: `Please <a href="${subscribeUrl}" class="myft-ui-subscribe" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
+		saved: `Please <a href="${subscribeUrl}" class="myft-ui-subscribe" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to save this article.`
 	};
 
 	['followed', 'saved'].forEach(action => {
@@ -35,7 +35,9 @@ function anonEventListeners () {
 
 			nNotification.show({
 				content: messages[action],
-				trackable: 'myft-anon'
+				trackable: 'myft-anon',
+				focusSelector: '.myft-ui-subscribe',
+				returnFocusSelector: document.activeElement
 			});
 		});
 	});
