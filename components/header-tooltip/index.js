@@ -2,7 +2,7 @@ import Tooltip from 'o-tooltip';
 import myftClient from 'next-myft-client';
 
 const isMyftPage = window.location.pathname.startsWith('/myft');
-const externalReferrer = !document.referrer || (new URL(document.referrer)).host.endsWith('ft.com');
+const externalReferrer = !document.referrer || !(new URL(document.referrer).hostname.endsWith('ft.com'));
 const myftHeaderLogo = document.querySelector('.o-header__top-link--myft');
 const flagIsEnabled = window.FT && window.FT.flags && window.FT.flags.get('myFT_HeaderTooltip');
 
