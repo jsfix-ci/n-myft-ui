@@ -28,11 +28,18 @@ module.exports = function (karma) {
 				'Array.prototype.find',
 				'Array.prototype.findIndex',
 				'Array.prototype.includes',
+				'Array.prototype.@@iterator',
 				'IntersectionObserver',
 				'Map',
+				'Set',
 				'Array.from',
+				'NodeList.prototype.forEach',
 				'NodeList.prototype.@@iterator',
-				'Array.prototype.@@iterator'
+				'EventSource',
+				'Number.isInteger',
+				'Object.entries',
+				'String.prototype.padStart',
+				'String.prototype.padEnd'
 			].join(','),
 			'test/**/*.spec.js'
 		],
@@ -52,7 +59,7 @@ module.exports = function (karma) {
 						query: {
 							cacheDirectory: true,
 							presets: ['es2015'],
-							plugins: [['add-module-exports', { loose: true }], ['transform-es2015-classes', { loose: true }]]
+							plugins: [['add-module-exports', {loose: true}], ['transform-es2015-classes', {loose: true}]]
 						}
 					},
 					// set 'this' scope to window
@@ -63,7 +70,7 @@ module.exports = function (karma) {
 				]
 			},
 			plugins: [
-				new BowerWebpackPlugin({ includes: /\.js$/ })
+				new BowerWebpackPlugin({includes: /\.js$/})
 			],
 			resolve: {
 				root: [
@@ -161,7 +168,7 @@ module.exports = function (karma) {
 			safari: {
 				base: 'BrowserStack',
 				os: 'OS X',
-				os_version : 'High Sierra',
+				os_version: 'High Sierra',
 				browser: 'Safari',
 				browser_version: 'latest'
 			}
