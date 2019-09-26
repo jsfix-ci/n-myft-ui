@@ -36,11 +36,13 @@ describe('unread stories indicator', () => {
 			isAvailable: sinon.stub().callsFake(() => isStorageAvailable)
 		};
 		mockTracking = {
-			countShown: sinon.stub()
+			countShown: sinon.stub(),
+			onVisibilityChange: sinon.stub()
 		};
 		mockUi = {
 			createIndicators: sinon.stub(),
-			setCount: sinon.stub()
+			setCount: sinon.stub(),
+			getState: sinon.stub(),
 		};
 		mockFetchNewArticles = sinon.stub().returns(Promise.resolve(NEW_ARTICLES));
 		unreadStoriesIndicator = require('inject-loader!../../components/unread-articles-indicator')({
@@ -140,10 +142,10 @@ describe('unread stories indicator', () => {
 
 			it('should update the values in storage the first time it is called', () => {
 				return unreadStoriesIndicator.getNewArticlesSinceTime()
-				.then(() => {
-					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
-					expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
-				});
+					.then(() => {
+						expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledWith(DETERMINED_NEW_ARTICLES_SINCE_TIME);
+						expect(mockStorage.setNewArticlesSinceTime).to.have.been.calledAfter(mockChronology.determineNewArticlesSinceTime);
+					});
 			});
 
 			it('should return the the newArticlesSinceTime', () => {

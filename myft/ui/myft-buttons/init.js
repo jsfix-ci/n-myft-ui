@@ -8,14 +8,15 @@ import Delegate from 'ftdomdelegate';
 import personaliseLinks from '../personalise-links';
 import doFormSubmit from './do-form-submit';
 import enhanceActionUrls from './enhance-action-urls';
+import {init as initPushNotifications} from '../lib/push-notifications';
 
 const delegate = new Delegate(document.body);
 let initialised;
 
-function getInteractionHandler (relationshipName) {
+function getInteractionHandler (flags, relationshipName) {
 	return (ev, formEl) => {
 		ev.preventDefault();
-		return doFormSubmit(relationshipName, formEl);
+		return doFormSubmit(relationshipName, formEl, flags.myftOfferInstantAlertNotifications);
 	};
 }
 
@@ -24,23 +25,25 @@ function anonEventListeners () {
 	const subscribeUrl = '/products?segID=400863&segmentID=190b4443-dc03-bd53-e79b-b4b6fbd04e64';
 	const signInLink = `/login${currentPath.length ? `?location=${currentPath}` : ''}`;
 	const messages = {
-		followed: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
-		saved: `Please <a href="${subscribeUrl}" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to save this article.`
+		followed: `Please <a href="${subscribeUrl}" class="myft-ui-subscribe" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to add this topic to myFT.`,
+		saved: `Please <a href="${subscribeUrl}" class="myft-ui-subscribe" data-trackable="Subscribe">subscribe</a> or <a href="${signInLink}" data-trackable="Sign In">sign in</a> to save this article.`
 	};
 
 	['followed', 'saved'].forEach(action => {
 		delegate.on('submit', relationshipConfig[action].uiSelector, event => {
 			event.preventDefault();
-
 			nNotification.show({
 				content: messages[action],
-				trackable: 'myft-anon'
+				trackable: 'myft-anon',
+				focusSelector: '.myft-ui-subscribe',
+				returnFocusSelector: document.activeElement,
+				duration: 0
 			});
 		});
 	});
 }
 
-function signedInEventListeners () {
+function signedInEventListeners (flags = {}) {
 	Object.keys(relationshipConfig).forEach(relationshipName => {
 		const uiSelector = relationshipConfig[relationshipName].uiSelector;
 		loadedRelationships.waitForRelationshipsToLoad(relationshipName)
@@ -59,18 +62,20 @@ function signedInEventListeners () {
 				const eventName = `myft.${actorType}.${relationshipName}.${subjectType}.${action}`;
 				document.body.addEventListener(eventName, event => {
 					const resultData = event.detail.results && event.detail.results[0];
-					buttonStates.setStateOfButton(relationshipName, event.detail.subject, !!event.detail.results, undefined, resultData);
+					const isPressed = !!event.detail.results;
+					buttonStates.setStateOfButton(relationshipName, event.detail.subject, isPressed, undefined, resultData, true);
 					tracking.custom({
 						subjectType,
 						action,
 						subjectId: event.detail.subject,
 						postedData: event.detail.data,
-						resultData: resultData
+						resultData: resultData,
+						trackingInfo: event.detail.trackingInfo
 					});
 				});
 			});
 
-		delegate.on('submit', uiSelector, getInteractionHandler(relationshipName));
+		delegate.on('submit', uiSelector, getInteractionHandler(flags, relationshipName));
 	});
 }
 
@@ -86,7 +91,10 @@ export default function (opts) {
 		if (opts && opts.anonymous) {
 			anonEventListeners();
 		} else {
-			signedInEventListeners();
+			if( opts.flags && opts.flags.myftOfferInstantAlertNotifications ) {
+				initPushNotifications(opts.flags.fcmSwitch);
+			}
+			signedInEventListeners(opts.flags);
 			personaliseLinks();
 		}
 	}

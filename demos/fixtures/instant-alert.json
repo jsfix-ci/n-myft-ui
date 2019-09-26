@@ -4,11 +4,5 @@
     "name": "myFT Enterprises",
     "directType": "http://www.ft.com/ontology/Topic",
     "showPrioritiseButton": true
-  },
-  {
-    "id": "00000000-0000-0000-0000-000000000023",
-    "name": "myFT Enterprises",
-    "directType": "http://www.ft.com/ontology/Topic",
-    "showPrioritiseButton": false
   }
 ]

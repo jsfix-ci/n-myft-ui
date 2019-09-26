@@ -17,14 +17,17 @@
   "main": "main.js",
   "dependencies": {
     "n-ui-foundations": "^3.0.0-beta",
-    "n-notification": "^6.0.3",
-    "next-myft-client": "^7.0.0",
-    "o-overlay": "^2.0.0",
-    "o-forms": "^5.0.0",
+    "n-notification": "^6.2.0",
+    "next-myft-client": "^7.7.0",
+    "o-overlay": "^2.7.9",
+    "o-forms": "^6.0.2",
     "o-errors": "^3.5.2",
     "next-session-client": "^2.3.4",
     "fetchres": "^1.7.2",
-    "o-tooltip": "^3.1.2",
+    "o-tooltip": "^3.5.0",
     "js-cookie": "^2.2.0"
+  },
+  "resolutions": {
+    "ftdomdelegate": "^3.0.0"
   }
 }

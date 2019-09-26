@@ -4,6 +4,7 @@
 		method="GET"
 		data-myft-ui="follow"
 		data-concept-id="{{conceptId}}"
+		{{#if collectionName}}data-myft-tracking="collectionName={{collectionName}}"{{/if}}
 		{{#if followPlusDigestEmail}}
 			action="/__myft/api/core/follow-plus-digest-email/{{conceptId}}?method=put"
 			data-myft-ui-variant="followPlusDigestEmail"
@@ -25,35 +26,103 @@
 			{{/ifAll}}
 		{{/if}}>
 		{{> n-myft-ui/components/csrf-token/input}}
+		<div
+			class="n-myft-ui__announcement o-normalise-visually-hidden"
+			aria-live="assertive"
+			data-pressed-text="Now following {{name}}."
+			data-unpressed-text="No longer following {{name}}."
+		></div>
 		<button
 			{{#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl}}
-				aria-label="Remove {{name}} from myFT"
-				title="Remove {{name}} from myFT"
-				data-alternate-label="Add {{name}} to myFT"
-				aria-pressed="true"
-				{{#if alternateText}}
-					data-alternate-text="{{alternateText}}"
-				{{else}}
-					{{#if buttonText}}
-						data-alternate-text="{{buttonText}}"
+				{{#ifEquals @root.flags.followmyFTABTest 'Variant1' }}
+					aria-label="Remove {{name}} from feed"
+					title="Remove {{name}} from feed"
+					data-alternate-label="Add {{name}} to feed"
+					aria-pressed="true"
+					{{#if alternateText}}
+						data-alternate-text="{{alternateText}}"
 					{{else}}
-						data-alternate-text="Add to myFT"
+						{{#if buttonText}}
+							data-alternate-text="{{buttonText}}"
+						{{else}}
+							data-alternate-text="Add to feed"
+						{{/if}}
 					{{/if}}
-				{{/if}}
+				{{else}}
+					{{#ifEquals @root.flags.followmyFTABTest 'Variant2'}}
+						aria-label="Unfollow {{name}}"
+						title="Unfollow {{name}}"
+						data-alternate-label="Follow {{name}}"
+						aria-pressed="true"
+						{{#if alternateText}}
+							data-alternate-text="{{alternateText}}"
+						{{else}}
+							{{#if buttonText}}
+								data-alternate-text="{{buttonText}}"
+							{{else}}
+								data-alternate-text="Unfollowed"
+							{{/if}}
+						{{/if}}
+					{{else}}
+						aria-label="Remove {{name}} from myFT"
+						title="Remove {{name}} from myFT"
+						data-alternate-label="Add {{name}} to myFT"
+						aria-pressed="true"
+						{{#if alternateText}}
+							data-alternate-text="{{alternateText}}"
+						{{else}}
+							{{#if buttonText}}
+								data-alternate-text="{{buttonText}}"
+							{{else}}
+								data-alternate-text="Add to myFT"
+							{{/if}}
+						{{/if}}
+					{{/ifEquals}}
+				{{/ifEquals}}
 			{{else}}
-				aria-label="Add {{name}} to myFT"
-				title="Add {{name}} to myFT"
-				data-alternate-label="Remove {{name}} from myFT"
 				aria-pressed="false"
-				{{#if alternateText}}
-					data-alternate-text="{{alternateText}}"
-				{{else}}
-					{{#if buttonText}}
-						data-alternate-text="{{buttonText}}"
+				{{#ifEquals @root.flags.followmyFTABTest 'Variant1' }}
+					aria-label="Add {{name}} to feed"
+					title="Add {{name}} to feed"
+					data-alternate-label="Remove {{name}} from feed"
+					{{#if alternateText}}
+						data-alternate-text="{{alternateText}}"
 					{{else}}
-						data-alternate-text="Added"
+						{{#if buttonText}}
+							data-alternate-text="{{buttonText}}"
+						{{else}}
+							data-alternate-text="Added to feed"
+						{{/if}}
 					{{/if}}
-				{{/if}}
+				{{else}}
+					{{#ifEquals @root.flags.followmyFTABTest 'Variant2' }}
+						aria-label="Follow {{name}}"
+						title="Follow {{name}}"
+						data-alternate-label="Unfollow {{name}}"
+						{{#if alternateText}}
+							data-alternate-text="{{alternateText}}"
+						{{else}}
+							{{#if buttonText}}
+								data-alternate-text="{{buttonText}}"
+							{{else}}
+								data-alternate-text="Following"
+							{{/if}}
+						{{/if}}
+					{{else}}
+						aria-label="Add {{name}} to myFT"
+						title="Add {{name}} to myFT"
+						data-alternate-label="Remove {{name}} from myFT"
+						{{#if alternateText}}
+							data-alternate-text="{{alternateText}}"
+						{{else}}
+							{{#if buttonText}}
+								data-alternate-text="{{buttonText}}"
+							{{else}}
+								data-alternate-text="Added"
+							{{/if}}
+						{{/if}}
+					{{/ifEquals}}
+				{{/ifEquals}}
 			{{/ifAll}}
 			class="{{extraButtonClasses}}
 				n-myft-follow-button
@@ -67,11 +136,27 @@
 			{{~#if buttonText~}}
 				{{buttonText}}
 			{{~else~}}
-				{{~#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl~}}
-					Added
-				{{~else~}}
-					Add to myFT
-				{{~/ifAll~}}
+				{{~#ifEquals @root.flags.followmyFTABTest 'Variant1'~}}
+					{{~#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl~}}
+						Added to feed
+					{{~else~}}
+						Add to feed
+					{{~/ifAll~}}
+				{{~/ifEquals~}}
+				{{~#ifEquals @root.flags.followmyFTABTest 'Variant2'~}}
+					{{~#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl~}}
+						Following
+					{{~else~}}
+						Follow
+					{{~/ifAll~}}
+				{{~/ifEquals~}}
+				{{~#ifEquals @root.flags.followmyFTABTest false ~}}
+					{{~#ifAll setFollowButtonStateToSelected @root.cacheablePersonalisedUrl~}}
+						Added
+					{{~else~}}
+						Add to myFT
+					{{~/ifAll~}}
+				{{~/ifEquals~}}
 			{{~/if~}}
 		</button>
 	</form>

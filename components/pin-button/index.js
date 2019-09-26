@@ -1,6 +1,7 @@
 import Delegate from 'ftdomdelegate';
 import myftApiClient from 'next-myft-client';
 import serialize from 'form-serialize';
+import Tooltip from 'o-tooltip';
 
 const delegate = new Delegate(document.body);
 
@@ -42,7 +43,22 @@ export default () => {
 				const wrapper = event.target.closest('.myft-pin-button-wrapper');
 
 				setLoading(wrapper);
-				togglePrioritised(conceptId, prioritised === 'true', formData);
+
+				const isPinned = prioritised === 'true';
+				togglePrioritised(conceptId, isPinned, formData);
+
+				if (true) {
+					const screenReaderAnnouncement = wrapper.querySelector('.n-myft-ui__announcement');
+					if (screenReaderAnnouncement) {
+						screenReaderAnnouncement.innerHTML = screenReaderAnnouncement.dataset[isPinned ? 'pressedText' : 'unpressedText'];
+					}
+				}
 			});
+
+
 		});
+
+	[...document.querySelectorAll('.o-tooltip--myft-pin-button')].forEach(element => {
+		new Tooltip(element);
+	});
 };

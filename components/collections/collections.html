@@ -1,18 +1,27 @@
 <section
-	class="collection"
-	data-trackable="collection">
-	<header class="collection__header">
-		<h2 class="collection__title">
+	class="collection {{#if liteStyle}}collection--lite{{else}}collection--regular{{/if}}"
+	data-trackable="{{#if trackable}}{{trackable}}{{else}}collection{{/if}}">
+	<header class="collection__header {{#if liteStyle}}collection__header--lite{{else}}collection__header--regular{{/if}}">
+		<h2 class="collection__title {{#if liteStyle}}collection__title--lite{{else}}collection__title--regular{{/if}}">
 			{{title}}
 		</h2>
 	</header>
 	<ul class="collection__concepts">
 		{{#concepts}}
 			<li class="collection__concept">
-				{{>	n-myft-ui/components/follow-button/follow-button
-					variant="inverse"
-					buttonText=name
-				}}
+				{{#if ../liteStyle}}
+					{{>	n-myft-ui/components/follow-button/follow-button
+						variant="primary"
+						buttonText=name
+						collectionName=../collectionName
+					}}
+				{{else}}
+					{{>	n-myft-ui/components/follow-button/follow-button
+						variant="inverse"
+						buttonText=name
+						collectionName=../collectionName
+					}}
+				{{/if}}
 			</li>
 		{{/concepts}}
 	</ul>
@@ -21,6 +30,7 @@
 			method="POST"
 			action="#"
 			data-myft-ui="follow"
+			{{#if collectionName}}data-myft-tracking="collectionName={{collectionName}}"{{/if}}
 			data-concept-id="
 				{{~#concepts~}}
 					{{conceptId}}
@@ -53,22 +63,38 @@
 				{{~/concepts~}}"
 			/>
 			<button
-				type="submit"
-				aria-label="Add all topics in the {{title}} collection to my F T"
-				aria-pressed="false"
-				class="collection-follow-all__button"
-				data-alternate-label="Remove all topics in the {{title}} collection from my F T"
-				data-alternate-text="Added"
-				data-trackable="follow all"
-				data-concept-id="
-					{{~#concepts~}}
-						{{conceptId}}
-						{{~#unless @last~}}
-							,
-						{{~/unless~}}
-					{{~/concepts~}}"
-				title="Add all topics in the {{title}} collection to my F T">
-				Add all to myFT
+					type="submit"
+					aria-pressed="false"
+					class="collection-follow-all__button {{#if liteStyle}}collection-follow-all__button--lite{{else}}collection-follow-all__button--regular{{/if}}"
+					data-trackable="follow all"
+					data-concept-id="
+						{{~#concepts~}}
+							{{conceptId}}
+							{{~#unless @last~}}
+								,
+							{{~/unless~}}
+						{{~/concepts~}}"
+				{{#ifEquals @root.flags.followmyFTABTest 'Variant1' }}
+					aria-label="Add all topics in the {{title}} collection to feed"
+					data-alternate-label="Remove all topics in the {{title}} collection from feed"
+					data-alternate-text="Added to feed"
+					title="Add all topics in the {{title}} collection to feed">
+					Add all to feed
+				{{else}}
+					{{#ifEquals @root.flags.followmyFTABTest 'Variant2' }}
+						aria-label="Follow all topics in the {{title}} collection"
+						data-alternate-label="Unfollow all topics in the {{title}} collection"
+						data-alternate-text="Following"
+						title="Follow all topics in the {{title}} collection">
+						Follow all
+					{{else}}
+						aria-label="Add all topics in the {{title}} collection to my F T"
+						data-alternate-label="Remove all topics in the {{title}} collection from my F T"
+						data-alternate-text="Added"
+						title="Add all topics in the {{title}} collection to my F T">
+						Add all to myFT
+					{{/ifEquals}}
+				{{/ifEquals}}
 			</button>
 		</form>
 	</div>
