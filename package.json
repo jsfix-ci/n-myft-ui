@@ -83,6 +83,7 @@
     "snyk": "^1.216.5"
   },
   "dependencies": {
+    "babel-preset-env": "^1.7.0",
     "date-fns": "^1.29.0",
     "form-serialize": "^0.7.2",
     "js-cookie": "^2.2.0",
