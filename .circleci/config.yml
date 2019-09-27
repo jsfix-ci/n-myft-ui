@@ -150,7 +150,7 @@ workflows:
           filters:
             <<: *filters_only_master
           requires:
-            - build
+            - test
   build-test-publish:
     jobs:
       - build:
