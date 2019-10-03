@@ -13,7 +13,6 @@ describe('unread stories indicator', () => {
 	let mockUpdate;
 	let mockInitialiseFeedStartTime;
 	let mockStorage;
-	let mockTracking;
 	let mockUi;
 	let isStorageAvailable;
 
@@ -21,11 +20,9 @@ describe('unread stories indicator', () => {
 		mockStorage = {
 			getFeedStartTime: sinon.stub().returns(FEED_START_TIME),
 			setFeedStartTime: sinon.stub(),
-			isAvailable: sinon.stub().callsFake(() => isStorageAvailable)
-		};
-		mockTracking = {
-			onCountChange: sinon.stub(),
-			onVisibilityChange: sinon.stub()
+			updateLastUpdate: sinon.stub(),
+			isAvailable: sinon.stub().callsFake(() => isStorageAvailable),
+			setIndicatorDismissedTime: sinon.stub()
 		};
 		mockUi = {
 			createIndicators: sinon.stub(),
@@ -40,7 +37,6 @@ describe('unread stories indicator', () => {
 				uuid: sinon.stub().resolves({uuid: '00000000-0000-0000-0000-000000000000'})
 			},
 			'./storage': mockStorage,
-			'./tracking': mockTracking,
 			'./ui': mockUi,
 			'./update': mockUpdate,
 			'./initialise-feed-start-time': mockInitialiseFeedStartTime
@@ -51,7 +47,7 @@ describe('unread stories indicator', () => {
 		describe('storage availability', () => {
 			it('should not do anything if storage is not available', () => {
 				isStorageAvailable = false;
-				unreadStoriesIndicator();
+				unreadStoriesIndicator.default();
 				expect(mockUi.createIndicators).to.not.have.been.called;
 				expect(mockUi.setCount).to.not.have.been.called;
 				expect(mockInitialiseFeedStartTime).to.not.have.been.called;
@@ -61,7 +57,7 @@ describe('unread stories indicator', () => {
 		describe('initialisation', () => {
 			beforeEach(() => {
 				isStorageAvailable = true;
-				return unreadStoriesIndicator();
+				return unreadStoriesIndicator.default();
 			});
 
 			it('should initialise feed start time', () => {
@@ -70,14 +66,17 @@ describe('unread stories indicator', () => {
 
 			it('should create ui indicators', () => {
 				expect(mockUi.createIndicators).to.have.been.calledOnce;
+			});
 
+			it('should handle clicks', () => {
 				const args = mockUi.createIndicators.firstCall.args;
 
 				expect(args[1].onClick).to.be.a('function');
 
 				args[1].onClick();
 
-				expect(mockUi.setCount).to.have.been.calledOnce;
+				expect(mockStorage.setIndicatorDismissedTime).to.have.been.calledOnce;
+				expect(mockStorage.updateLastUpdate).to.have.been.calledOnce;
 			});
 		});
 	});

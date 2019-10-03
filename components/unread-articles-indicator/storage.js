@@ -3,6 +3,7 @@ import { isValid } from 'date-fns';
 const DEVICE_SESSION_EXPIRY = 'deviceSessionExpiry';
 const FEED_START_TIME = 'newArticlesSinceTime';
 const LAST_INDICATOR_UPDATE = 'myFTIndicatorUpdate';
+const INDICATOR_DISMISSED_TIME = 'myFTIndicatorDismissedAt';
 
 const isISOString = str => typeof str === 'string' && str.charAt(10) === 'T';
 const getStoredDate = key => {
@@ -20,6 +21,10 @@ export const getFeedStartTime = () => getStoredDate(FEED_START_TIME);
 
 export const setFeedStartTime = date => window.localStorage.setItem(FEED_START_TIME, date.toISOString());
 
+export const getIndicatorDismissedTime = () => getStoredDate(INDICATOR_DISMISSED_TIME);
+
+export const setIndicatorDismissedTime = date => window.localStorage.setItem(INDICATOR_DISMISSED_TIME, date.toISOString());
+
 export const isAvailable = () => {
 	try {
 		const storage = window.localStorage;
@@ -33,12 +38,27 @@ export const isAvailable = () => {
 	}
 };
 
-export const setLastUpdate = (update) => window.localStorage.setItem(LAST_INDICATOR_UPDATE, JSON.stringify(Object.assign( {}, update, update && update.time && {time: update.time.toISOString()})) );
+export const setLastUpdate = (update) =>
+	window.localStorage.setItem(LAST_INDICATOR_UPDATE,
+		JSON.stringify(
+			Object.assign(
+				{},
+				update,
+				update && update.time && {time: update.time.toISOString()},
+				update && update.updateStarted && {updateStarted: update.updateStarted.toISOString()}
+			)
+		)
+	);
 
 export const getLastUpdate = () => {
 	try {
 		const update = JSON.parse(window.localStorage.getItem(LAST_INDICATOR_UPDATE));
-		return Object.assign({}, update, update && update.time && {time: new Date(update.time)});
+		return Object.assign(
+			{},
+			update,
+			update && update.time && {time: new Date(update.time)},
+			update && update.updateStarted && {updateStarted: new Date(update.updateStarted)}
+		);
 	} catch (e) {}
 };
 
