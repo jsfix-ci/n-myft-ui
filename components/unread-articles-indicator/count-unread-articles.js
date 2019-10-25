@@ -1,6 +1,6 @@
 import sessionClient from 'next-session-client';
 import {json as fetchJson} from 'fetchres';
-import {isAfter} from 'date-fns';
+import {isAfter, parseISO} from 'date-fns';
 import squashWhitespace from './lib/squash-whitespace';
 
 const fetchContentFromPersonalisedFeed = uuid => {
@@ -57,10 +57,12 @@ const getUnreadArticles = (uuid) =>
 	Promise.all([fetchContentFromPersonalisedFeed(uuid), fetchReadingHistory(uuid)])
 		.then(([userFeedLast24Hours, readingHistory]) => removeReadArticles(userFeedLast24Hours, readingHistory));
 
-const filterRecent = (articles, startTime) =>
-	articles.filter(
-		article => isAfter(article.contentTimeStamp, startTime)
+const filterRecent = (articles, startTime) => {
+	if (typeof startTime === 'string') startTime = parseISO(startTime);
+	return articles.filter(
+		article => isAfter(parseISO(article.contentTimeStamp), startTime)
 	);
+};
 
 export default (startTime) =>
 	sessionClient.uuid()
