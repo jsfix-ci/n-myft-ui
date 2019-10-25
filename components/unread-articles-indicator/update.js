@@ -1,4 +1,4 @@
-import {isAfter} from 'date-fns';
+import {isAfter, parseISO} from 'date-fns';
 import * as storage from './storage';
 import countUnreadArticles from './count-unread-articles';
 import * as ui from './ui';
@@ -14,7 +14,7 @@ function latest ( a, b ) {
 	if( !b ) {
 		return a;
 	}
-	return isAfter(a,b) ? a : b;
+	return isAfter(parseISO(a),parseISO(b)) ? a : b;
 }
 
 export default function update (now) {
