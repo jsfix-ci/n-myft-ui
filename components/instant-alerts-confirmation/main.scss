@@ -54,6 +54,10 @@
 
 .instant-alerts-confirmation-info__icon {
 	@include oIconsGetIcon('notifications', getColor('claret'), 42, $iconset-version: 1);
+	margin-left: -8px;
+	@include oGridRespondTo(M) {
+		margin-left: -12px;
+	}
 }
 
 .instant-alerts-confirmation-info__subtext {

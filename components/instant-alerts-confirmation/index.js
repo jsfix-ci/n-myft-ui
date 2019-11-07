@@ -3,7 +3,7 @@ const Overlay = require('o-overlay');
 const buildOverlayContent = isBlocked => `
 <div class='instant-alerts-confirmation__info'>
 	<div class='instant-alerts-confirmation-info__icon'></div>
-	<div class='instant-alerts-confirmation-info__text'>Would you like to receive instant alerts?</div>
+	<div class='instant-alerts-confirmation-info__text'>Would you like to receive instant alerts on this device?</div>
 </div>
 ${isBlocked ? '<div class=\'instant-alerts-confirmation-info__subtext\'>Unblock notifications to receive them on this device.</div>' : ''}
 <div class='instant-alerts-confirmation__buttons'>
