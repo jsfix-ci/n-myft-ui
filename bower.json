@@ -16,6 +16,7 @@
   ],
   "main": "main.js",
   "dependencies": {
+    "date-fns": "^2.7.0",
     "n-ui-foundations": "^3.0.0-beta",
     "n-notification": "^6.2.0",
     "next-myft-client": "^7.7.0",

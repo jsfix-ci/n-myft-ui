@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/Financial-Times/n-myft-ui#readme",
   "devDependencies": {
-    "@babel/plugin-transform-async-to-generator": "^7.7.0",
     "@financial-times/n-gage": "^3.11.2",
     "@financial-times/n-heroku-tools": "8.3.1",
     "@financial-times/n-internal-tool": "2.3.4",
@@ -82,15 +81,15 @@
     "semver": "6.3.0",
     "sinon": "^7.1.0",
     "sinon-chai": "^3.2.0",
-    "snyk": "^1.216.5"
+    "snyk": "^1.216.5",
+    "babel-preset-env": "^1.7.0",
+    "regenerator-runtime": "^0.13.3"
   },
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
     "date-fns": "2.7.0",
     "form-serialize": "^0.7.2",
     "js-cookie": "^2.2.0",
-    "lodash": "^4.17.10",
-    "regenerator-runtime": "^0.13.3"
+    "lodash": "^4.17.10"
   },
   "x-dash": {
     "engine": {
