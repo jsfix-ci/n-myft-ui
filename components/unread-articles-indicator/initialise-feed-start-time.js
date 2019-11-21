@@ -1,37 +1,16 @@
 import {isToday, startOfDay} from 'date-fns';
 import DeviceSession from './device-session';
 import * as storage from './storage';
-import sessionClient from 'next-session-client';
 import {json as fetchJson} from 'fetchres';
-import squashWhitespace from './lib/squash-whitespace';
 
 const deviceSession = new DeviceSession();
 
-export const fetchUserLastVisitedAt = () => {
-	return sessionClient.uuid()
-		.then(({uuid}) => {
-			if (!uuid) {
-				return Promise.reject();
-			}
-
-			const gqlQuery = `
-				query userLastVisitedAt($uuid: String!) {
-					user(uuid: $uuid) {
-						lastSeenTimestamp
-					}
-				}
-			`;
-			const variables = {uuid};
-			const url = `https://next-api.ft.com/v2/query?query=${squashWhitespace(gqlQuery)}&variables=${JSON.stringify(variables)}&source=next-myft`;
-			const options = {credentials: 'include'};
-
-			return fetch(url, options)
-				.then(fetchJson)
-				.then(body => body.data)
-				.then(data => data.user.lastSeenTimestamp)
-				.then(lastSeenTimestamp => new Date(lastSeenTimestamp));
-		})
-		.catch(() => Promise.resolve(null));
+export const fetchUserLastVisitedAt = (userId) => {
+	const url = '/__myft/users/:userId/last-seen?source=next-myft'
+		.replace(':userId', userId);
+	return fetch(url, {credentials: 'include'})
+		.then(fetchJson)
+		.then(({lastSeen}) => new Date(lastSeen));
 };
 
 /**
@@ -39,12 +18,12 @@ export const fetchUserLastVisitedAt = () => {
  * @param {Date} previousFeedStartTime  Date representing the time we last used to determine if articles are new for the user
  * @return {Promise<Date>} date when we now determine articles to be 'new' for the user
  */
-const determineFeedStartTime = (now, previousFeedStartTime) => {
+const determineFeedStartTime = (userId, now, previousFeedStartTime) => {
 	if (previousFeedStartTime && isToday(previousFeedStartTime) && !deviceSession.isNewSession()) {
 		return Promise.resolve(previousFeedStartTime);
 	}
 
-	return fetchUserLastVisitedAt()
+	return fetchUserLastVisitedAt(userId)
 		.then(userLastVisitedAt => isToday(userLastVisitedAt) ? userLastVisitedAt : Promise.reject())
 		.catch(() => startOfDay(now));
 };
@@ -53,9 +32,9 @@ const determineFeedStartTime = (now, previousFeedStartTime) => {
  * Sets/updates the time after which articles must be published to count towards indicator count
  * @param {Date} now  Date representing the time now
  */
-export default (now) => {
+export default (userId, now) => {
 	const previousFeedStartTime = (storage.isAvailable() && storage.getFeedStartTime());
-	return determineFeedStartTime(now, previousFeedStartTime)
+	return determineFeedStartTime(userId, now, previousFeedStartTime)
 		.then(startTime => {
 			if (storage.isAvailable()) {
 				storage.setFeedStartTime(startTime);

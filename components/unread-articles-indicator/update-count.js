@@ -1,11 +1,12 @@
 import {isAfter, parseISO} from 'date-fns';
 import * as storage from './storage';
 import countUnreadArticles from './count-unread-articles';
-import * as ui from './ui';
 import * as tracking from './tracking';
+import {
+	UPDATE_INTERVAL,
+	UPDATE_TIMEOUT
+} from './constants';
 
-const UPDATE_INTERVAL = 1000 * 60 * 5; // how often to get an update from the server.
-const UPDATE_TIMEOUT = 1000 * 60 * 10; // how long before we assume an update finished without tidying up.
 
 function latest ( a, b ) {
 	if( !a ) {
@@ -17,7 +18,7 @@ function latest ( a, b ) {
 	return isAfter(parseISO(a),parseISO(b)) ? a : b;
 }
 
-export default function update (now) {
+export default function updateCount (userId, now) {
 	const lastUpdate = storage.getLastUpdate();
 
 	const readyToUpdate =
@@ -35,21 +36,16 @@ export default function update (now) {
 		storage.updateLastUpdate({updateStarted: now});
 
 		const startTime = latest(storage.getFeedStartTime(), storage.getIndicatorDismissedTime());
-		return countUnreadArticles(startTime)
+		return countUnreadArticles(userId, startTime)
 			.then((count) => {
-
-				ui.setCount(count);
-
 				if (!lastUpdate || count !== lastUpdate.count) {
 					tracking.onCountChange(count, startTime);
 				}
-
 				storage.setLastUpdate({time: now, count, updateStarted: false});
 			})
 			.catch(() => storage.updateLastUpdate({updateStarted: false}));
 
 	} else {
-		ui.setCount(lastUpdate ? lastUpdate.count : 0);
 		return Promise.resolve();
 	}
 };

@@ -51,8 +51,12 @@ module.exports = function (karma) {
 						exclude: /node_modules\/(?!(@financial-times\/n-teaser|@financial-times\/n-display-metadata)\/).*/,
 						query: {
 							cacheDirectory: true,
-							presets: ['es2015'],
-							plugins: [['add-module-exports', { loose: true }], ['transform-es2015-classes', { loose: true }]]
+							presets: ['env'],
+							plugins: [
+								['transform-runtime'],
+								['add-module-exports', { loose: true }],
+								['transform-es2015-classes', { loose: true }]
+							]
 						}
 					},
 					// set 'this' scope to window

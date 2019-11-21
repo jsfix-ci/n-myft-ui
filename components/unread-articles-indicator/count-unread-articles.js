@@ -1,71 +1,28 @@
-import sessionClient from 'next-session-client';
 import {json as fetchJson} from 'fetchres';
 import {isAfter, parseISO} from 'date-fns';
-import squashWhitespace from './lib/squash-whitespace';
 
-const fetchContentFromPersonalisedFeed = uuid => {
-	if (!uuid) {
-		return Promise.resolve([]);
-	}
-
-	const url = `/__myft/api/onsite/feed/${uuid}?originatingSignals=followed&from=-24h&source=myft-ui`;
-	const options = {credentials: 'include'};
-
-	return fetch(url, options)
-		.then(fetchJson)
-		.then(body => body.results);
-};
-
-// read state in articlesFromReadingHistory will be delayed by up to ~1 minute
-const fetchReadingHistory = uuid => {
-	if (!uuid) {
-		return Promise.resolve([]);
-	}
-
-	const gqlQuery = `
-		query newMyFTContentSince($uuid: String!) {
-			user(uuid: $uuid) {
-				articlesFromReadingHistory {
-					articles {
-						id
-					}
-				}
-			}
-		}
-		`;
-	const variables = {uuid};
-	const url = `https://next-api.ft.com/v2/query?query=${squashWhitespace(gqlQuery)}&variables=${JSON.stringify(variables)}&source=next-myft`;
-	const options = {credentials: 'include'};
-
-	return fetch(url, options)
-		.then(fetchJson)
-		.then(body => body.data)
-		.then(data => data.user.articlesFromReadingHistory ? data.user.articlesFromReadingHistory.articles : [])
-		.catch(() => []);
-};
-
-const removeReadArticles = (allArticles, readArticles) =>
-	allArticles.reduce((unreadArticles, article) => {
-		if (readArticles.find(readArticle => article.id === readArticle.id)) {
-			return unreadArticles;
-		}
-		return unreadArticles.concat(article);
-	},
-	[]);
-
-const getUnreadArticles = (uuid) =>
-	Promise.all([fetchContentFromPersonalisedFeed(uuid), fetchReadingHistory(uuid)])
-		.then(([userFeedLast24Hours, readingHistory]) => removeReadArticles(userFeedLast24Hours, readingHistory));
-
-const filterRecent = (articles, startTime) => {
+export default async (userId, startTime) => {
 	if (typeof startTime === 'string') startTime = parseISO(startTime);
-	return articles.filter(
-		article => isAfter(parseISO(article.contentTimeStamp), startTime)
-	);
+
+	const articles = await fetchContentFromPersonalisedFeed(userId);
+	const unreadArticlesSinceLastVisit = articles
+		.filter(({userCompletion = -1}) => userCompletion < 1) // only include unread articles
+		.filter(({contentTimeStamp}) => isAfter(parseISO(contentTimeStamp), startTime)); // only include articles published since last visit
+
+	return unreadArticlesSinceLastVisit.length;
 };
 
-export default (startTime) =>
-	sessionClient.uuid()
-		.then(({uuid}) => getUnreadArticles(uuid))
-		.then(articles => filterRecent(articles, startTime))
-		.then(newArticles => newArticles.length);
+async function fetchContentFromPersonalisedFeed (userId) {
+
+	const searchParams = new URLSearchParams({
+		originatingSignals: 'followed',
+		from: '-1d',
+		source: 'myft-ui'
+	});
+
+	const res = await fetch(`/__myft/api/onsite/feed/${userId}?${searchParams.toString()}`, {
+		credentials: 'include'
+	});
+	const {results = []} = res.statusCode === 401 ? {} : await fetchJson(res);
+	return results;
+}
