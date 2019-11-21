@@ -1,9 +1,10 @@
 /* global expect */
 
 import fetchMock from 'fetch-mock';
-import sinon from 'sinon';
+import * as dateFns from 'date-fns';
 
 const START_TIME = new Date('2018-06-05T06:48:26.635Z');
+const userId = '00000000-0000-0000-0000-000000000000';
 
 const timestamps = {
 	BEFORE: '2018-06-04T06:48:26.635Z',
@@ -22,25 +23,12 @@ const articleGenerator = () => {
 		const count = counters[read][when]++;
 		return {
 			id: `${read}_${when}_${count}`,
-			contentTimeStamp: timestamps[when]
+			contentTimeStamp: timestamps[when],
+			userCompletion: read === 'READ' ? 1 : 0
 		};
 	};
 };
 
-const generateReadingHistory = articleGenerator();
-const mockReadingHistoryData = {
-	data: {
-		user: {
-			articlesFromReadingHistory: {
-				articles: [
-					{id: generateReadingHistory('READ', 'AFTER').id},
-					{id: generateReadingHistory('READ', 'BEFORE').id},
-					{id: generateReadingHistory('READ', 'AFTER').id}
-				]
-			}
-		}
-	}
-};
 
 const generateFeedArticle = articleGenerator();
 const mockPersonalisedFeedData = {
@@ -67,17 +55,14 @@ describe('count-unread-articles', () => {
 
 	const injector = require('inject-loader!../../components/unread-articles-indicator/count-unread-articles');
 	const countUnreadArticles = injector({
-		'next-session-client': {
-			uuid: sinon.stub().resolves({uuid: '00000000-0000-0000-0000-000000000000'})
-		},
+		'date-fns': dateFns
 	});
 
 	beforeEach(() => {
 		count = null;
-		fetchMock.get('begin:https://next-api.ft.com/v2/', mockReadingHistoryData);
 		fetchMock.get('begin:/__myft/api/onsite/feed/', mockPersonalisedFeedData);
 
-		return countUnreadArticles(START_TIME)
+		return countUnreadArticles(userId, START_TIME)
 			.then(resolvedValue => {
 				count = resolvedValue;
 			});

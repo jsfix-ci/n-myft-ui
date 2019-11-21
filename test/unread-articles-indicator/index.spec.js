@@ -20,9 +20,11 @@ describe('unread stories indicator', () => {
 		mockStorage = {
 			getFeedStartTime: sinon.stub().returns(FEED_START_TIME),
 			setFeedStartTime: sinon.stub(),
+			getLastUpdate: sinon.stub().returns({count: 22}),
 			updateLastUpdate: sinon.stub(),
 			isAvailable: sinon.stub().callsFake(() => isStorageAvailable),
-			setIndicatorDismissedTime: sinon.stub()
+			setIndicatorDismissedTime: sinon.stub(),
+			addCountChangeListeners: sinon.stub()
 		};
 		mockUi = {
 			createIndicators: sinon.stub(),
@@ -38,7 +40,7 @@ describe('unread stories indicator', () => {
 			},
 			'./storage': mockStorage,
 			'./ui': mockUi,
-			'./update': mockUpdate,
+			'./update-count': mockUpdate,
 			'./initialise-feed-start-time': mockInitialiseFeedStartTime
 		});
 	});
@@ -67,6 +69,16 @@ describe('unread stories indicator', () => {
 			it('should create ui indicators', () => {
 				expect(mockUi.createIndicators).to.have.been.calledOnce;
 			});
+
+			it('should set the ui indicators initial count', () => {
+				expect(mockUi.setCount).to.have.been.calledOnce;
+				expect(mockUi.setCount).to.have.been.calledWith(22);
+			});
+
+			it('should set a listener for storage changes', () => {
+				expect(mockStorage.addCountChangeListeners).to.have.been.calledOnce;
+			});
+
 
 			it('should handle clicks', () => {
 				const args = mockUi.createIndicators.firstCall.args;

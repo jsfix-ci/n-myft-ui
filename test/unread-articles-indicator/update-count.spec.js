@@ -7,6 +7,7 @@ const MOCK_NOW = new Date('2019-09-23T11:29:00Z');
 const MOCK_EARLIEST_CUTOFF_TIME = new Date('2019-09-22T00:00:00Z');
 const MOCK_OVERDUE_REFRESH_TIME = new Date('2019-09-23T11:23:59Z');
 const MOCK_UNDUE_REFRESH_TIME = new Date('2019-09-23T11:24:01Z');
+const USER_ID = '00000000-0000-0000-0000-000000000000';
 
 const mocks = {
 	countUnreadArticles: sinon.stub().resolves(MOCK_COUNT),
@@ -32,11 +33,10 @@ function resetMocks () {
 
 describe('update function', () => {
 
-	const injector = require('inject-loader!../../components/unread-articles-indicator/update');
-	const update = injector({
+	const injector = require('inject-loader!../../components/unread-articles-indicator/update-count');
+	const updateCount = injector({
 		'./storage': mockStorage,
 		'./count-unread-articles': mocks.countUnreadArticles,
-		'./ui': {setCount: mocks.setCount},
 		'./tracking': {onCountChange: mocks.onCountChange}
 	});
 
@@ -44,15 +44,11 @@ describe('update function', () => {
 		before( function () {
 			resetMocks();
 			mockStorage.lastUpdate = undefined;
-			return update(MOCK_NOW);
+			return updateCount(USER_ID, MOCK_NOW);
 		} );
 
 		it('checks for new articles', () => {
-			expect(mocks.countUnreadArticles).calledWith(MOCK_EARLIEST_CUTOFF_TIME);
-		});
-
-		it('updates the ui', () => {
-			expect(mocks.setCount).calledWith(MOCK_COUNT);
+			expect(mocks.countUnreadArticles).calledWith(USER_ID, MOCK_EARLIEST_CUTOFF_TIME);
 		});
 
 		it('marked an update as in progress', () => {
@@ -70,15 +66,11 @@ describe('update function', () => {
 		before( function () {
 			resetMocks();
 			mockStorage.lastUpdate = {time: MOCK_OVERDUE_REFRESH_TIME};
-			return update(MOCK_NOW);
+			return updateCount(USER_ID, MOCK_NOW);
 		} );
 
 		it('checks for new articles', () => {
-			expect(mocks.countUnreadArticles).calledWith(MOCK_EARLIEST_CUTOFF_TIME);
-		});
-
-		it('updates the ui', () => {
-			expect(mocks.setCount).calledWith(MOCK_COUNT);
+			expect(mocks.countUnreadArticles).calledWith(USER_ID, MOCK_EARLIEST_CUTOFF_TIME);
 		});
 
 		it('updates the local storage', () => {
@@ -99,15 +91,11 @@ describe('update function', () => {
 		before( function () {
 			resetMocks();
 			mockStorage.lastUpdate = lastUpdate;
-			return update(MOCK_NOW);
+			return updateCount(USER_ID, MOCK_NOW);
 		} );
 
 		it('does not check for new articles', () => {
 			expect(mocks.countUnreadArticles.notCalled).equal(true,'Unexpected call to countUnreadArticles()');
-		});
-
-		it('updates the ui with the current value', () => {
-			expect(mocks.setCount).calledWith(MOCK_PREVIOUS_COUNT);
 		});
 
 		it('did not mark an update as in progress', () => {
@@ -120,11 +108,16 @@ describe('update function', () => {
 	});
 
 	context('when an update fails', () => {
-		before( () => {
+		let err;
+		before( async () => {
 			resetMocks();
-			mocks.countUnreadArticles.rejects('boom');
+			mocks.countUnreadArticles.rejects(new Error('boom'));
 			mockStorage.lastUpdate = undefined;
-			return update(MOCK_NOW);
+			try {
+				await updateCount(USER_ID, MOCK_NOW);
+			} catch(e) {
+				err = e;
+			}
 		} );
 
 		after( () => {
@@ -135,12 +128,12 @@ describe('update function', () => {
 			expect(mockStorage._setLastUpdate.firstCall.args[0].updateStarted.toISOString()).equal(MOCK_NOW.toISOString());
 		});
 
-		it('doesn\'t update the ui', () => {
-			expect(mocks.setCount.notCalled).equal(true,'Unexpected call to ui.setCount()');
-		});
-
 		it('doesn\'t block further updates', () => {
 			expect(mockStorage.lastUpdate.updateStarted).equal(false);
+		});
+
+		it('should throw an error', () => {
+			expect(err.message).to.equal('boom');
 		});
 	});
 
@@ -148,15 +141,11 @@ describe('update function', () => {
 		before( function () {
 			resetMocks();
 			mockStorage.lastUpdate = {time: MOCK_OVERDUE_REFRESH_TIME, count: MOCK_PREVIOUS_COUNT, updateStarted: MOCK_OVERDUE_REFRESH_TIME};
-			return update(MOCK_NOW);
+			return updateCount(USER_ID, MOCK_NOW);
 		} );
 
 		it('does not check for new articles', () => {
 			expect(mocks.countUnreadArticles.notCalled).equal(true,'Unexpected call to countUnreadArticles()');
-		});
-
-		it('updates the ui with the current value', () => {
-			expect(mocks.setCount).calledWith(MOCK_PREVIOUS_COUNT);
 		});
 
 		it('does not touch local storage', () => {

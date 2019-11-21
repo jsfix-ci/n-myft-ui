@@ -18,6 +18,7 @@ const VISIT_TIME_TODAY = new Date('2018-03-05T14:00:00Z');
 const VISIT_TIME_YESTERDAY = new Date('2018-03-04T14:00:00Z');
 const FEED_TIME_TODAY = new Date('2018-03-05T12:00:00Z');
 const FEED_TIME_YESTERDAY = new Date('2018-03-04T12:00:00Z');
+const USER_ID = '00000000-0000-0000-0000-000000000000';
 
 const mockSetFeedStartTime = sinon.stub();
 
@@ -29,9 +30,6 @@ describe('initialiseFeedStartTime', () => {
 	const injector = require('inject-loader!../../components/unread-articles-indicator/initialise-feed-start-time');
 	const initialiseFeedStartTime = injector({
 		'date-fns': mockDateFns,
-		'next-session-client': {
-			uuid: sinon.stub().resolves({uuid: '00000000-0000-0000-0000-000000000000'})
-		},
 		'./device-session': () => ({ isNewSession: () => isNewSession }),
 		'./storage': {
 			setFeedStartTime: mockSetFeedStartTime,
@@ -43,7 +41,9 @@ describe('initialiseFeedStartTime', () => {
 	const expectStartTime = startTime => expect(mockSetFeedStartTime.firstCall.args[0].toISOString()).equal(startTime.toISOString());
 
 	before(() => {
-		fetchMock.get('begin:https://next-api.ft.com/v2/', ()=>({body: {data: {user: {lastSeenTimestamp: lastVisitTime.toISOString()}}}}));
+		fetchMock.get(`begin:/__myft/users/${USER_ID}/last-seen`, () => ({
+			lastSeen: lastVisitTime && lastVisitTime.toISOString()
+		}));
 	});
 	after(() => {
 		fetchMock.restore();
@@ -57,7 +57,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = VISIT_TIME_TODAY;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to visit time', () => {
 				expectStartTime(VISIT_TIME_TODAY);
@@ -67,7 +67,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = VISIT_TIME_YESTERDAY;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to start of today', () => {
 				expectStartTime(START_OF_TODAY);
@@ -77,7 +77,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = undefined;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to start of today', () => {
 				expectStartTime(START_OF_TODAY);
@@ -92,7 +92,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = VISIT_TIME_TODAY;
-				return initialiseFeedStartTime();
+				return initialiseFeedStartTime(USER_ID, );
 			});
 			it('sets start time to previous feed start time', () => {
 				expectStartTime(FEED_TIME_TODAY);
@@ -109,7 +109,7 @@ describe('initialiseFeedStartTime', () => {
 				before(() => {
 					mockSetFeedStartTime.resetHistory();
 					lastVisitTime = VISIT_TIME_TODAY;
-					return initialiseFeedStartTime(TIME_NOW);
+					return initialiseFeedStartTime(USER_ID, TIME_NOW);
 				});
 				it('sets start time to visit time', () => {
 					expectStartTime(VISIT_TIME_TODAY);
@@ -119,7 +119,7 @@ describe('initialiseFeedStartTime', () => {
 				before(() => {
 					mockSetFeedStartTime.resetHistory();
 					lastVisitTime = VISIT_TIME_YESTERDAY;
-					return initialiseFeedStartTime(TIME_NOW);
+					return initialiseFeedStartTime(USER_ID, TIME_NOW);
 				});
 				it('sets start time to start of today', () => {
 					expectStartTime(START_OF_TODAY);
@@ -129,7 +129,7 @@ describe('initialiseFeedStartTime', () => {
 				before(() => {
 					mockSetFeedStartTime.resetHistory();
 					lastVisitTime = undefined;
-					return initialiseFeedStartTime(TIME_NOW);
+					return initialiseFeedStartTime(USER_ID, TIME_NOW);
 				});
 				it('sets start time to start of today', () => {
 					expectStartTime(START_OF_TODAY);
@@ -145,7 +145,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = VISIT_TIME_TODAY;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to visit time', () => {
 				expectStartTime(VISIT_TIME_TODAY);
@@ -155,7 +155,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = VISIT_TIME_YESTERDAY;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to start of today', () => {
 				expectStartTime(START_OF_TODAY);
@@ -165,7 +165,7 @@ describe('initialiseFeedStartTime', () => {
 			before(() => {
 				mockSetFeedStartTime.resetHistory();
 				lastVisitTime = undefined;
-				return initialiseFeedStartTime(TIME_NOW);
+				return initialiseFeedStartTime(USER_ID, TIME_NOW);
 			});
 			it('sets start time to start of today', () => {
 				expectStartTime(START_OF_TODAY);
