@@ -108,11 +108,16 @@ describe('update function', () => {
 	});
 
 	context('when an update fails', () => {
-		before( () => {
+		let err;
+		before( async () => {
 			resetMocks();
-			mocks.countUnreadArticles.rejects('boom');
+			mocks.countUnreadArticles.rejects(new Error('boom'));
 			mockStorage.lastUpdate = undefined;
-			return updateCount(USER_ID, MOCK_NOW);
+			try {
+				await updateCount(USER_ID, MOCK_NOW);
+			} catch(e) {
+				err = e;
+			}
 		} );
 
 		after( () => {
@@ -125,6 +130,10 @@ describe('update function', () => {
 
 		it('doesn\'t block further updates', () => {
 			expect(mockStorage.lastUpdate.updateStarted).equal(false);
+		});
+
+		it('should throw an error', () => {
+			expect(err.message).to.equal('boom');
 		});
 	});
 

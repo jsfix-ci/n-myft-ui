@@ -6,62 +6,82 @@ import initialiseFeedStartTime from './initialise-feed-start-time';
 import sessionClient from 'next-session-client';
 import {UPDATE_INTERVAL} from './constants';
 
+let shouldPoll;
+let updateTimeout;
 let initialFeedStartTime;
 let userId;
 
-const assertValidSession = async () => {
-	const {uuid} = await sessionClient.uuid();
-	userId = uuid;
-	if (!userId) throw new Error('No userId');
-	return userId;
-};
-
-async function updater () {
-	await updateCount(new Date());
-	window.setTimeout(() => assertValidSession().then(updater), UPDATE_INTERVAL);
-}
-const uiOnClick = () => {
-	storage.updateLastUpdate({count: 0, time: new Date()});
-	storage.setIndicatorDismissedTime(new Date());
-};
-
-const onVisibilityChange = () => {
-	if (document.visibilityState !== 'visible') return;
-	assertValidSession()
-		.then(getNewArticlesSinceTime)
-		.then(() => updateCount(userId, new Date()));
-};
-
-// Export used in next-myft -page to determine whether to add "New" label to articles in feed
-export async function getNewArticlesSinceTime (userId) {
-	const dayStart = startOfDay(new Date());
-
-	if (!initialFeedStartTime && storage.isAvailable()) {
-		try {
-			initialFeedStartTime = await initialiseFeedStartTime(userId, new Date());
-		} catch(e) {}
-	}
-
-	return initialFeedStartTime || dayStart;
-}
+const doUpdate = () => updater().catch(stopPolling);
 
 export default async (options = {}) => {
 	if (!storage.isAvailable()) return;
 
 	const myftHeaderLink = document.querySelectorAll('.o-header__top-link--myft');
 	const uiOpts = Object.assign({onClick: uiOnClick, flags: {}}, options);
-	const {myftNewUnreadIndicatorPolling} = uiOpts;
-	userId = await assertValidSession();
+	shouldPoll = uiOpts.flags.myftNewUnreadIndicatorPolling;
 
-	await getNewArticlesSinceTime(userId);
+	await getNewArticlesSinceTime();
+
 	const {count = 0} = storage.getLastUpdate() || {};
-	ui.createIndicators(myftHeaderLink,uiOpts);
+	ui.createIndicators(myftHeaderLink, uiOpts);
 	ui.setCount(count);
+
+	document.addEventListener('visibilitychange', onVisibilityChange);
 	storage.addCountChangeListeners(newCount => ui.setCount(newCount));
-	if (myftNewUnreadIndicatorPolling) {
-		return updater(userId);
-	} else {
-		await updateCount(userId, new Date());
-		document.addEventListener('visibilitychange', onVisibilityChange);
-	}
+
+	return updater();
 };
+
+async function getValidSession () {
+	if (!userId) {
+		const {uuid} = await sessionClient.uuid();
+		if (!uuid) throw new Error('No userId');
+		userId = uuid;
+	}
+	return userId;
+}
+
+// Export used in next-myft -page to determine whether to add "New" label to articles in feed
+export async function getNewArticlesSinceTime () {
+	const user = await getValidSession();
+	const dayStart = startOfDay(new Date());
+
+	if (!initialFeedStartTime && storage.isAvailable()) {
+		try {
+			initialFeedStartTime = await initialiseFeedStartTime(user, new Date());
+		} catch(e) {}
+	}
+
+	return initialFeedStartTime || dayStart;
+}
+
+async function updater () {
+	const user = await getValidSession();
+	await updateCount(user, new Date());
+	if (!shouldPoll) return;
+	updateTimeout = window.setTimeout(doUpdate, UPDATE_INTERVAL);
+}
+
+async function onVisibilityChange () {
+	if (document.visibilityState !== 'visible') return;
+	try {
+		await getValidSession();
+		await getNewArticlesSinceTime();
+		if (updateTimeout) window.clearTimeout(updateTimeout);
+		await updater();
+	} catch(e) {
+		stopPolling();
+	}
+}
+
+function stopPolling () {
+	userId = undefined;
+	if (updateTimeout) {
+		window.clearTimeout(updateTimeout);
+	}
+}
+
+function uiOnClick () {
+	storage.updateLastUpdate({count: 0, time: new Date()});
+	storage.setIndicatorDismissedTime(new Date());
+}

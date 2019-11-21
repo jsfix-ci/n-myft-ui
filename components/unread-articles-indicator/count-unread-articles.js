@@ -23,6 +23,6 @@ async function fetchContentFromPersonalisedFeed (userId) {
 	const res = await fetch(`/__myft/api/onsite/feed/${userId}?${searchParams.toString()}`, {
 		credentials: 'include'
 	});
-	const {results = []} = res.statusCode === 401 ? {} : await fetchJson(res);
+	const {results = []} = await fetchJson(res);
 	return results;
 }
