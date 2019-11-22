@@ -1,7 +1,8 @@
 /* global expect */
 
 import fetchMock from 'fetch-mock';
-import * as dateFns from 'date-fns';
+import isAfter from 'date-fns/src/isAfter';
+import parseISO from 'date-fns/src/parseISO';
 
 const START_TIME = new Date('2018-06-05T06:48:26.635Z');
 const userId = '00000000-0000-0000-0000-000000000000';
@@ -55,7 +56,8 @@ describe('count-unread-articles', () => {
 
 	const injector = require('inject-loader!../../components/unread-articles-indicator/count-unread-articles');
 	const countUnreadArticles = injector({
-		'date-fns': dateFns
+		'date-fns/src/isAfter': isAfter,
+		'date-fns/src/parseISO': parseISO
 	});
 
 	beforeEach(() => {

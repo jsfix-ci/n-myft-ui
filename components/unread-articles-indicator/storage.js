@@ -1,4 +1,4 @@
-import { isValid } from 'date-fns';
+import isValid from 'date-fns/src/isValid';
 
 const DEVICE_SESSION_EXPIRY = 'deviceSessionExpiry';
 const FEED_START_TIME = 'newArticlesSinceTime';
