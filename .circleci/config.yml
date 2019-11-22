@@ -115,12 +115,8 @@ jobs:
     steps:
       - *attach_workspace
       - run:
-          name: shared-helper / npm-store-auth-token
-          command: .circleci/shared-helpers/helper-npm-store-auth-token
-      - run: npx snyk monitor --org=customer-products --project-name=Financial-Times/n-myft-ui
-      - run:
-          name: shared-helper / npm-version-and-publish-public
-          command: .circleci/shared-helpers/helper-npm-version-and-publish-public
+          name: Just informational
+          command: echo "This project is only published to bower not npm."
 
   deploy:
     <<: *container_config_node8
