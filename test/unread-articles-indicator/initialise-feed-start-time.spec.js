@@ -29,7 +29,8 @@ describe('initialiseFeedStartTime', () => {
 	let lastVisitTime;
 	const injector = require('inject-loader!../../components/unread-articles-indicator/initialise-feed-start-time');
 	const initialiseFeedStartTime = injector({
-		'date-fns': mockDateFns,
+		'date-fns/src/isToday': mockDateFns.isToday,
+		'date-fns/src/startOfDay': mockDateFns.startOfDay,
 		'./device-session': () => ({ isNewSession: () => isNewSession }),
 		'./storage': {
 			setFeedStartTime: mockSetFeedStartTime,
