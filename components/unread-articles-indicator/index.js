@@ -14,22 +14,26 @@ let userId;
 const doUpdate = () => updater().catch(stopPolling);
 
 export default async (options = {}) => {
-	if (!storage.isAvailable()) return;
+	try {
+		if (!storage.isAvailable()) return;
 
-	const myftHeaderLink = document.querySelectorAll('.o-header__top-link--myft');
-	const uiOpts = Object.assign({onClick: uiOnClick, flags: {}}, options);
-	shouldPoll = uiOpts.flags.myftNewUnreadIndicatorPolling;
+		const myftHeaderLink = document.querySelectorAll('.o-header__top-link--myft');
+		const uiOpts = Object.assign({onClick: uiOnClick, flags: {}}, options);
+		shouldPoll = uiOpts.flags.myftNewUnreadIndicatorPolling;
 
-	await getNewArticlesSinceTime();
+		await getNewArticlesSinceTime();
 
-	const {count = 0} = storage.getLastUpdate() || {};
-	ui.createIndicators(myftHeaderLink, uiOpts);
-	ui.setCount(count);
+		const {count = 0} = storage.getLastUpdate() || {};
+		ui.createIndicators(myftHeaderLink, uiOpts);
+		ui.setCount(count);
 
-	document.addEventListener('visibilitychange', onVisibilityChange);
-	storage.addCountChangeListeners(newCount => ui.setCount(newCount));
+		document.addEventListener('visibilitychange', onVisibilityChange);
+		storage.addCountChangeListeners(newCount => ui.setCount(newCount));
 
-	return updater();
+		return updater();
+	} catch(e) {
+
+	}
 };
 
 async function getValidSession () {
