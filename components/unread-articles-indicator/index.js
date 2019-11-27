@@ -19,7 +19,7 @@ export default async (options = {}) => {
 
 		const myftHeaderLink = document.querySelectorAll('.o-header__top-link--myft');
 		const uiOpts = Object.assign({onClick: uiOnClick, flags: {}}, options);
-		shouldPoll = uiOpts.flags.myftNewUnreadIndicatorPolling;
+		shouldPoll = uiOpts.flags.MyFT_UnreadArticlesIndicatorPolling;
 
 		await getNewArticlesSinceTime();
 
