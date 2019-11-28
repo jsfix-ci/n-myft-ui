@@ -11,7 +11,11 @@
 }
 
 .collection--regular {
+<<<<<<< HEAD
 	background: getColor('claret-70');
+=======
+	background: oColorsByName("claret-70");
+>>>>>>> 785973a... Partially fix conflicts with Origami mixins 🐿 v2.12.5
 
 	@include oGridRespondTo(M) {
 		height: 100%;
@@ -19,8 +23,13 @@
 }
 
 .collection--lite {
+<<<<<<< HEAD
 	background: getColor('white-40');
 	border: 1px solid getColor('black-5');
+=======
+	background: oColorsByName("white-40");
+	border: 1px solid oColorsByName("black-5");
+>>>>>>> 785973a... Partially fix conflicts with Origami mixins 🐿 v2.12.5
 	padding-top: 18px;
 }
 
@@ -30,11 +39,11 @@
 }
 
 .collection__header--regular {
-	color: getColor('white');
+	color: oColorsByName("white");
 }
 
 .collection__header--lite {
-	color: getColor('black');
+	color: oColorsByName("black");
 }
 
 .collection__title {

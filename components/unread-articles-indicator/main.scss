@@ -12,9 +12,9 @@ $circle-radius-mobile: 8px;
 	right: -7px;
 	border-radius: 15px;
 	padding: 0 5px;
-	background-color: oColorsGetPaletteColor('teal');
-	color: oColorsGetPaletteColor('white');
-	@include oTypographySansBold(-1);
+	background-color: oColorsByName("teal");
+	color: oColorsByName("white");
+	@include oTypographySansBold($scale: -1, $weight: "semibold");
 }
 
 .myft__indicator {
@@ -23,8 +23,8 @@ $circle-radius-mobile: 8px;
 	top: 18px;
 	right: -3px;
 
-	border: 1px solid oColorsGetPaletteColor('paper');
-	background-color: oColorsGetPaletteColor('claret');
+	border: 1px solid oColorsByName("paper");
+	background-color: oColorsByName("claret");
 
 	font-family: MetricWeb, sans-serif;
 	vertical-align: middle;
@@ -44,7 +44,11 @@ $circle-radius-mobile: 8px;
 	&.myft__indicator--single-digit {
 		top: 16px;
 		right: -6px;
+<<<<<<< HEAD
 		color: oColorsGetPaletteColor('white');
+=======
+		color: oColorsByName("white");
+>>>>>>> 785973a... Partially fix conflicts with Origami mixins 🐿 v2.12.5
 		line-height: $circle-radius-mobile-single-digit;
 		border-radius: $circle-radius-mobile-single-digit;
 		width: $circle-radius-mobile-single-digit;
@@ -53,7 +57,11 @@ $circle-radius-mobile: 8px;
 	@include oGridRespondTo(M) {
 		top: 16px;
 		right: -8px;
+<<<<<<< HEAD
 		color: oColorsGetPaletteColor('white');
+=======
+		color: oColorsByName("white");
+>>>>>>> 785973a... Partially fix conflicts with Origami mixins 🐿 v2.12.5
 		line-height: $circle-radius-desktop;
 		border-radius: $circle-radius-desktop;
 		width: $circle-radius-desktop;

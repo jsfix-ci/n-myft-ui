@@ -8,9 +8,9 @@ $icon-width-m: 90px;
 	display: none;
 	float: none;
 	position: relative;
-	background-color: getColor('white-60');
-	border-bottom: 1px solid getColor('black-20');
-	border-top: 1px solid getColor('black-20');
+	background-color: oColorsByName("white-60");
+	border-bottom: 1px solid oColorsByName("black-20");
+	border-top: 1px solid oColorsByName("black-20");
 	margin-bottom: 20px;
 }
 
@@ -36,7 +36,12 @@ $icon-width-m: 90px;
 	width: 22px;
 
 	&::before {
-		@include oIconsGetIcon('cross', getColor('black-80'), 20, $iconset-version: 1);
+		@include oIconsContent(
+			"cross",
+			oColorsByName("black-80"),
+			20,
+			$iconset-version: 1
+		);
 		position: absolute;
 		top: 0;
 		right: 0;

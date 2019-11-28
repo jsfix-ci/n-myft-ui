@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "commit-wizard",
-    "precommit": "node_modules/.bin/secret-squirrel",
-    "prepush": "make verify -j3",
-    "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
-    "prepare": "npx snyk protect || npx snyk protect -d || true"
+    "prepare": "npx snyk protect || npx snyk protect -d || true",
+    "precommit": "secret-squirrel",
+    "commitmsg": "secret-squirrel-commitmsg",
+    "prepush": "make verify -j3"
   },
   "repository": {
     "type": "git",

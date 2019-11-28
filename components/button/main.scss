@@ -4,7 +4,7 @@
 	@include oButtons();
 
 	&:focus {
-		outline: 3px solid getColor('teal-40');
+		outline: 3px solid oColorsByName("teal-40");
 		outline-offset: 3px;
 	}
 }
@@ -24,8 +24,13 @@
 .n-myft-ui__save-button-with-icon {
 	$icon-size: 38px;
 
-	@include oIconsGetIcon('bookmark-outline', oColorsGetPaletteColor('black'), $icon-size, $iconset-version: 1);
-	color: oColorsGetPaletteColor('black');
+	@include oIconsContent(
+		"bookmark-outline",
+		oColorsByName("black"),
+		$icon-size,
+		$iconset-version: 1
+	);
+	color: oColorsByName("black");
 	background-position: 0 0;
 	border: 0;
 	min-height: $icon-size;
@@ -41,13 +46,23 @@
 	}
 
 	&:not([disabled]):hover {
-		@include oIconsGetIcon('bookmark', oColorsGetPaletteColor('black-50'), $icon-size, $iconset-version: 1);
+		@include oIconsContent(
+			"bookmark",
+			oColorsByName("black-50"),
+			$icon-size,
+			$iconset-version: 1
+		);
 		background-position: 0 0;
 	}
 
-	&[aria-selected=true],
-	&[aria-pressed=true] {
-		@include oIconsGetIcon('bookmark', oColorsGetPaletteColor('claret'), $icon-size, $iconset-version: 1);
+	&[aria-selected="true"],
+	&[aria-pressed="true"] {
+		@include oIconsContent(
+			"bookmark",
+			oColorsByName("claret"),
+			$icon-size,
+			$iconset-version: 1
+		);
 		background-position: 0 0;
 	}
 }

@@ -15,7 +15,7 @@
 			content: ' ';
 			position: absolute;
 			display: block;
-			background-color: getColor('teal');
+			background-color: oColorsByName('teal');
 			top: 0;
 			right: 0;
 			height: 100%;
