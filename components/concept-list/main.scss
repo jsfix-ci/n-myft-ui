@@ -13,7 +13,9 @@
 }
 
 .concept-list__list {
-	@include oTypographyMargin($top: 7, $bottom: 10);
+	// TODO validate metrics
+	// @include oTypographyMargin($top: 7, $bottom: 10);
+	margin: oSpacingByName("s6") 0 oSpacingByName("m12");
 	padding: 0;
 }
 
@@ -38,7 +40,8 @@
 	// TODO replace
 	// @include oTypographyTopic;
 	@include oTypographySans(0);
-	margin: oSpacing("s1") 0;
+	margin: oSpacingByName("s1") 0;
+	text-decoration: none;
 	color: oColorsByName('black');
 
 	&:hover {

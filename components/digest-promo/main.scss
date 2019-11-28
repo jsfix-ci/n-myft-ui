@@ -3,6 +3,9 @@
 $icon-width-s: 90px;
 $icon-width-m: 90px;
 
+// TODO Remove below
+$spacing-unit: 20px;
+
 .n-myft-digest-promo {
 	@include oNormaliseClearfix;
 	display: none;

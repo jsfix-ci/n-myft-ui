@@ -1,3 +1,5 @@
+$system-code: "REMOVEME";
+
 @import "n-notification/main";
 @import "o-buttons/main";
 @import "o-editorial-typography/main";
@@ -20,6 +22,9 @@ $o-overlay-is-silent: false !default;
 @import '../components/pin-button/main';
 @import '../components/instant-alert/main';
 @import '../components/instant-alerts-confirmation/main';
+
+// TODO Fix below
+$spacing-unit: 20px;
 
 .myft-ui,
 .n-myft-ui {
@@ -108,8 +113,10 @@ $o-overlay-is-silent: false !default;
 //Specificity war with Origami
 .mypage .myft-list-form__message,
 .o-overlay .myft-list-form__message {
-	@include oFormsMessage();
-	background: getColor('paper');
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsMessage();
+
+	background: oColorsByName("paper");
 	border-radius: 0;
 	margin: 3px 0 0;
 	padding: $spacing-unit 20px;
@@ -204,12 +211,20 @@ $o-overlay-is-silent: false !default;
 
 @include oGridRespondTo($until: S) {
 	.o-overlay--myft-ui {
-		@include oOverlayFullscreen($fill: 'width');
-		@include oOverlayFullscreen($fill: 'height');
-		@include nUiZIndexFor('overlay');
+		@include oOverlay(
+			$opts: (
+				"variants": (
+					"compact"
+				)
+			)
+		);
+
+		// TODO Fix and restore
+		// @include nUiZIndexFor("overlay");
 	}
 
 	.o-overlay-shadow {
-		@include nUiZIndexFor('overlay');
+		// TODO Fix and restore
+		// @include nUiZIndexFor("overlay");
 	}
 }
