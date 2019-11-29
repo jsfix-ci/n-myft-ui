@@ -42,7 +42,7 @@
 
 @mixin myftLozenge($theme: standard, $with-toggle-icon: false) {
 	@include myftLozengeTheme($theme, $with-toggle-icon);
-	@include oTypographySansBold($scale: -1);
+	@include oTypographySans($weight: 'semibold', $scale: -1);
 
 	border-radius: 100px;
 	box-sizing: content-box;

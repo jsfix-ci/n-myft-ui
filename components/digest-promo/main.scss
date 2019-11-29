@@ -81,7 +81,7 @@ $spacing-unit: 20px;
 }
 
 .n-myft-digest-promo__heading {
-	@include oTypographySansBold($scale: 2);
+	@include oTypographySans($weight: 'semibold', $scale: 2);
 
 	margin-top: 0;
 	margin-bottom: 7px;

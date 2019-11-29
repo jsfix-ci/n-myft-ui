@@ -4,13 +4,14 @@
 	@include oButtonsContent();
 
 	&:focus {
-		outline: 3px solid oColorsByName("teal-40");
+		outline: 3px solid oColorsByName('teal-40');
 		outline-offset: 3px;
 	}
 }
 
 .n-myft-ui__button--inverse {
-	@include oButtonsTheme(inverse);
+	// TODO fix this
+	// @include oButtonsGetColor($theme: 'inverse');
 }
 
 .n-myft-ui__button--viewport-large {
@@ -25,12 +26,12 @@
 	$icon-size: 38px;
 
 	@include oIconsContent(
-		"bookmark-outline",
-		oColorsByName("black"),
+		'bookmark-outline',
+		oColorsByName('black'),
 		$icon-size,
 		$iconset-version: 1
 	);
-	color: oColorsByName("black");
+	color: oColorsByName('black');
 	background-position: 0 0;
 	border: 0;
 	min-height: $icon-size;
@@ -47,19 +48,19 @@
 
 	&:not([disabled]):hover {
 		@include oIconsContent(
-			"bookmark",
-			oColorsByName("black-50"),
+			'bookmark',
+			oColorsByName('black-50'),
 			$icon-size,
 			$iconset-version: 1
 		);
 		background-position: 0 0;
 	}
 
-	&[aria-selected="true"],
-	&[aria-pressed="true"] {
+	&[aria-selected='true'],
+	&[aria-pressed='true'] {
 		@include oIconsContent(
-			"bookmark",
-			oColorsByName("claret"),
+			'bookmark',
+			oColorsByName('claret'),
 			$icon-size,
 			$iconset-version: 1
 		);

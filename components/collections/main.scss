@@ -11,7 +11,7 @@
 }
 
 .collection--regular {
-	background: oColorsByName("claret-70");
+	background: oColorsByName('claret-70');
 
 	@include oGridRespondTo(M) {
 		height: 100%;
@@ -19,8 +19,8 @@
 }
 
 .collection--lite {
-	background: oColorsByName("white-40");
-	border: 1px solid oColorsByName("black-5");
+	background: oColorsByName('white-40');
+	border: 1px solid oColorsByName('black-5');
 	padding-top: 18px;
 }
 
@@ -30,24 +30,24 @@
 }
 
 .collection__header--regular {
-	color: oColorsByName("white");
+	color: oColorsByName('white');
 }
 
 .collection__header--lite {
-	color: oColorsByName("black");
+	color: oColorsByName('black');
 }
 
 .collection__title {
-	@include oTypographySansBold($scale: 1, $progressive: true);
+	@include oTypographySans($weight: 'semibold', $scale: 1);
 	margin: 0;
 }
 
 .collection__concepts {
 	@include oTypographySans($scale: 1);
-	@include oTypographyPadding($top: 4, $bottom: 0);
+
 	margin: 0;
 	margin-left: -3px;
-	padding: oSpacingByName("s4") 0 0;
+	padding: oSpacingByName('s4') 0 0;
 
 	flex-grow: 1;
 	list-style: none;
@@ -58,7 +58,7 @@
 }
 
 .collection__meta {
-	padding-top: oSpacingByName("s4");
+	padding-top: oSpacingByName('s4');
 
 	.n-myft-follow-button {
 		margin: 0;
@@ -70,13 +70,21 @@
 }
 
 .collection-follow-all__button--regular {
-	@include oButtonsTheme($theme: (
-		background: 'claret-70',
-		accent: 'white',
-		colorizer: 'primary'
-	));
+	@include oButtonsContent(
+		$opts: (
+			theme: (
+				background: 'claret-70',
+				accent: 'white',
+				colorizer: 'primary'
+			)
+		)
+	);
 }
 
 .collection-follow-all__button--lite {
-	@include oButtons($theme: primary);
+	@include oButtonsContent(
+		$opts: (
+			theme: 'primary'
+		)
+	);
 }

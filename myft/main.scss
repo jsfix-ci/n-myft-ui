@@ -1,24 +1,19 @@
-$system-code: "REMOVEME";
-
-@import "n-notification/main";
-@import "o-buttons/main";
-@import "o-editorial-typography/main";
-@import "o-forms/main";
-@import "o-overlay/main";
-@import "o-spacing/main";
-
-$o-forms-is-silent: false;
+@import 'o-normalise/main';
+@import 'o-colors/main';
+@import 'o-grid/main';
+@import 'o-icons/main';
+@import 'o-buttons/main';
+@import 'o-editorial-typography/main';
 @import 'o-forms/main';
+@import 'o-overlay/main';
+@import 'o-spacing/main';
 
 $n-notification-is-silent: false !default;
 @import 'n-notification/main';
 
-$o-overlay-is-silent: false !default;
-@import 'o-overlay/main';
-
 @import './ui/myft-buttons/main';
 @import './ui/lists';
-@import "../components/header-tooltip/main";
+@import '../components/header-tooltip/main';
 @import '../components/pin-button/main';
 @import '../components/instant-alert/main';
 @import '../components/instant-alerts-confirmation/main';
@@ -37,8 +32,13 @@ $spacing-unit: 20px;
 // 'unfollow' button
 .myft-ui__button--manage,
 .myft-ui__button--myft-manage {
-	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
+	&[aria-pressed='true']::before {
+		@include oIconsContent(
+			'cross',
+			oColorsByName('white'),
+			28,
+			$iconset-version: 1
+		);
 	}
 }
 
@@ -47,7 +47,8 @@ $spacing-unit: 20px;
 }
 
 .n-myft-ui__error-message {
-	@include oFormsErrorText();
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsErrorText();
 }
 
 .n-myft-ui__error-message.n-myft-ui__error-message--no-name {
@@ -66,7 +67,9 @@ $spacing-unit: 20px;
 		display: flex;
 	}
 
-	.o-overlay__content & { margin-bottom: 0; }
+	.o-overlay__content & {
+		margin-bottom: 0;
+	}
 }
 
 .myft-list-form {
@@ -84,16 +87,19 @@ $spacing-unit: 20px;
 }
 
 .myft-list-form__label {
-	@include oFormsLabel();
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsLabel();
 }
 
 .myft-list-form__input {
-	@include oFormsCommonFieldBase();
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsCommonFieldBase();
 }
 
 .myft-list-form__select {
-	@include oFormsCommonFieldBase();
-	@include oFormsSelect();
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsCommonFieldBase();
+	// @include oFormsSelect();
 	@include oGridRespondTo($until: M) {
 		max-width: 478px;
 	}
@@ -103,7 +109,8 @@ $spacing-unit: 20px;
 }
 
 .myft-list-form__textarea {
-	@include oFormsTextarea();
+	// TODO Update markup and use standard oForms mixins
+	// @include oFormsTextarea();
 }
 
 .myft-list-form__button {
@@ -116,13 +123,13 @@ $spacing-unit: 20px;
 	// TODO Update markup and use standard oForms mixins
 	// @include oFormsMessage();
 
-	background: oColorsByName("paper");
+	background: oColorsByName('paper');
 	border-radius: 0;
 	margin: 3px 0 0;
 	padding: $spacing-unit 20px;
 
 	h3 {
-		@include oTypographySansBold($scale: 2);
+		@include oTypographySans($scale: 2, $weight: 'semibold');
 		margin: 0 5px 0 0;
 	}
 
@@ -142,7 +149,7 @@ $spacing-unit: 20px;
 }
 
 .o-overlay .myft-list-form__message {
-	border-top: 1px solid getColor('black-20');
+	border-top: 1px solid oColorsByName('black-20');
 	margin: 0 -20px;
 
 	&:first-child {
@@ -153,10 +160,15 @@ $spacing-unit: 20px;
 
 .myft-list-form__message--success {
 	h3 {
-		color: getColor('jade');
+		color: oColorsByName('jade');
 
 		&::before {
-			@include oIconsGetIcon('tick', getColor('jade'), 14, $iconset-version: 1);
+			@include oIconsContent(
+				'tick',
+				oColorsByName('jade'),
+				14,
+				$iconset-version: 1
+			);
 			content: '';
 			margin-right: 3px;
 		}
@@ -179,7 +191,7 @@ $spacing-unit: 20px;
 	&::after {
 		content: '';
 		display: block;
-		border-top: 1px solid getColor('black-20');
+		border-top: 1px solid oColorsByName('black-20');
 		margin-top: -10px;
 
 		@include oGridRespondTo(M) {
@@ -190,31 +202,30 @@ $spacing-unit: 20px;
 			margin-top: 0;
 			margin-left: -18px;
 			border-top: 0;
-			border-left: 1px solid getColor('black-20');
+			border-left: 1px solid oColorsByName('black-20');
 		}
 	}
 }
 
 .myft-list-form-divider__inner {
 	padding: 10px;
-	background-color: getColor('white-60');
+	background-color: oColorsByName('white-60');
 
 	@include oGridRespondTo(M) {
 		z-index: 10;
 	}
 
 	.o-overlay__content & {
-		background-color: getColor('white');
+		background-color: oColorsByName('white');
 	}
-
 }
 
 @include oGridRespondTo($until: S) {
 	.o-overlay--myft-ui {
 		@include oOverlay(
 			$opts: (
-				"variants": (
-					"compact"
+				'variants': (
+					'compact'
 				)
 			)
 		);
