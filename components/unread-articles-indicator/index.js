@@ -11,7 +11,7 @@ let updateTimeout;
 let initialFeedStartTime;
 let userId;
 
-const isMyftFeedPage = window.location.pathname.startsWith('/myft/following');
+const isMyftFeedPage = window.location.pathname.indexOf('/myft/following') === 0;
 const doUpdate = () => updater().catch(stopPolling);
 
 export default async (options = {}) => {
