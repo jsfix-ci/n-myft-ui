@@ -1,9 +1,6 @@
 // Karma configuration
 // Generated on Fri Apr 18 2014 18:19:03 GMT+0100 (BST)
-
-const path = require('path');
-const BowerWebpackPlugin = require('bower-webpack-plugin');
-
+const BowerResolvePlugin = require('bower-resolve-webpack-plugin');
 module.exports = function (karma) {
 
 
@@ -43,36 +40,37 @@ module.exports = function (karma) {
 			'test/**/*.spec.js': ['webpack', 'sourcemap']
 		},
 		webpack: {
+			resolve: {
+				plugins: [new BowerResolvePlugin()],
+				modules: ['bower_components', 'node_modules'],
+				descriptionFiles: ['bower.json', 'package.json'],
+				mainFields: ['browser', 'main'],
+				mainFiles: ['index', 'main'],
+				extensions: ['.js', '.json']
+			},
 			module: {
-				loaders: [
+				rules: [
 					{
 						test: /\.js$/,
-						loader: 'babel',
+						use: {
+							loader: 'babel-loader',
+							options: {
+								cacheDirectory: true,
+								presets: ['env'],
+								plugins: [
+									['transform-runtime'],
+									['add-module-exports', { loose: true }],
+									['transform-es2015-classes', { loose: true }]
+								]
+							}
+						},
 						exclude: /node_modules\/(?!(@financial-times\/n-teaser|@financial-times\/n-display-metadata)\/).*/,
-						query: {
-							cacheDirectory: true,
-							presets: ['env'],
-							plugins: [
-								['transform-runtime'],
-								['add-module-exports', { loose: true }],
-								['transform-es2015-classes', { loose: true }]
-							]
-						}
 					},
 					// set 'this' scope to window
 					{
 						test: /cssrelpreload\.js$/,
-						loader: 'imports-loader?this=>window'
+						use: 'imports-loader?this=>window'
 					}
-				]
-			},
-			plugins: [
-				new BowerWebpackPlugin({ includes: /\.js$/ })
-			],
-			resolve: {
-				root: [
-					path.join(__dirname, 'bower_components'),
-					path.join(__dirname, 'node_modules')
 				]
 			},
 			devtool: 'inline-source-map'
