@@ -11,6 +11,7 @@ let updateTimeout;
 let initialFeedStartTime;
 let userId;
 
+const isMyftFeedPage = window.location.pathname.indexOf('/myft/following') === 0;
 const doUpdate = () => updater().catch(stopPolling);
 
 export default async (options = {}) => {
@@ -18,7 +19,7 @@ export default async (options = {}) => {
 		if (!storage.isAvailable()) return;
 
 		const myftHeaderLink = document.querySelectorAll('.o-header__top-link--myft');
-		const uiOpts = Object.assign({onClick: uiOnClick, flags: {}}, options);
+		const uiOpts = Object.assign({onClick: setDismissed, flags: {}}, options);
 		shouldPoll = uiOpts.flags.MyFT_UnreadArticlesIndicatorPolling;
 
 		await getNewArticlesSinceTime();
@@ -29,7 +30,7 @@ export default async (options = {}) => {
 
 		document.addEventListener('visibilitychange', onVisibilityChange);
 		storage.addCountChangeListeners(newCount => ui.setCount(newCount));
-
+		if (isMyftFeedPage) setDismissed();
 		return updater();
 	} catch(e) {
 
@@ -85,7 +86,7 @@ function stopPolling () {
 	}
 }
 
-function uiOnClick () {
+function setDismissed () {
 	storage.updateLastUpdate({count: 0, time: new Date()});
 	storage.setIndicatorDismissedTime(new Date());
 }
