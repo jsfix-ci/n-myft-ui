@@ -30,7 +30,7 @@ static-demo: demo-build
 	@scripts/make-static-demo.sh
 
 test-build:
-	webpack --config webpack.config.js
+	page-kit build --development
 
 test-unit:
 	karma start karma.conf.js
