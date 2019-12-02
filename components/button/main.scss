@@ -10,8 +10,7 @@
 }
 
 .n-myft-ui__button--inverse {
-	// TODO fix this
-	// @include oButtonsGetColor($theme: 'inverse');
+	@include oButtonsContent($opts: (theme: inverse), $include-base-styles: false);
 }
 
 .n-myft-ui__button--viewport-large {
