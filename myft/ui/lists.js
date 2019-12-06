@@ -128,7 +128,7 @@ function showListsOverlay (overlayTitle, formHtmlUrl, contentId) {
 		})
 		.then(html => openOverlay(html, { title: overlayTitle }))
 		.then(overlay => {
-			oForms.init(overlay);
+			oForms.init(overlay.content);
 			setUpSaveToExistingListListeners(overlay, contentId);
 			setUpCreateListListeners(overlay, contentId);
 		})
