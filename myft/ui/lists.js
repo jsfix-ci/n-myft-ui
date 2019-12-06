@@ -10,7 +10,7 @@ const delegate = new Delegate(document.body);
 const csrfToken = getToken();
 
 
-function openOverlay (html, { name = 'myft-ui', title = '&nbsp;', shaded = true }) {
+function openOverlay (html, { name = 'myft-ui', title = '&nbsp;', shaded = false }) {
 	const overlay = new Overlay(name, {
 		heading: { title, shaded },
 		html
