@@ -5,6 +5,7 @@ import * as myFtUiButtonStates from './lib/button-states';
 import nNotification from 'n-notification';
 import {uuid} from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
+import oForms from 'o-forms';
 
 const delegate = new Delegate(document.body);
 const csrfToken = getToken();
@@ -56,8 +57,6 @@ function setUpSaveToExistingListListeners (overlay, contentId) {
 			event.preventDefault();
 
 			if (!listSelect.value) {
-				const nameFormGroup = overlay.content.querySelector('.js-uuid-group');
-				nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
 				return;
 			}
 
@@ -80,8 +79,6 @@ function setUpCreateListListeners (overlay, contentId) {
 		event.preventDefault();
 
 		if (!nameInput.value) {
-			const nameFormGroup = overlay.content.querySelector('.js-name-group');
-			nameFormGroup.className += ' o-forms--error n-myft-ui__error--no-name';
 			return;
 		}
 
@@ -131,6 +128,7 @@ function showListsOverlay (overlayTitle, formHtmlUrl, contentId) {
 		})
 		.then(html => openOverlay(html, { title: overlayTitle }))
 		.then(overlay => {
+			oForms.init(overlay);
 			setUpSaveToExistingListListeners(overlay, contentId);
 			setUpCreateListListeners(overlay, contentId);
 		})
