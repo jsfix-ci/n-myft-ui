@@ -8,7 +8,7 @@ const buildOverlayContent = isBlocked => `
 ${isBlocked ? '<div class=\'instant-alerts-confirmation-info__subtext\'>Unblock notifications to receive them on this device.</div>' : ''}
 <div class='instant-alerts-confirmation__buttons'>
 	<button
-			class="o-buttons instant-alerts-confirmation__button js-instant-alerts-confirmation-no"
+			class="o-buttons o-buttons--secondary instant-alerts-confirmation__button js-instant-alerts-confirmation-no"
 			data-trackable="decline-instant-alerts"
 			type="submit"
 			aria-label="Not now"
