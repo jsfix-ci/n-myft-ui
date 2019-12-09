@@ -12,6 +12,13 @@ const csrfToken = getToken();
 
 
 function openOverlay (html, { name = 'myft-ui', title = '&nbsp;', shaded = false }) {
+	// If an overlay already exists of the same name destroy it.
+	const overlays = Overlay.getOverlays();
+	const existingOverlays = overlays.filter(o => o.id === name);
+	existingOverlays.forEach(existingOverlay => {
+		existingOverlay.destroy();
+	});
+	// Create a new overlay.
 	const overlay = new Overlay(name, {
 		heading: { title, shaded },
 		html

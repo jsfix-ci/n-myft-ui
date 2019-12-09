@@ -27,7 +27,14 @@ ${isBlocked ? '<div class=\'instant-alerts-confirmation-info__subtext\'>Unblock 
 `;
 
 module.exports = (isBlocked) => {
-	const overlay = new Overlay('instant-alerts-confirmation', {
+	const overlayName = 'instant-alerts-confirmation';
+	// If an overlay already exists of the same name destroy it.
+	const overlays = Overlay.getOverlays();
+	const existingOverlays = overlays.filter(o => o.id === overlayName);
+	existingOverlays.forEach(existingOverlay => {
+		existingOverlay.destroy();
+	});
+	const overlay = new Overlay(overlayName, {
 		heading: {
 			title: 'You have added this topic to <abbr title="myFT" class="myft-ui__icon"></abbr>',
 			shaded: false
