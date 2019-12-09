@@ -46,22 +46,124 @@ $spacing-unit: 20px;
 	margin-bottom: 10px;
 }
 
-@include oGridRespondTo($until: S) {
-	.o-overlay--myft-ui {
-		@include oOverlay(
-			$opts: (
-				'variants': (
-					'compact'
-				)
-			)
-		);
+.myft-list-form__wrapper {
+	margin-bottom: 20px;
 
-		// TODO Fix and restore
-		// @include nUiZIndexFor("overlay");
+	@include oGridRespondTo(M) {
+		min-width: 640px;
+		display: flex;
 	}
 
-	.o-overlay-shadow {
-		// TODO Fix and restore
-		// @include nUiZIndexFor("overlay");
+	.o-overlay__content & { margin-bottom: 0; }
+}
+
+.myft-list-form {
+	overflow: auto;
+	padding: 4px 0;
+
+	@include oGridRespondTo(M) {
+		flex: 6;
+		padding: 0 4px;
 	}
+}
+
+.myft-list-form__button {
+	float: right;
+}
+
+//Specificity war with Origami
+.mypage .myft-list-form__message,
+.o-overlay .myft-list-form__message {
+	@include oFormsMessage();
+	background: getColor('paper');
+	border-radius: 0;
+	margin: 3px 0 0;
+	padding: $spacing-unit 20px;
+
+	h3 {
+		@include oTypographySansBold($scale: 2);
+		margin: 0 5px 0 0;
+	}
+
+	p {
+		@include oTypographySans($scale: 2);
+	}
+
+	h3,
+	p {
+		display: inline-block;
+		padding: 0;
+	}
+}
+
+.myft-list-form__message + .myft-list-form__wrapper {
+	margin-top: $spacing-unit;
+}
+
+.o-overlay .myft-list-form__message {
+	border-top: 1px solid getColor('black-20');
+	margin: 0 -20px;
+
+	&:first-child {
+		border-top: 0;
+		margin-top: -20px;
+	}
+}
+
+.myft-list-form__message--success {
+	h3 {
+		color: getColor('jade');
+
+		&::before {
+			@include oIconsGetIcon('tick', getColor('jade'), 14, $iconset-version: 1);
+			content: '';
+			margin-right: 3px;
+		}
+	}
+}
+
+.myft-list-form-divider {
+	text-align: center;
+	margin-bottom: 30px;
+
+	@include oGridRespondTo(M) {
+		display: flex;
+		position: relative;
+		flex: 2;
+		justify-content: center;
+		align-items: center;
+		margin: 0;
+	}
+
+	&::after {
+		content: '';
+		display: block;
+		border-top: 1px solid getColor('black-20');
+		margin-top: -10px;
+
+		@include oGridRespondTo(M) {
+			position: absolute;
+			top: 0;
+			height: 100%;
+			width: 1px;
+			margin-top: 0;
+			margin-left: -18px;
+			border-top: 0;
+			border-left: 1px solid getColor('black-20');
+		}
+	}
+}
+
+.myft-list-form-divider__inner {
+	padding: 10px;
+	background-color: getColor('white-60');
+
+	@include oGridRespondTo(M) {
+		z-index: 10;
+	}
+
+	.o-overlay__content & {
+		background-color: getColor('white');
+	}
+
 }
