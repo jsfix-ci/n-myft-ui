@@ -46,11 +46,20 @@ $spacing-unit: 20px;
 	margin-bottom: 10px;
 }
 
+.o-overlay.o-overlay--myft-lists {
+	height: 100%;
+	width: 100%;
+	max-width: 640px;
+
+	@include oGridRespondTo(S) {
+		height: auto;
+	}
+}
+
 .myft-list-form__wrapper {
 	margin-bottom: 20px;
 
 	@include oGridRespondTo(M) {
-		min-width: 640px;
 		display: flex;
 	}
 
@@ -58,12 +67,9 @@ $spacing-unit: 20px;
 }
 
 .myft-list-form {
-	overflow: auto;
-	padding: 4px 0;
-
+	overflow: hidden; // clearfix
 	@include oGridRespondTo(M) {
-		flex: 6;
-		padding: 0 4px;
+		flex: 1;
 	}
 }
 
@@ -87,7 +93,7 @@ $spacing-unit: 20px;
 
 	p {
 		@include oTypographySans($scale: 2);
-		padding: oTypographySpacingSize(2) 0;
+		padding: oSpacingByName('s2') 0;
 		margin: 0;
 	}
 
@@ -126,15 +132,16 @@ $spacing-unit: 20px;
 
 .myft-list-form-divider {
 	text-align: center;
-	margin-bottom: 30px;
+	margin-bottom: oSpacingByName('s8');
+	padding: oSpacingByName('s6') 0;
 
 	@include oGridRespondTo(M) {
 		display: flex;
 		position: relative;
-		flex: 2;
 		justify-content: center;
 		align-items: center;
 		margin: 0;
+		padding: 0 oSpacingByName('s2');
 	}
 
 	&::after {
@@ -149,7 +156,6 @@ $spacing-unit: 20px;
 			height: 100%;
 			width: 1px;
 			margin-top: 0;
-			margin-left: -18px;
 			border-top: 0;
 			border-left: 1px solid oColorsByName('black-20');
 		}
