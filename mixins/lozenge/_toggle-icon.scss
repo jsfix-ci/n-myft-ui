@@ -1,18 +1,23 @@
-@import './themes';
+@import "./themes";
 
 @mixin getIcon($name, $color) {
-	@include oIconsGetIcon($icon-name: $name, $container-width: 10, $color: $color, $iconset-version: 1);
-	content: '';
+	@include oIconsContent(
+		$icon-name: $name,
+		$size: 10,
+		$color: $color,
+		$iconset-version: 1
+	);
+	content: "";
 }
 
 @mixin plusIcon($color) {
-	@include getIcon('plus', $color);
+	@include getIcon("plus", $color);
 	background-size: 25px;
 	margin: 0 6px -1px 0;
 }
 
 @mixin tickIcon($color) {
-	@include getIcon('tick', $color);
+	@include getIcon("tick", $color);
 	background-size: 21px;
 }
 

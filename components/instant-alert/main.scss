@@ -4,7 +4,7 @@
 	position: relative;
 
 	.n-myft-ui__button {
-		@include buttonWithIcon(26, 24, getColor('teal-40'), 'mail', 'mail', getColor('white'));
+		@include buttonWithIcon(26, 24, oColorsByName('teal-40'), 'mail', 'mail', oColorsByName('white'));
 	}
 }
 
@@ -13,27 +13,27 @@
 	border: 0;
 	padding-left: 8px;
 	padding-right: 36px;
-	color: getColor('black-80');
+	color: oColorsByName('black-80');
 	font-weight: 400;
 	background: transparent;
 	&:not([disabled]):hover,
 	&:not([disabled]):focus {
 		background: transparent;
-		color: getColor('black-80');
+		color: oColorsByName('black-80');
 	}
 	&[aria-pressed="true"] {
 		background: transparent;
-		color: getColor('black-80');
+		color: oColorsByName('black-80');
 	}
 	&::before {
-		@include oIconsGetIcon('notifications', getColor('black-60'), $icon-width, $iconset-version: 1);
+		@include oIconsContent('notifications', oColorsByName('black-60'), $icon-width, $iconset-version: 1);
 		left: auto;
 		right: 1px;
 		margin-top: -18px;
 	}
 	&:not([disabled]):hover:before,
 	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon('notifications', getColor('claret'), $icon-width, $iconset-version: 1);
+		@include oIconsContent('notifications', oColorsByName('claret'), $icon-width, $iconset-version: 1);
 	}
 
 	.n-myft-ui--instant--hide-text & {

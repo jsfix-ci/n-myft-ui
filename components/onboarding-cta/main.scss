@@ -1,8 +1,10 @@
+
 .n-myft-onboarding-cta {
-	@include oButtons();
-	@include oButtonsTheme($theme: (
-		background: 'claret',
-		accent: 'white',
-		colorizer: 'claret'
+	@include oButtonsContent($opts: (
+		'type': 'secondary',
+		'theme': (
+			'color': 'white',
+			'context': 'claret'
+		)
 	));
 }

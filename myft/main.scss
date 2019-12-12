@@ -1,20 +1,25 @@
+@import 'o-normalise/main';
+@import 'o-colors/main';
+@import 'o-grid/main';
+@import 'o-icons/main';
 @import 'o-buttons/main';
-
-$o-forms-is-silent: false;
+@import 'o-editorial-typography/main';
 @import 'o-forms/main';
+@import 'o-overlay/main';
+@import 'o-spacing/main';
 
 $n-notification-is-silent: false !default;
 @import 'n-notification/main';
 
-$o-overlay-is-silent: false !default;
-@import 'o-overlay/main';
-
 @import './ui/myft-buttons/main';
 @import './ui/lists';
-@import "../components/header-tooltip/main";
+@import '../components/header-tooltip/main';
 @import '../components/pin-button/main';
 @import '../components/instant-alert/main';
 @import '../components/instant-alerts-confirmation/main';
+
+// TODO Fix below
+$spacing-unit: 20px;
 
 .myft-ui,
 .n-myft-ui {
@@ -27,8 +32,13 @@ $o-overlay-is-silent: false !default;
 // 'unfollow' button
 .myft-ui__button--manage,
 .myft-ui__button--myft-manage {
-	&[aria-pressed="true"]::before {
-		@include oIconsGetIcon('cross', getColor('white'), 28, $iconset-version: 1);
+	&[aria-pressed='true']::before {
+		@include oIconsContent(
+			'cross',
+			oColorsByName('white'),
+			28,
+			$iconset-version: 1
+		);
 	}
 }
 
@@ -36,15 +46,13 @@ $o-overlay-is-silent: false !default;
 	margin-bottom: 10px;
 }
 
-.n-myft-ui__error-message {
-	@include oFormsErrorText();
-}
+.o-overlay.o-overlay--myft-lists {
+	height: 100%;
+	width: 100%;
+	max-width: 640px;
 
-.n-myft-ui__error-message.n-myft-ui__error-message--no-name {
-	display: none;
-
-	.n-myft-ui__error--no-name & {
-		display: block;
+	@include oGridRespondTo(S) {
+		height: auto;
 	}
 }
 
@@ -52,7 +60,6 @@ $o-overlay-is-silent: false !default;
 	margin-bottom: 20px;
 
 	@include oGridRespondTo(M) {
-		min-width: 640px;
 		display: flex;
 	}
 
@@ -60,40 +67,10 @@ $o-overlay-is-silent: false !default;
 }
 
 .myft-list-form {
-	overflow: auto;
-	padding: 4px 0;
-
+	overflow: hidden; // clearfix
 	@include oGridRespondTo(M) {
-		flex: 6;
-		padding: 0 4px;
+		flex: 1;
 	}
-
-	.o-forms {
-		padding: 0;
-	}
-}
-
-.myft-list-form__label {
-	@include oFormsLabel();
-}
-
-.myft-list-form__input {
-	@include oFormsCommonFieldBase();
-}
-
-.myft-list-form__select {
-	@include oFormsCommonFieldBase();
-	@include oFormsSelect();
-	@include oGridRespondTo($until: M) {
-		max-width: 478px;
-	}
-	@include oGridRespondTo($from: M) {
-		max-width: 300px;
-	}
-}
-
-.myft-list-form__textarea {
-	@include oFormsTextarea();
 }
 
 .myft-list-form__button {
@@ -103,19 +80,21 @@ $o-overlay-is-silent: false !default;
 //Specificity war with Origami
 .mypage .myft-list-form__message,
 .o-overlay .myft-list-form__message {
-	@include oFormsMessage();
-	background: getColor('paper');
+	@include oTypographySans(1);
+	background: oColorsByName('paper');
 	border-radius: 0;
 	margin: 3px 0 0;
 	padding: $spacing-unit 20px;
 
 	h3 {
-		@include oTypographySansBold($scale: 2);
+		@include oTypographySans($scale: 2, $weight: 'semibold');
 		margin: 0 5px 0 0;
 	}
 
 	p {
 		@include oTypographySans($scale: 2);
+		padding: oSpacingByName('s2') 0;
+		margin: 0;
 	}
 
 	h3,
@@ -130,7 +109,7 @@ $o-overlay-is-silent: false !default;
 }
 
 .o-overlay .myft-list-form__message {
-	border-top: 1px solid getColor('black-20');
+	border-top: 1px solid oColorsByName('black-20');
 	margin: 0 -20px;
 
 	&:first-child {
@@ -141,10 +120,10 @@ $o-overlay-is-silent: false !default;
 
 .myft-list-form__message--success {
 	h3 {
-		color: getColor('jade');
+		color: oColorsByName('jade');
 
 		&::before {
-			@include oIconsGetIcon('tick', getColor('jade'), 14, $iconset-version: 1);
+			@include oIconsContent('tick', oColorsByName('jade'), 14, $iconset-version: 1);
 			content: '';
 			margin-right: 3px;
 		}
@@ -153,21 +132,22 @@ $o-overlay-is-silent: false !default;
 
 .myft-list-form-divider {
 	text-align: center;
-	margin-bottom: 30px;
+	margin-bottom: oSpacingByName('s8');
+	padding: oSpacingByName('s6') 0;
 
 	@include oGridRespondTo(M) {
 		display: flex;
 		position: relative;
-		flex: 2;
 		justify-content: center;
 		align-items: center;
 		margin: 0;
+		padding: 0 oSpacingByName('s2');
 	}
 
 	&::after {
 		content: '';
 		display: block;
-		border-top: 1px solid getColor('black-20');
+		border-top: 1px solid oColorsByName('black-20');
 		margin-top: -10px;
 
 		@include oGridRespondTo(M) {
@@ -176,35 +156,22 @@ $o-overlay-is-silent: false !default;
 			height: 100%;
 			width: 1px;
 			margin-top: 0;
-			margin-left: -18px;
 			border-top: 0;
-			border-left: 1px solid getColor('black-20');
+			border-left: 1px solid oColorsByName('black-20');
 		}
 	}
 }
 
 .myft-list-form-divider__inner {
 	padding: 10px;
-	background-color: getColor('white-60');
+	background-color: oColorsByName('white-60');
 
 	@include oGridRespondTo(M) {
 		z-index: 10;
 	}
 
 	.o-overlay__content & {
-		background-color: getColor('white');
+		background-color: oColorsByName('white');
 	}
 
-}
-
-@include oGridRespondTo($until: S) {
-	.o-overlay--myft-ui {
-		@include oOverlayFullscreen($fill: 'width');
-		@include oOverlayFullscreen($fill: 'height');
-		@include nUiZIndexFor('overlay');
-	}
-
-	.o-overlay-shadow {
-		@include nUiZIndexFor('overlay');
-	}
 }

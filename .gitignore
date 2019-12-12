@@ -7,10 +7,7 @@
 .editorconfig
 .eslintrc.js
 .stylelintrc
-public/main-without-n-ui.js
-public/main-without-n-ui.js.map
-public/main.css
-public/main.css.map
+public/
 pa11y_screenCapture/
 .idea/
 .vscode/

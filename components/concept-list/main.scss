@@ -6,20 +6,22 @@
 		display: block;
 		width: 60px;
 		margin-top: 5px;
-		border-bottom: 4px solid getColor('black');
+		border-bottom: 4px solid oColorsByName('black');
 		position: absolute;
 		z-index: 1;
 	}
 }
 
 .concept-list__list {
-	@include oTypographyMargin($top: 7, $bottom: 10);
+	// TODO validate metrics
+	// @include oTypographyMargin($top: 7, $bottom: 10);
+	margin: oSpacingByName("s6") 0 oSpacingByName("m12");
 	padding: 0;
 }
 
 .concept-list__list-item {
 	@include oTypographySans(1);
-	color: getColor('black');
+	color: oColorsByName('black');
 	list-style: none;
 	display: flex;
 	align-items: center;
@@ -35,12 +37,14 @@
 
 .concept-list__concept {
 	word-break: keep-all;
-	@include oTypographyTopic;
+	// TODO replace
+	// @include oTypographyTopic;
 	@include oTypographySans(0);
-	@include oTypographyMargin($top: 1, $bottom: 1);
-	color: getColor('black');
+	margin: oSpacingByName("s1") 0;
+	text-decoration: none;
+	color: oColorsByName('black');
 
 	&:hover {
-		color: oColorsMix(getColor('black'), getColor('paper'), 73);
+		color: oColorsMix(oColorsByName('black'), oColorsByName('paper'), 73);
 	}
 }

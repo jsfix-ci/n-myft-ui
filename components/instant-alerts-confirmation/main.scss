@@ -2,12 +2,12 @@
 
 	@include oTypographySans($scale: 2);
 
-	background-color: getColor('paper');
+	background-color: oColorsByName('paper');
 	.o-overlay__heading {
 		margin-left: 20px;
 		margin-top: 10px;
 		margin-right: 20px;
-		border-bottom: 1px solid getColor('black-10');
+		border-bottom: 1px solid oColorsByName('black-10');
 		font-weight: 400;
 	}
 	.o-overlay__title {
@@ -22,7 +22,7 @@
 		padding-top: 30px;
 	}
 	.myft-ui__icon {
-		@include nGetImage('logo', 'brand-myft', getColor('black-80'), 50);
+		@include oIconsContent('logo', oColorsByName('black-80'), 50);
 		margin: 0 0 -19px;
 	}
 	.o-overlay__close {
@@ -53,7 +53,7 @@
 }
 
 .instant-alerts-confirmation-info__icon {
-	@include oIconsGetIcon('notifications', getColor('claret'), 42, $iconset-version: 1);
+	@include oIconsContent('notifications', oColorsByName('claret'), 42, $iconset-version: 1);
 	margin-left: -8px;
 	@include oGridRespondTo(M) {
 		margin-left: -12px;

@@ -1,3 +1,5 @@
+$system-code: "n-myft-ui-demo";
+
 @import 'n-ui-foundations/main';
 @import '../../myft/main';
 @import '../../components/collections/main';
@@ -28,22 +30,22 @@
 }
 
 .concept-collection--standard {
-	background-color: getColor('paper');
+	background-color: oColorsByName('paper');
 }
 
 .concept-collection--inverse {
-	background-color: getColor('claret-60');
-	color: getColor('white');
+	background-color: oColorsByName('claret-60');
+	color: oColorsByName('white');
 }
 
 .concept-collection--opinion {
-	background-color: getColor('sky');
-	color: getColor('oxford');
+	background-color: oColorsByName('sky');
+	color: oColorsByName('oxford');
 }
 
 .concept-collection--monochrome {
-	background-color: getColor('black');
-	color: getColor('white');
+	background-color: oColorsByName('black');
+	color: oColorsByName('white');
 }
 
 .demo-section {
@@ -59,5 +61,5 @@
 	font-style: italic;
 	font-size: 1.2em;
 	margin: 12px 0;
-	color: getColor('black-70');
+	color: oColorsByName('black-70');
 }
