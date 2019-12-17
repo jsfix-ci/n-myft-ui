@@ -5,6 +5,7 @@
 
 	.n-myft-ui__button {
 		@include buttonWithIcon(26, 24, oColorsByName('teal-40'), 'mail', 'mail', oColorsByName('white'));
+		display: inline-block;
 	}
 }
 
