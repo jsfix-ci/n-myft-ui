@@ -13,8 +13,6 @@
 }
 
 .concept-list__list {
-	// TODO validate metrics
-	// @include oTypographyMargin($top: 7, $bottom: 10);
 	margin: oSpacingByName("s6") 0 oSpacingByName("m12");
 	padding: 0;
 }
@@ -25,24 +23,16 @@
 	list-style: none;
 	display: flex;
 	align-items: center;
-
-	.n-content-tag {
-		flex: 1;
-	}
-
-	.n-content-tag {
-		flex: 2;
-	}
 }
 
 .concept-list__concept {
 	word-break: keep-all;
-	// TODO replace
-	// @include oTypographyTopic;
-	@include oTypographySans(0);
-	margin: oSpacingByName("s1") 0;
+	@include oTypographySans(0, $weight: 'semibold');
+	margin: oSpacingByName("s1") oSpacingByName("s3") oSpacingByName("s1") 0;
 	text-decoration: none;
+	border: 0;
 	color: oColorsByName('black');
+	flex: 2;
 
 	&:hover {
 		color: oColorsMix(oColorsByName('black'), oColorsByName('paper'), 73);
