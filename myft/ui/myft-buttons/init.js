@@ -46,36 +46,39 @@ function anonEventListeners () {
 function signedInEventListeners (flags = {}) {
 	Object.keys(relationshipConfig).forEach(relationshipName => {
 		const uiSelector = relationshipConfig[relationshipName].uiSelector;
-		loadedRelationships.waitForRelationshipsToLoad(relationshipName)
-			.then(() => {
-				const relationships = loadedRelationships.getRelationships(relationshipName);
-				if (relationships.length > 0) {
-					const subjectIds = relationships.map(item => item.uuid);
-					buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true);
-				}
-			});
 
-		['add', 'remove', 'update']
-			.forEach(action => {
-				const actorType = relationshipConfig[relationshipName].actorType;
-				const subjectType = relationshipConfig[relationshipName].subjectType;
-				const eventName = `myft.${actorType}.${relationshipName}.${subjectType}.${action}`;
-				document.body.addEventListener(eventName, event => {
-					const resultData = event.detail.results && event.detail.results[0];
-					const isPressed = !!event.detail.results;
-					buttonStates.setStateOfButton(relationshipName, event.detail.subject, isPressed, undefined, resultData, true);
-					tracking.custom({
-						subjectType,
-						action,
-						subjectId: event.detail.subject,
-						postedData: event.detail.data,
-						resultData: resultData,
-						trackingInfo: event.detail.trackingInfo
+		if (uiSelector) {
+			loadedRelationships.waitForRelationshipsToLoad(relationshipName)
+				.then(() => {
+					const relationships = loadedRelationships.getRelationships(relationshipName);
+					if (relationships.length > 0) {
+						const subjectIds = relationships.map(item => item.uuid);
+						buttonStates.setStateOfManyButtons(relationshipName, subjectIds, true);
+					}
+				});
+
+			['add', 'remove', 'update']
+				.forEach(action => {
+					const actorType = relationshipConfig[relationshipName].actorType;
+					const subjectType = relationshipConfig[relationshipName].subjectType;
+					const eventName = `myft.${actorType}.${relationshipName}.${subjectType}.${action}`;
+					document.body.addEventListener(eventName, event => {
+						const resultData = event.detail.results && event.detail.results[0];
+						const isPressed = !!event.detail.results;
+						buttonStates.setStateOfButton(relationshipName, event.detail.subject, isPressed, undefined, resultData, true);
+						tracking.custom({
+							subjectType,
+							action,
+							subjectId: event.detail.subject,
+							postedData: event.detail.data,
+							resultData: resultData,
+							trackingInfo: event.detail.trackingInfo
+						});
 					});
 				});
-			});
 
-		delegate.on('submit', uiSelector, getInteractionHandler(flags, relationshipName));
+			delegate.on('submit', uiSelector, getInteractionHandler(flags, relationshipName));
+		}
 	});
 }
 
