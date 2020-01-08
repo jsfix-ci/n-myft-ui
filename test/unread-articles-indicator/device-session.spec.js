@@ -4,7 +4,7 @@ import addMinutes from 'date-fns/src/addMinutes';
 import isAfter from 'date-fns/src/isAfter';
 import parseISO from 'date-fns/src/parseISO';
 
-const expiryTimestamp = '2018-06-14T12:00:00.000Z';
+const expiryTimestamp = parseISO('2018-06-14T12:00:00.000Z');
 const timestampBeforeExpiry = '2018-06-14T11:40:00.000Z';
 const timestampAfterExpiry = '2018-06-14T12:10:00.000Z';
 
@@ -25,7 +25,6 @@ describe('DeviceSession', () => {
 	const DeviceSession = subjectInjector({
 		'date-fns/src/addMinutes': addMinutes,
 		'date-fns/src/isAfter': isAfter,
-		'date-fns/src/parseISO': parseISO,
 		'./storage': mockStorage
 	});
 

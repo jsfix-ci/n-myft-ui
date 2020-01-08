@@ -1,6 +1,5 @@
 import addMinutes from 'date-fns/src/addMinutes';
 import isAfter from 'date-fns/src/isAfter';
-import parseISO from 'date-fns/src/parseISO';
 import * as storage from './storage';
 const SESSION_THRESHOLD_MINUTES = 30;
 
@@ -14,7 +13,7 @@ export default class DeviceSession {
 
 	isNewSession () {
 		if (this.expiry) {
-			return isAfter(new Date(), parseISO(this.expiry));
+			return isAfter(new Date(), this.expiry);
 		} else {
 			return true;
 		}
