@@ -1,5 +1,4 @@
 import isAfter from 'date-fns/src/isAfter';
-import parseISO from 'date-fns/src/parseISO';
 import * as storage from './storage';
 import countUnreadArticles from './count-unread-articles';
 import * as tracking from './tracking';
@@ -9,7 +8,7 @@ import {UPDATE_INTERVAL, UPDATE_TIMEOUT} from './constants';
 function latest (a, b) {
 	if (!a) return b;
 	if (!b) return a;
-	return isAfter(parseISO(a), parseISO(b)) ? a : b;
+	return isAfter(a, b) ? a : b;
 }
 
 export default async function updateCount (userId, now) {
