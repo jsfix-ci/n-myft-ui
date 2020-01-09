@@ -1,4 +1,4 @@
-import isAfter from 'date-fns/src/isAfter';
+import {isAfter} from './date-fns';
 import * as storage from './storage';
 import countUnreadArticles from './count-unread-articles';
 import * as tracking from './tracking';

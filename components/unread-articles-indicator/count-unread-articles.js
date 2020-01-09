@@ -1,10 +1,7 @@
 import {json as fetchJson} from 'fetchres';
-import isAfter from 'date-fns/src/isAfter';
-import parseISO from 'date-fns/src/parseISO';
+import {isAfter, parseISO} from './date-fns';
 
 export default async (userId, startTime) => {
-	if (typeof startTime === 'string') startTime = parseISO(startTime);
-
 	const articles = await fetchContentFromPersonalisedFeed(userId);
 	const unreadArticlesSinceLastVisit = articles
 		.filter(({userCompletion = -1}) => userCompletion < 1) // only include unread articles

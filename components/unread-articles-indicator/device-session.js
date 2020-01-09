@@ -1,5 +1,4 @@
-import addMinutes from 'date-fns/src/addMinutes';
-import isAfter from 'date-fns/src/isAfter';
+import {isAfter, addMinutes} from './date-fns';
 import * as storage from './storage';
 const SESSION_THRESHOLD_MINUTES = 30;
 
