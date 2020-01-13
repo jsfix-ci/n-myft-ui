@@ -1,5 +1,4 @@
-import isToday from 'date-fns/src/isToday';
-import startOfDay from 'date-fns/src/startOfDay';
+import {isToday, startOfDay} from './date-fns';
 import DeviceSession from './device-session';
 import * as storage from './storage';
 import {json as fetchJson} from 'fetchres';
