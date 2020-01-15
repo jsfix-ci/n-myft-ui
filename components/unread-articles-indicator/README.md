@@ -40,7 +40,7 @@ It indicates to the user that articles they've not yet read have been published 
 
 - The indicator is reset when the user visits their myFT feed page on [ft.com](https://www.ft.com/ft.com/myft/following)
 
-- The indicator is reset every day << Does this work?
+- The indicator is reset every day
 
 - The state of the indicator is synched between devices (the number may be different if the device is within the device session) << Can we explain this in a user friendly way?
 
