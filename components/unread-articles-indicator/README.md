@@ -17,7 +17,7 @@ It indicates to the user that articles they've not yet read have been published 
 
 - **.com only**:
   - next-front-page
-  - next-stream-page 
+  - next-stream-page
   - next-article
   - next-myft-page
 
@@ -36,7 +36,7 @@ It indicates to the user that articles they've not yet read have been published 
 
 - The favicon is updated to reflect what the indicator is showing
 
-- The article count updates automatically without the user having to refresh the page. < Every??
+- The article count updates automatically without the user having to refresh the page every 5 minutes
 
 - The indicator is reset when the user visits their myFT feed page on [ft.com](https://www.ft.com/ft.com/myft/following)
 
@@ -64,6 +64,6 @@ It indicates to the user that articles they've not yet read have been published 
 &ast; `myFTIndicatorDismissedAt` timestamp is stored in `window.localStorage` when user visits [myFT feed page](https://www.ft.com/myft/following).
 
 ---
-![unread article count](https://user-images.githubusercontent.com/21194161/72248809-f0b3ea00-35ef-11ea-899f-0ac0abba6ba6.png)
+![unread article count](https://user-images.githubusercontent.com/21194161/72608180-11df4800-391a-11ea-973b-4a52933561ab.png)
 
 To keep the number consistent on **cross devices**, it fetches the last 'active' time for a user via a Volt Procedure called UserInfo.
