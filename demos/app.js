@@ -39,8 +39,7 @@ app.get('/', (req, res) => {
 		layout: 'demo-layout',
 		flags: {
 			myFtApi: true,
-			myFtApiWrite: true,
-			xFollowButton: res.locals.flags.xFollowButton
+			myFtApiWrite: true
 		}
 	}, fixtures));
 });
