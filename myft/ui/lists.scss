@@ -3,21 +3,21 @@
 }
 
 .myft-ui__icon {
-	@include nGetImage('logo', 'brand-myft', getColor('white'), 16);
+	@include oIconsContent('logo', oColorsByName('white'), 16);
 	width: 34px;
 	margin: 0 8px -5px;
 }
 
 .n-notification {
 	.myft-ui__icon {
-		@include nGetImage('logo', 'brand-myft', getColor('black-80'), 20);
+		@include oIconsContent('logo', oColorsByName('black-80'), 20);
 		margin: 0 3px -5px;
 	}
 
 	&--error,
 	&--success {
 		.myft-ui__icon {
-			@include nGetImage('logo', 'brand-myft', getColor('white'), 20);
+			@include oIconsContent('logo', oColorsByName('white'), 20);
 		}
 	}
 }

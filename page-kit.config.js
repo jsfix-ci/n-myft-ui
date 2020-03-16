@@ -13,7 +13,7 @@ module.exports = {
 					'./myft/index.js',
 					'./myft-common/index.js'
 				],
-				styles: './myft/main.scss'
+				styles: './myft/test.scss'
 			},
 			outputPath: path.resolve('./public')
 		}

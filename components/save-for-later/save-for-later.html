@@ -34,9 +34,9 @@
 			data-alternate-text="{{alternateText}}"
 		{{else}}
 			{{#if isSaved}}
-				data-alternate-text="Save "
+				data-alternate-text="Save&nbsp;"
 			{{else}}
-				data-alternate-text="Saved "
+				data-alternate-text="Saved&nbsp;"
 			{{/if}}
 		{{/if}}
 		data-content-id="{{contentId}}" {{! duplicated here for tracking}}
@@ -57,7 +57,7 @@
 			{{else}}
 				{{#if buttonText}}{{buttonText}}{{else}}
 					{{#unlessEquals appIsStreamPage true}}
-						<span class="save-button-longer-copy" data-variant-label>{{#if isSaved}}Saved {{else}}Save {{/if}}</span><span class="n-myft-ui__button--viewport-large" aria-hidden="true">to myFT</span>
+						<span class="save-button-longer-copy" data-variant-label>{{#if isSaved}}Saved&nbsp;{{else}}Save&nbsp;{{/if}}</span><span class="n-myft-ui__button--viewport-large" aria-hidden="true">to myFT</span>
 					{{else}}
 						<span>{{#if isSaved}}Saved{{else}}Save{{/if}}</span>
 					{{/unlessEquals}}
