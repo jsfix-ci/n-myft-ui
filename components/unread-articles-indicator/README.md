@@ -35,7 +35,7 @@ It indicates to the user that articles they've not yet read have been published 
 
 - The favicon is updated to reflect what the indicator is showing
 
-- The article count updates automatically without the user having to refresh the page every 5 minutes
+- The article count updates automatically without the user having to refresh the page every 20 minutes
 
 - The count is reset to 0 when the user visits their myFT feed page on [ft.com](https://www.ft.com/ft.com/myft/following)
 
