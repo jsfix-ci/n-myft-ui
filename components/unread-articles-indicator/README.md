@@ -23,9 +23,9 @@ It indicates to the user that articles they've not yet read have been published 
 
 ## When?
 
-- June 2018 - intial implementation
+- June 2018 - intial implementation [AB Test results](https://sites.google.com/ft.com/ftproductanalytics/analysis/myft/myft-feed-page)
 - Sep 2018 - sync across devices
-- Oct 2019 - add favicon
+- Oct 2019 - add favicon [AB Test results](https://sites.google.com/ft.com/ftproductanalytics/tests/engagement/myftunreadfavicon)
 - Nov 2019 - automatically update (polling)
 
 
@@ -41,11 +41,9 @@ It indicates to the user that articles they've not yet read have been published 
 
 - The count is reset every day at midnight
 
-- The count is reset after 30 minutes of site inactivity
+- The count is reset after 30 minutes of site inactivity - 🐛 thought to be a bug
 
 - The state of the indicator is synched between different browsers, however it's not expected to be real-time
-
-
 ---
 
 ## How the unread articles number is determined
