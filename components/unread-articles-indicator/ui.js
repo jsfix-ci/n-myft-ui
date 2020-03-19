@@ -1,24 +1,3 @@
-
-class IndicatorOriginal {
-	constructor (container, {onClick} = {}) {
-		this.container = container;
-		this.container.classList.add('myft__indicator-container');
-
-		this.el = document.createElement('span');
-		this.el.classList.add('myft__indicator-original');
-
-		container.appendChild(this.el);
-
-		if (typeof onClick === 'function') {
-			this.container.addEventListener('click', () => onClick());
-		}
-	}
-
-	setCount (count) {
-		this.el.innerText = count > 0 ? count : '';
-	}
-}
-
 class Indicator {
 	constructor (container, {onClick} = {}) {
 		this.count = undefined;
@@ -96,11 +75,8 @@ let favicon;
 let title;
 
 export const createIndicators = (targets, options = {}) => {
-	if( options.flags && options.flags.myftNewUnreadIndicator ) {
-		indicators = [...targets].map(target => new Indicator(target, options));
-	} else {
-		indicators = [...targets].map(target => new IndicatorOriginal(target, options));
-	}
+	indicators = [...targets].map(target => new Indicator(target, options));
+
 	if (options.flags && options.flags.myftUnreadFavicon) {
 		favicon = new Favicon();
 		title = new Title();

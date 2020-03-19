@@ -38,7 +38,7 @@ describe('unread stories indicator - ui', () => {
 
 			it('should add a count element to each container', () => {
 				containers.forEach(container => {
-					const els = container.querySelectorAll('.myft__indicator-original');
+					const els = container.querySelectorAll('.myft__indicator');
 
 					expect(els.length).to.equal(1);
 				});
@@ -53,17 +53,48 @@ describe('unread stories indicator - ui', () => {
 
 			it('should show the count in the count element', () => {
 				containers.forEach(container => {
-					const el = container.querySelector('.myft__indicator-original');
+					const el = container.querySelector('.myft__indicator');
 
 					expect(el.innerText).to.equal('3');
 				});
 			});
 
-			it('should clear the count when count is zero', () => {
+			it('should hide the indicator when count is zero', () => {
 				ui.setCount(0);
 				containers.forEach(container => {
-					const el = container.querySelector('.myft__indicator-original');
+					const el = container.querySelector('.myft__indicator');
 
+					expect(el.classList.contains('myft__indicator--hidden')).to.equal(true);
+				});
+			});
+
+			it('should set a single digit class when count is less than 10', () => {
+				ui.setCount(9);
+				containers.forEach(container => {
+					const el = container.querySelector('.myft__indicator');
+
+					expect(el.classList.contains('myft__indicator--hidden')).to.equal(false);
+					expect(el.classList.contains('myft__indicator--single-digit')).to.equal(true);
+				});
+			});
+
+			it('should remove a single digit class when count is more than 10', () => {
+				ui.setCount(10);
+				containers.forEach(container => {
+					const el = container.querySelector('.myft__indicator');
+
+					expect(el.classList.contains('myft__indicator--hidden')).to.equal(false);
+					expect(el.classList.contains('myft__indicator--single-digit')).to.equal(false);
+				});
+			});
+
+			it('should not display number when count is more than 200', () => {
+				ui.setCount(200);
+				containers.forEach(container => {
+					const el = container.querySelector('.myft__indicator');
+
+					expect(el.classList.contains('myft__indicator--hidden')).to.equal(false);
+					expect(el.classList.contains('myft__indicator--single-digit')).to.equal(false);
 					expect(el.innerText).to.equal('');
 				});
 			});
