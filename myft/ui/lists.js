@@ -11,7 +11,7 @@ const delegate = new Delegate(document.body);
 const csrfToken = getToken();
 
 
-function openOverlay(html, { name = 'myft-ui', title = '&nbsp;', shaded = false }) {
+function openOverlay (html, { name = 'myft-ui', title = '&nbsp;', shaded = false }) {
 	// If an overlay already exists of the same name destroy it.
 	const overlays = Overlay.getOverlays();
 	const existingOverlay = overlays[name];
@@ -31,7 +31,7 @@ function openOverlay(html, { name = 'myft-ui', title = '&nbsp;', shaded = false 
 	});
 }
 
-function updateAfterAddToList(listId, contentId, wasAdded) {
+function updateAfterAddToList (listId, contentId, wasAdded) {
 
 	myFtUiButtonStates.setStateOfButton('contained', contentId, wasAdded);
 
@@ -54,7 +54,7 @@ function updateAfterAddToList(listId, contentId, wasAdded) {
 }
 
 
-function setUpSaveToExistingListListeners(overlay, contentId) {
+function setUpSaveToExistingListListeners (overlay, contentId) {
 
 	const saveToExistingListButton = overlay.content.querySelector('.js-save-to-existing-list');
 	const listSelect = overlay.content.querySelector('.js-list-select');
@@ -77,7 +77,7 @@ function setUpSaveToExistingListListeners(overlay, contentId) {
 	}
 }
 
-function setUpCreateListListeners(overlay, contentId) {
+function setUpCreateListListeners (overlay, contentId) {
 
 	const createListButton = overlay.content.querySelector('.js-create-list');
 	const nameInput = overlay.content.querySelector('.js-name');
@@ -121,7 +121,7 @@ function setUpCreateListListeners(overlay, contentId) {
 }
 
 
-function showListsOverlay(overlayTitle, formHtmlUrl, contentId) {
+function showListsOverlay (overlayTitle, formHtmlUrl, contentId) {
 	myFtClient.personaliseUrl(formHtmlUrl)
 		.then(url => fetch(url, {
 			credentials: 'same-origin'
@@ -149,19 +149,19 @@ function showListsOverlay(overlayTitle, formHtmlUrl, contentId) {
 
 }
 
-function showCopyToListOverlay(contentId, excludeList) {
+function showCopyToListOverlay (contentId, excludeList) {
 	showListsOverlay('Copy to list', `/myft/list?fragment=true&copy=true&contentId=${contentId}&excludeList=${excludeList}`, contentId);
 }
 
-function showCreateListOverlay() {
+function showCreateListOverlay () {
 	showListsOverlay('Create list', '/myft/list?fragment=true');
 }
 
-function showArticleSavedOverlay(contentId) {
+function showArticleSavedOverlay (contentId) {
 	showListsOverlay('Article saved', `/myft/list?fragment=true&fromArticleSaved=true&contentId=${contentId}`, contentId);
 }
 
-function handleArticleSaved(contentId) {
+function handleArticleSaved (contentId) {
 	return myFtClient.getAll('created', 'list')
 		.then(createdLists => createdLists.filter(list => !list.isRedirect))
 		.then(createdLists => {
@@ -171,7 +171,7 @@ function handleArticleSaved(contentId) {
 		});
 }
 
-function initialEventListeners() {
+function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
 		const contentId = event.detail.subject;
@@ -188,6 +188,6 @@ function initialEventListeners() {
 	});
 }
 
-export function init() {
+export function init () {
 	initialEventListeners();
 }
