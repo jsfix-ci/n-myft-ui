@@ -31,11 +31,14 @@ describe('navigationAlphaTest', () => {
 			{
 				flags:
 				{
-					frontPageAlpha: true
+					get: () => { return 'on'; }
 				}
 			} :
 			{
-				flags : {}
+				flags :
+				{
+					get: () => { return undefined; }
+				}
 			};
 	};
 
