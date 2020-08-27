@@ -1,7 +1,7 @@
 import { $$ as findElements } from 'n-ui-foundations';
 
 export default function (opts) {
-	if (opts && opts.flags && opts.flags.frontPageAlpha) {
+	if (opts && opts.flags && opts.flags.get('frontPageAlpha')) {
 		const ft = 'www.ft.com/';
 		const relativeLinks = findElements('a[href="/"], a[href^="/?"]');
 		const absoluteLinks = findElements(
