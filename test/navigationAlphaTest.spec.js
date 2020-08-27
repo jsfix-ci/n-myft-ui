@@ -31,15 +31,13 @@ describe('navigationAlphaTest', () => {
 			{
 				flags:
 				{
-					// eslint-disable-next-line no-unused-vars
-					get: (_flag) => { return 'on'; }
+					get: () => { return 'on'; }
 				}
 			} :
 			{
 				flags :
 				{
-					// eslint-disable-next-line no-unused-vars
-					get: (_flag) => { return undefined; }
+					get: () => { return undefined; }
 				}
 			};
 	};
