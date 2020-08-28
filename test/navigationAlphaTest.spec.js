@@ -26,19 +26,32 @@ describe('navigationAlphaTest', () => {
 		});
 	};
 
-	const optsFactory = (includeFrontPageAlphaFlag = true) => {
+	const optsFactory = (includeFrontPageAlphaFlag = true, accessViaFlags = true) => {
+		if (accessViaFlags) {
+			return includeFrontPageAlphaFlag ?
+				{
+					flags:
+						{
+							get: () => { return 'on'; }
+						}
+				} :
+				{
+					flags :
+						{
+							get: () => { return undefined; }
+						}
+				};
+		}
+
 		return includeFrontPageAlphaFlag ?
 			{
 				flags:
-				{
-					get: () => { return 'on'; }
-				}
+					{
+						frontPageAlpha : true
+					}
 			} :
 			{
-				flags :
-				{
-					get: () => { return undefined; }
-				}
+				flags : {}
 			};
 	};
 
@@ -74,14 +87,12 @@ describe('navigationAlphaTest', () => {
 		baseOverrideTest('https://www.ft.com/?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
 	});
 
-	it('Should override all types of expected links', () => {
+	const baseOverrideAllLinksTest = (opts) => {
 		// Arrange
 		const relativeLink = createAnchorElement('/');
 		const absoluteSecureLink = createAnchorElement('https://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
 		const absoluteInsecureLink = createAnchorElement('http://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
 		const searchParamLink = createAnchorElement('https://www.ft.com/?edition=uk');
-
-		const opts = optsFactory();
 
 		// Act
 		navigationAlphaTest(opts);
@@ -94,6 +105,18 @@ describe('navigationAlphaTest', () => {
 
 		// Clean-up
 		removeElements([relativeLink.id, absoluteSecureLink.id, absoluteInsecureLink.id, searchParamLink.id]);
+		;};
+
+	it('Should override all types of expected links', () => {
+		const opts = optsFactory();
+
+		baseOverrideAllLinksTest(opts);
+	});
+
+	it('Should override all types of expected links when accessing flag through property', () => {
+		const opts = optsFactory(true, false);
+
+		baseOverrideAllLinksTest(opts);
 	});
 
 	const baseShouldNotOverrideTest = (opts) => {
