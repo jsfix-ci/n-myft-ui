@@ -4,7 +4,7 @@ export default function (opts) {
 	if (
 		opts &&
 		opts.flags &&
-		(opts.flags.get && opts.flags.get('frontPageAlpha') || opts.flags.frontPageAlpha)
+		((opts.flags.get && opts.flags.get('frontPageAlpha')) || opts.flags.frontPageAlpha)
 	) {
 		const ft = 'www.ft.com/';
 		const relativeLinks = findElements('a[href="/"], a[href^="/?"]');
