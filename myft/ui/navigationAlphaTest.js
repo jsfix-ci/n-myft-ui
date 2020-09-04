@@ -6,11 +6,21 @@ export default function (opts) {
 		opts.flags &&
 		((opts.flags.get && opts.flags.get('frontPageAlpha')) || opts.flags.frontPageAlpha)
 	) {
-		const ft = 'www.ft.com/';
+		const ft = 'www.ft.com';
 		const relativeLinks = findElements('a[href="/"], a[href^="/?"]');
-		const absoluteLinks = findElements(
-			`a[href^="https://${ft}"], a[href^="http://${ft}"]`
-		);
+
+		const cssSelectors = [
+			`a[href="https://${ft}"]`,
+			`a[href="http://${ft}"]`,
+			`a[href="https://${ft}/"]`,
+			`a[href="http://${ft}/"]`,
+			`a[href^="https://${ft}/?"]`,
+			`a[href^="http://${ft}/?"]`,
+			`a[href^="https://${ft}?"]`,
+			`a[href^="http://${ft}?"]`
+		].join(',');
+
+		const absoluteLinks = findElements(cssSelectors);
 
 		const alphaFrontPageUrl =
 			'https://ft-next-alpha-front-page-eu.herokuapp.com/next-alpha-front-page';
