@@ -93,6 +93,8 @@ describe('navigationAlphaTest', () => {
 	it('Should override absolute links with search param', () => {
 		baseOverrideTest('https://www.ft.com/?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
 		baseOverrideTest('https://www.ft.com?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('http://www.ft.com/?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('http://www.ft.com?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
 	});
 
 	const baseOverrideAllLinksTest = (opts) => {
