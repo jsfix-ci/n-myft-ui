@@ -72,11 +72,16 @@ describe('navigationAlphaTest', () => {
 	};
 
 	it('Should override secure absolute links', () => {
-		baseOverrideTest('https://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
+		baseOverrideTest('https://www.ft.com/');
 	});
 
 	it('Should override insecure absolute links', () => {
-		baseOverrideTest('http://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
+		baseOverrideTest('http://www.ft.com/');
+	});
+
+	it('Should not override links to FT pages', () => {
+		baseOverrideTest('http://www.ft.com/myaccount', 'http://www.ft.com/myaccount');
+		baseOverrideTest('https://www.ft.com/tour/myft','https://www.ft.com/tour/myft');
 	});
 
 	it('Should override relative links', () => {
@@ -90,8 +95,8 @@ describe('navigationAlphaTest', () => {
 	const baseOverrideAllLinksTest = (opts) => {
 		// Arrange
 		const relativeLink = createAnchorElement('/');
-		const absoluteSecureLink = createAnchorElement('https://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
-		const absoluteInsecureLink = createAnchorElement('http://www.ft.com/content/a5676e20-5c92-47f3-a76c-11f9761121f5');
+		const absoluteSecureLink = createAnchorElement('https://www.ft.com/');
+		const absoluteInsecureLink = createAnchorElement('http://www.ft.com/');
 		const searchParamLink = createAnchorElement('https://www.ft.com/?edition=uk');
 
 		// Act
