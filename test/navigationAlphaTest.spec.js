@@ -71,12 +71,14 @@ describe('navigationAlphaTest', () => {
 		removeElements([anchor.id]);
 	};
 
-	it('Should override secure absolute links', () => {
+	it('Should override secure absolute links to the FT homepage', () => {
 		baseOverrideTest('https://www.ft.com/');
+		baseOverrideTest('https://www.ft.com');
 	});
 
-	it('Should override insecure absolute links', () => {
+	it('Should override insecure absolute links to the FT homepage', () => {
 		baseOverrideTest('http://www.ft.com/');
+		baseOverrideTest('http://www.ft.com');
 	});
 
 	it('Should not override links to FT pages', () => {
