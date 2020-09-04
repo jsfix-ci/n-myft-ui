@@ -9,7 +9,7 @@ export default function (opts) {
 		const ft = 'www.ft.com';
 		const relativeLinks = findElements('a[href="/"], a[href^="/?"]');
 		const absoluteLinks = findElements(
-			`a[href="https://${ft}"], a[href="http://${ft}"], a[href="https://${ft}/"], a[href="http://${ft}/"], a[href^="https://${ft}/?"], a[href^="http://${ft}/?"]`
+			`a[href="https://${ft}"], a[href="http://${ft}"], a[href="https://${ft}/"], a[href="http://${ft}/"], a[href^="https://${ft}/?"], a[href^="http://${ft}/?"], a[href^="https://${ft}?"]`
 		);
 
 		const alphaFrontPageUrl =
