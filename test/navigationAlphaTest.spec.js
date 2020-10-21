@@ -47,7 +47,7 @@ describe('navigationAlphaTest', () => {
 			{
 				flags:
 					{
-						frontPageAlpha : true
+						betaHomePage : true
 					}
 			} :
 			{
@@ -144,7 +144,7 @@ describe('navigationAlphaTest', () => {
 		removeElements([anchor.id]);
 	};
 
-	it('Should override not override links if frontPageAlpha flag not set', () => {
+	it('Should not override links if betaHomePage flag not set', () => {
 		const opts = optsFactory(false);
 
 		baseShouldNotOverrideTest(opts);
