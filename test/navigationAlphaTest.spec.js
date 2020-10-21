@@ -5,7 +5,7 @@ import { uuid } from 'n-ui-foundations';
 
 describe('navigationAlphaTest', () => {
 
-	const alphaFrontPageUrl = 'https://ft-next-alpha-front-page-eu.herokuapp.com/next-alpha-front-page';
+	const alphaFrontPageUrl = 'https://www.ft.com/page/home';
 
 	const createAnchorElement = (href) => {
 		const anchor = document.createElement('a');

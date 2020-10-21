@@ -22,8 +22,7 @@ export default function (opts) {
 
 		const absoluteLinks = findElements(cssSelectors);
 
-		const alphaFrontPageUrl =
-			'https://ft-next-alpha-front-page-eu.herokuapp.com/next-alpha-front-page';
+		const alphaFrontPageUrl = `https://${ft}/page/home`;
 
 		[...relativeLinks, ...absoluteLinks].forEach((link) => {
 			const url = new URL(link.href);
