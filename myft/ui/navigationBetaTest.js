@@ -22,11 +22,11 @@ export default function (opts) {
 
 		const absoluteLinks = findElements(cssSelectors);
 
-		const alphaFrontPageUrl = `https://${ft}/page/home`;
+		const betaFrontPageUrl = `https://${ft}/page/home`;
 
 		[...relativeLinks, ...absoluteLinks].forEach((link) => {
 			const url = new URL(link.href);
-			link.href = `${alphaFrontPageUrl}${url.search}`;
+			link.href = `${betaFrontPageUrl}${url.search}`;
 		});
 	}
 }
