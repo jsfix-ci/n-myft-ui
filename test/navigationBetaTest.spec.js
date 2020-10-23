@@ -1,11 +1,11 @@
 /* global expect */
 
-const navigationAlphaTest = require('../myft/ui/navigationAlphaTest');
+const navigationBetaTest = require('../myft/ui/navigationBetaTest');
 import { uuid } from 'n-ui-foundations';
 
-describe('navigationAlphaTest', () => {
+describe('navigationBetaTest', () => {
 
-	const alphaFrontPageUrl = 'https://ft-next-alpha-front-page-eu.herokuapp.com/next-alpha-front-page';
+	const betaFrontPageUrl = 'https://www.ft.com/page/home';
 
 	const createAnchorElement = (href) => {
 		const anchor = document.createElement('a');
@@ -13,7 +13,7 @@ describe('navigationAlphaTest', () => {
 		anchor.appendChild(linkText);
 		anchor.title = 'title';
 		anchor.href = href;
-		anchor.id = `alphaFrontPage-${uuid()}`;
+		anchor.id = `betaFrontPage-${uuid()}`;
 		document.body.appendChild(anchor);
 
 		return anchor;
@@ -26,9 +26,9 @@ describe('navigationAlphaTest', () => {
 		});
 	};
 
-	const optsFactory = (includeFrontPageAlphaFlag = true, accessViaFlags = true) => {
+	const optsFactory = (includeFrontPageBetaFlag = true, accessViaFlags = true) => {
 		if (accessViaFlags) {
-			return includeFrontPageAlphaFlag ?
+			return includeFrontPageBetaFlag ?
 				{
 					flags:
 						{
@@ -43,11 +43,11 @@ describe('navigationAlphaTest', () => {
 				};
 		}
 
-		return includeFrontPageAlphaFlag ?
+		return includeFrontPageBetaFlag ?
 			{
 				flags:
 					{
-						frontPageAlpha : true
+						betaHomePage : true
 					}
 			} :
 			{
@@ -55,14 +55,14 @@ describe('navigationAlphaTest', () => {
 			};
 	};
 
-	const baseOverrideTest = (url, expectedUrl = alphaFrontPageUrl) => {
+	const baseOverrideTest = (url, expectedUrl = betaFrontPageUrl) => {
 		// Arrange
 		const anchor = createAnchorElement(url);
 
 		const opts = optsFactory();
 
 		// Act
-		navigationAlphaTest(opts);
+		navigationBetaTest(opts);
 
 		// Assert
 		expect(document.getElementById(anchor.id).href).to.equal(expectedUrl);
@@ -91,10 +91,10 @@ describe('navigationAlphaTest', () => {
 	});
 
 	it('Should override absolute links with search param', () => {
-		baseOverrideTest('https://www.ft.com/?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
-		baseOverrideTest('https://www.ft.com?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
-		baseOverrideTest('http://www.ft.com/?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
-		baseOverrideTest('http://www.ft.com?edition=uk', `${alphaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('https://www.ft.com/?edition=uk', `${betaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('https://www.ft.com?edition=uk', `${betaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('http://www.ft.com/?edition=uk', `${betaFrontPageUrl}?edition=uk`);
+		baseOverrideTest('http://www.ft.com?edition=uk', `${betaFrontPageUrl}?edition=uk`);
 	});
 
 	const baseOverrideAllLinksTest = (opts) => {
@@ -105,13 +105,13 @@ describe('navigationAlphaTest', () => {
 		const searchParamLink = createAnchorElement('https://www.ft.com/?edition=uk');
 
 		// Act
-		navigationAlphaTest(opts);
+		navigationBetaTest(opts);
 
 		// Assert
-		expect(document.getElementById(relativeLink.id).href).to.equal(alphaFrontPageUrl);
-		expect(document.getElementById(absoluteSecureLink.id).href).to.equal(alphaFrontPageUrl);
-		expect(document.getElementById(absoluteInsecureLink.id).href).to.equal(alphaFrontPageUrl);
-		expect(document.getElementById(searchParamLink.id).href).to.equal(`${alphaFrontPageUrl}?edition=uk`);
+		expect(document.getElementById(relativeLink.id).href).to.equal(betaFrontPageUrl);
+		expect(document.getElementById(absoluteSecureLink.id).href).to.equal(betaFrontPageUrl);
+		expect(document.getElementById(absoluteInsecureLink.id).href).to.equal(betaFrontPageUrl);
+		expect(document.getElementById(searchParamLink.id).href).to.equal(`${betaFrontPageUrl}?edition=uk`);
 
 		// Clean-up
 		removeElements([relativeLink.id, absoluteSecureLink.id, absoluteInsecureLink.id, searchParamLink.id]);
@@ -135,7 +135,7 @@ describe('navigationAlphaTest', () => {
 		const initialHref = anchor.href;
 
 		// Act
-		navigationAlphaTest(opts);
+		navigationBetaTest(opts);
 
 		// Assert
 		expect(document.getElementById(anchor.id).href).to.equal(initialHref);
@@ -144,7 +144,7 @@ describe('navigationAlphaTest', () => {
 		removeElements([anchor.id]);
 	};
 
-	it('Should override not override links if frontPageAlpha flag not set', () => {
+	it('Should not override links if betaHomePage flag not set', () => {
 		const opts = optsFactory(false);
 
 		baseShouldNotOverrideTest(opts);

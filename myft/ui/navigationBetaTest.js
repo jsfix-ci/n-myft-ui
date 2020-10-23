@@ -4,7 +4,7 @@ export default function (opts) {
 	if (
 		opts &&
 		opts.flags &&
-		((opts.flags.get && opts.flags.get('frontPageAlpha')) || opts.flags.frontPageAlpha)
+		((opts.flags.get && opts.flags.get('betaHomePage')) || opts.flags.betaHomePage)
 	) {
 		const ft = 'www.ft.com';
 		const relativeLinks = findElements('a[href="/"], a[href^="/?"]');
@@ -22,12 +22,11 @@ export default function (opts) {
 
 		const absoluteLinks = findElements(cssSelectors);
 
-		const alphaFrontPageUrl =
-			'https://ft-next-alpha-front-page-eu.herokuapp.com/next-alpha-front-page';
+		const betaFrontPageUrl = `https://${ft}/page/home`;
 
 		[...relativeLinks, ...absoluteLinks].forEach((link) => {
 			const url = new URL(link.href);
-			link.href = `${alphaFrontPageUrl}${url.search}`;
+			link.href = `${betaFrontPageUrl}${url.search}`;
 		});
 	}
 }
