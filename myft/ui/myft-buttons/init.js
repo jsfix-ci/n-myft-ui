@@ -13,10 +13,10 @@ import {init as initPushNotifications} from '../lib/push-notifications';
 const delegate = new Delegate(document.body);
 let initialised;
 
-function getInteractionHandler (flags, relationshipName) {
+function getInteractionHandler (relationshipName) {
 	return (ev, formEl) => {
 		ev.preventDefault();
-		return doFormSubmit(relationshipName, formEl, flags.myftOfferInstantAlertNotifications);
+		return doFormSubmit(relationshipName, formEl);
 	};
 }
 
@@ -43,7 +43,7 @@ function anonEventListeners () {
 	});
 }
 
-function signedInEventListeners (flags = {}) {
+function signedInEventListeners () {
 	Object.keys(relationshipConfig).forEach(relationshipName => {
 		const uiSelector = relationshipConfig[relationshipName].uiSelector;
 
@@ -77,7 +77,7 @@ function signedInEventListeners (flags = {}) {
 					});
 				});
 
-			delegate.on('submit', uiSelector, getInteractionHandler(flags, relationshipName));
+			delegate.on('submit', uiSelector, getInteractionHandler(relationshipName));
 		}
 	});
 }
@@ -97,7 +97,7 @@ export default function (opts) {
 			if( opts.flags && opts.flags.myftOfferInstantAlertNotifications ) {
 				initPushNotifications(opts.flags.fcmSwitch);
 			}
-			signedInEventListeners(opts.flags);
+			signedInEventListeners();
 			personaliseLinks();
 		}
 	}
