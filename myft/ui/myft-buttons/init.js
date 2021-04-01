@@ -8,7 +8,6 @@ import Delegate from 'ftdomdelegate';
 import personaliseLinks from '../personalise-links';
 import doFormSubmit from './do-form-submit';
 import enhanceActionUrls from './enhance-action-urls';
-import {init as initPushNotifications} from '../lib/push-notifications';
 
 const delegate = new Delegate(document.body);
 let initialised;
@@ -94,9 +93,6 @@ export default function (opts) {
 		if (opts && opts.anonymous) {
 			anonEventListeners();
 		} else {
-			if( opts.flags && opts.flags.myftOfferInstantAlertNotifications ) {
-				initPushNotifications(opts.flags.fcmSwitch);
-			}
 			signedInEventListeners();
 			personaliseLinks();
 		}
