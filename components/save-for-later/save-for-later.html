@@ -41,10 +41,10 @@
 		{{/if}}
 		data-content-id="{{contentId}}" {{! duplicated here for tracking}}
 		{{#if isSaved}}
-			aria-label="{{#if title}}{{title}} is{{/if}} Saved to myFT"
+			aria-label="{{#if prefixText}}{{prefixText}}{{/if}} {{#if title}}{{title}} is{{/if}} Saved to myFT"
 			title="{{#if title}}{{title}} is{{/if}} Saved to myFT"
 		{{else}}
-			aria-label="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
+			aria-label="{{#if prefixText}}{{prefixText}}{{/if}} {{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
 			title="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
 		{{/if}}
 		>
