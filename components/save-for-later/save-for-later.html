@@ -17,10 +17,14 @@
 		data-trackable="{{#if trackableId}}{{trackableId}}{{else}}save-for-later{{/if}}"
 		{{#if isSaved}}
 			{{!-- The value of alternate label needs to be the opposite of label / the current saved state. This allows the client side JS to toggle the labels on state changes --}}
+			title="{{#if title}}{{title}} is{{/if}} Saved to myFT"
+			aria-label="{{#if title}}{{title}} is{{/if}} Saved to myFT"
 			data-alternate-label="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
 			aria-pressed="true"
 		{{else}}
-			data-alternate-label="Saved to myFT"
+			title="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
+			aria-label="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
+			data-alternate-label="{{#if title}}{{title}} is{{/if}} Saved to myFT"
 			aria-pressed="false"
 		{{/if}}
 		{{#unlessEquals appIsStreamPage true}}
@@ -40,13 +44,6 @@
 			{{/if}}
 		{{/if}}
 		data-content-id="{{contentId}}" {{! duplicated here for tracking}}
-		{{#if isSaved}}
-			aria-label="{{#if prefixText}}{{prefixText}}{{/if}} {{#if title}}{{title}} is{{/if}} Saved to myFT"
-			title="{{#if title}}{{title}} is{{/if}} Saved to myFT"
-		{{else}}
-			aria-label="{{#if prefixText}}{{prefixText}}{{/if}} {{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
-			title="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
-		{{/if}}
 		>
 			{{#if saveButtonWithIcon}}
 				<span class="save-button-with-icon-copy" data-variant-label>{{#if buttonText~}}
