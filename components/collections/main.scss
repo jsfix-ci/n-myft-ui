@@ -1,3 +1,61 @@
+@mixin focusOutlineColor($focus-color) {
+	// Apply :focus styles as a fallback
+	// These styles will be applied to all browsers that don't use the polyfill, this includes browsers which support the feature natively.
+	body:not(.js-focus-visible) &,
+	html:not(.js-focus-visible) & {
+		// Standardise focus styles.
+		:focus {
+			outline: 2px solid $focus-color;
+		}
+
+		input:focus,
+		textarea:focus,
+		select:focus {
+			box-shadow: 0 0 0 1px $focus-color;
+		}
+	}
+
+	// When the focus-visible polyfill is applied `.js-focus-visible` is added to the html dom node
+	// (the body node in v4 of the 3rd party polyfill)
+
+	// stylelint-disable-next-line selector-no-qualifying-type
+	body.js-focus-visible &, // stylelint-disable-next-line selector-no-qualifying-type
+	html.js-focus-visible & {
+		// Standardise focus styles.
+		// stylelint-disable-next-line selector-no-qualifying-type
+		.focus-visible {
+			outline: 2px solid $focus-color;
+		}
+		// stylelint-disable-next-line selector-no-qualifying-type
+		input.focus-visible, // stylelint-disable-next-line selector-no-qualifying-type
+		textarea.focus-visible,
+		select.focus-visible {
+			box-shadow: 0 0 0 1px $focus-color;
+		}
+	}
+
+
+	// Styles given :focus-visible support. Extra selectors needed to match
+	// previous `:focus` selector specificity.
+	body:not(.js-focus-visible) & :focus-visible,
+	html:not(.js-focus-visible) & :focus-visible,
+	:focus-visible {
+		outline: 2px solid $focus-color;
+	}
+
+	body:not(.js-focus-visible) & input:focus-visible,
+	html:not(.js-focus-visible) & input:focus-visible,
+	body:not(.js-focus-visible) & textarea:focus-visible,
+	html:not(.js-focus-visible) & textarea:focus-visible,
+	body:not(.js-focus-visible) & select:focus-visible,
+	html:not(.js-focus-visible) & select:focus-visible,
+	input:focus-visible,
+	textarea:focus-visible,
+	select:focus-visible {
+		box-shadow: 0 0 0 1px $focus-color;
+	}
+}
+
 .collection {
 	display: flex;
 	flex: 1 1 auto;
@@ -12,7 +70,7 @@
 
 .collection--regular {
 	background: oColorsByName('claret-70');
-
+	@include focusOutlineColor($focus-color: black);
 	@include oGridRespondTo(M) {
 		height: 100%;
 	}
