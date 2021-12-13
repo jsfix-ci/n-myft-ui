@@ -80,7 +80,7 @@ function generateButtonProps (props) {
 			if (buttonText) {
 				generatedProps['data-alternate-text'] = buttonText;
 			} else {
-				generatedProps['data-alternate-text'] = "Added";
+				generatedProps['data-alternate-text'] = 'Added';
 			}
 		}
 	}
