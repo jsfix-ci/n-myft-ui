@@ -1,10 +1,10 @@
-require('sucrase/register')
+require('sucrase/register');
 const express = require('@financial-times/n-internal-tool');
 const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
 const { PageKitReactJSX } = require('@financial-times/dotcom-server-react-jsx');
-var fs = require('fs');
+let fs = require('fs');
 const path = require('path');
 const xHandlebars = require('@financial-times/x-handlebars');
 const handlebars = require('handlebars');
@@ -63,8 +63,8 @@ app.get('/demo-jsx', async (req, res) => {
 		}
 	}, fixtures));
 
-	var template = handlebars.compile(demoLayoutSource);
-	var result = template({body: demo});
+	let template = handlebars.compile(demoLayoutSource);
+	let result = template({body: demo});
 
 	res.send(result);
 });
