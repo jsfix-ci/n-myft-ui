@@ -11,7 +11,8 @@ module.exports = {
 			entry: {
 				scripts:  [
 					'./myft/index.js',
-					'./myft-common/index.js'
+					'./myft-common/index.js',
+					'./components/follow-button/follow-button.jsx'
 				],
 				styles: './myft/test.scss'
 			},
