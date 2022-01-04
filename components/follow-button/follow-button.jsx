@@ -1,5 +1,5 @@
 import React from 'react';
-import Csrf_Token from '../csrf-token/input';
+import CsrfToken from '../csrf-token/input';
 
 
 function generateFormProps (props) {
@@ -49,7 +49,7 @@ function generateButtonProps (props) {
 
 	let generatedProps = {
 		'data-concept-id': conceptId,
-		'n-myft-follow-button': true,
+		'n-myft-follow-button': 'true',
 		'data-trackable': 'follow',
 		type: 'submit'
 	};
@@ -86,7 +86,7 @@ function generateButtonProps (props) {
 	}
 
 	if(variant) {
-		generatedProps[`n-myft-follow-button--${variant}`] = true;
+		generatedProps[`n-myft-follow-button--${variant}`] = 'true';
 	}
 
 	if(followPlusDigestEmail) {
@@ -147,6 +147,8 @@ export default function FollowButton (props) {
 	const formProps = generateFormProps(props);
 	const buttonProps = generateButtonProps(props);
 
+	const getVariantClass = (variant) => variant? `n-myft-follow-button--${variant}`: '';
+
 	return (
 		<>
 			{flags.myFtApiWrite && <form
@@ -155,7 +157,7 @@ export default function FollowButton (props) {
 				data-myft-ui="follow"
 				data-concept-id={conceptId}
 				{...formProps}>
-				<Csrf_Token cacheablePersonalisedUrl={props.cacheablePersonalisedUrl} csrfToken={props.csrfToken} />
+				<CsrfToken cacheablePersonalisedUrl={props.cacheablePersonalisedUrl} csrfToken={props.csrfToken} />
 				<div
 					className="n-myft-ui__announcement o-normalise-visually-hidden"
 					aria-live="assertive"
@@ -164,7 +166,7 @@ export default function FollowButton (props) {
 				></div>
 				<button
 					{...buttonProps}
-					className={[`n-myft-follow-button ${variant? `n-myft-follow-button--${variant}`: ''}`]}>
+					className={[`n-myft-follow-button ${getVariantClass(variant)}`]}>
 					{getButtonText(props)}
 				</button>
 			</form>}
