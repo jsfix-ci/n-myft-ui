@@ -2,7 +2,7 @@
 <span class="myft-pin-divider"></span>
 <div class="myft-pin-button-wrapper">
 	<form method="post" action="/__myft/api/core/prioritised/concept/{{id}}?method={{#if prioritised}}delete{{else}}put{{/if}}" data-myft-prioritise>
-		{{> n-myft-ui/components/csrf-token/input }}
+		{{{renderReactComponent localPath="components/csrf-token/input"}}}
 		<input type="hidden" value="{{name}}" name="name"> {{#if directType}}
 		<input type="hidden" value="{{directType}}" name="directType"> {{else}}
 		<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType"> {{/if}}
