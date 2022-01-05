@@ -20,10 +20,7 @@
 						class="concept-list__concept">
 						{{prefLabel}}
 					</a>
-					{{> n-myft-ui/components/follow-button/follow-button
-						conceptId=id
-						name=prefLabel
-					}}
+					{{{renderReactComponent localPath="components/follow-button/follow-button" conceptId=id name=prefLabel flags=@root.flags}}}
 				</li>
 			{{/each}}
 		</ul>

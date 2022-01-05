@@ -8,6 +8,7 @@ let fs = require('fs');
 const path = require('path');
 const xHandlebars = require('@financial-times/x-handlebars');
 const handlebars = require('handlebars');
+const { helpers } = require('@financial-times/dotcom-server-handlebars');
 
 const demoJSX = require('./templates/demo').default;
 const demoLayoutSource = fs.readFileSync(path.join(__dirname, './templates/demo-layout.html'),'utf8').toString();
@@ -36,7 +37,8 @@ const app = module.exports = express({
 	demo: true,
 	s3o: false,
 	helpers: {
-		x: xHandlebars()
+		x: xHandlebars(),
+		renderReactComponent: helpers.renderReactComponent
 	},
 });
 
