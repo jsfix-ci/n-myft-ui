@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export default function CsrfToken ({ cacheablePersonalisedUrl, csrfToken }) {
 
 	let inputProps = {};
@@ -10,6 +9,10 @@ export default function CsrfToken ({ cacheablePersonalisedUrl, csrfToken }) {
 			...inputProps,
 			'data-myft-csrf-token': csrfToken
 		};
+	}
+
+	if(csrfToken) {
+		inputProps.value = csrfToken;
 	}
 
 	return (
