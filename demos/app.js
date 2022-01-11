@@ -1,9 +1,17 @@
+require('sucrase/register');
 const express = require('@financial-times/n-internal-tool');
 const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
-
+const { PageKitReactJSX } = require('@financial-times/dotcom-server-react-jsx');
+const fs = require('fs');
+const path = require('path');
 const xHandlebars = require('@financial-times/x-handlebars');
+const handlebars = require('handlebars');
+const { helpers } = require('@financial-times/dotcom-server-handlebars');
+
+const demoJSX = require('./templates/demo').default;
+const demoLayoutSource = fs.readFileSync(path.join(__dirname, './templates/demo-layout.html'),'utf8').toString();
 
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
@@ -29,9 +37,12 @@ const app = module.exports = express({
 	demo: true,
 	s3o: false,
 	helpers: {
-		x: xHandlebars()
-	}
+		x: xHandlebars(),
+		renderReactComponent: helpers.renderReactComponent
+	},
 });
+
+const jsxRenderer = (new PageKitReactJSX({ includeDoctype: false }));
 
 app.get('/', (req, res) => {
 	res.render('demo', Object.assign({
@@ -42,6 +53,22 @@ app.get('/', (req, res) => {
 			myFtApiWrite: true
 		}
 	}, fixtures));
+});
+
+app.get('/demo-jsx', async (req, res) => {
+	let demo = await jsxRenderer.render(demoJSX, Object.assign({
+		title: 'n-myft-ui demo',
+		layout: 'demo-layout',
+		flags: {
+			myFtApi: true,
+			myFtApiWrite: true
+		}
+	}, fixtures));
+
+	let template = handlebars.compile(demoLayoutSource);
+	let result = template({body: demo});
+
+	res.send(result);
 });
 
 app.get('/digest-on-follow', (req, res) => {

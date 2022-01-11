@@ -12,7 +12,7 @@
 				</h2>
 
 				{{#followButton}}
-					{{> n-myft-ui/components/follow-button/follow-button}}
+					{{{renderReactComponent localPath="components/follow-button/follow-button" flags=@root.flags}}}
 				{{/followButton}}
 
 				<h2
@@ -21,9 +21,7 @@
 				</h2>
 
 				{{#followButton}}
-					{{>	n-myft-ui/components/follow-button/follow-button
-						buttonText=name
-					}}
+					{{{renderReactComponent localPath="components/follow-button/follow-button" buttonText=name flags=@root.flags}}}
 				{{/followButton}}
 
 				{{#saveButton}}
