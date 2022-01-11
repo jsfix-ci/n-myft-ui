@@ -2,11 +2,13 @@
   "name": "@financial-times/n-myft-ui",
   "version": "0.0.0",
   "description": "Client side component for interaction with myft",
-  "main": "server.js",
+  "main": "dist/bundle/bundle.js",
+  "module": "dist/bundle/bundle.esm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "commit-wizard",
-    "prepare": "npx snyk protect || npx snyk protect -d || true"
+    "prepare": "npx snyk protect || npx snyk protect -d || true",
+    "build-package": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,8 @@
   },
   "homepage": "https://github.com/Financial-Times/n-myft-ui#readme",
   "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-external-helpers": "^7.16.7",
     "@financial-times/dotcom-build-bower-resolve": "0.4.1",
     "@financial-times/dotcom-build-code-splitting": "0.4.1",
     "@financial-times/dotcom-build-js": "0.4.1",
@@ -30,6 +34,7 @@
     "@financial-times/n-heroku-tools": "8.3.1",
     "@financial-times/n-internal-tool": "2.3.4",
     "@financial-times/x-handlebars": "1.0.0-beta.21",
+    "@rollup/plugin-babel": "^5.3.0",
     "@sucrase/jest-plugin": "^2.2.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -90,6 +95,11 @@
     "postcss-loader": "^0.9.1",
     "react": "^17.0.2",
     "regenerator-runtime": "^0.13.3",
+    "rollup": "^2.63.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^4.0.2",
     "sass-loader": "^3.2.0",
     "semver": "6.3.0",
     "sinon": "^7.1.0",

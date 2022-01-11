@@ -82,6 +82,7 @@ jobs:
           command: .circleci/shared-helpers/helper-generate-build-state-artifacts
           when: always
       - *cache_npm_cache
+      - run: npm run build-package
       - store_artifacts:
           path: build-state
           destination: build-state

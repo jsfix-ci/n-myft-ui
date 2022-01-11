@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CsrfToken ({ cacheablePersonalisedUrl, csrfToken }) {
+function CsrfToken ({ cacheablePersonalisedUrl, csrfToken }) {
 
 	let inputProps = {};
 
@@ -24,3 +24,8 @@ export default function CsrfToken ({ cacheablePersonalisedUrl, csrfToken }) {
 	);
 
 }
+
+export {
+	CsrfToken
+};
+export default CsrfToken;
