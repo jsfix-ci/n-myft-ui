@@ -1,2 +1,7 @@
-export { CsrfToken } from './csrf-token/input';
-export { FollowButton } from './follow-button/follow-button';
+import CsrfToken from './csrf-token/input';
+import FollowButton from './follow-button/follow-button';
+
+export {
+	CsrfToken,
+	FollowButton
+};

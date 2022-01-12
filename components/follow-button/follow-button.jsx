@@ -1,5 +1,5 @@
 import React from 'react';
-import { CsrfToken } from '../csrf-token/input';
+import CsrfToken from '../csrf-token/input';
 
 function generateFormProps (props) {
 	let generatedProps = {};
@@ -132,7 +132,7 @@ function getButtonText (props) {
  * @param {*} props.followPlusDigestEmail
  * @param {string} props.collectionName
  */
-function FollowButton (props) {
+export default function FollowButton (props) {
 
 	const {
 		name,
@@ -172,8 +172,3 @@ function FollowButton (props) {
 	);
 
 }
-
-export {
-	FollowButton
-};
-export default FollowButton;

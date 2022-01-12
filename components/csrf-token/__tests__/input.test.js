@@ -1,5 +1,5 @@
 import React from 'react';
-import { CsrfToken } from '../input';
+import CsrfToken from '../input';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
