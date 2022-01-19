@@ -1,14 +1,13 @@
 require('sucrase/register');
-const express = require('@financial-times/n-internal-tool');
+const nExpress = require('@financial-times/n-express');
 const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
 const { PageKitReactJSX } = require('@financial-times/dotcom-server-react-jsx');
 const fs = require('fs');
 const path = require('path');
-const xHandlebars = require('@financial-times/x-handlebars');
 const handlebars = require('handlebars');
-const { helpers } = require('@financial-times/dotcom-server-handlebars');
+const { PageKitHandlebars, helpers } = require('@financial-times/dotcom-server-handlebars');
 
 const demoJSX = require('./templates/demo').default;
 const demoLayoutSource = fs.readFileSync(path.join(__dirname, './templates/demo-layout.html'),'utf8').toString();
@@ -22,32 +21,38 @@ const fixtures = {
 	instantAlert: require('./fixtures/instant-alert')
 };
 
-const app = module.exports = express({
+const app = module.exports = nExpress({
 	name: 'public',
 	systemCode: 'n-myft-ui-demo',
 	withFlags: true,
-	withHandlebars: true,
-	withNavigation: false,
+	withConsent: false,
+	withServiceMetrics: false,
 	withAnonMiddleware: false,
 	hasHeadCss: false,
-	layoutsDir: 'demos/templates',
-	viewsDirectory: '/demos/templates',
 	partialsDirectory: process.cwd(),
 	directory: process.cwd(),
 	demo: true,
-	s3o: false,
-	helpers: {
-		x: xHandlebars(),
-		renderReactComponent: helpers.renderReactComponent
-	},
+	withBackendAuthentication: false,
 });
+
+app.set('views', path.join(__dirname, '/templates'));
+app.set('view engine', '.html');
+
+app.engine('.html', new PageKitHandlebars({
+	cache: false,
+	handlebars,
+	helpers: {
+		...helpers
+	}
+}).engine);
+
+app.use('/public', nExpress.static(path.join(__dirname, '../public'), { redirect: false }));
 
 const jsxRenderer = (new PageKitReactJSX({ includeDoctype: false }));
 
 app.get('/', (req, res) => {
 	res.render('demo', Object.assign({
 		title: 'n-myft-ui demo',
-		layout: 'demo-layout',
 		flags: {
 			myFtApi: true,
 			myFtApiWrite: true
@@ -58,7 +63,6 @@ app.get('/', (req, res) => {
 app.get('/demo-jsx', async (req, res) => {
 	let demo = await jsxRenderer.render(demoJSX, Object.assign({
 		title: 'n-myft-ui demo',
-		layout: 'demo-layout',
 		flags: {
 			myFtApi: true,
 			myFtApiWrite: true
@@ -71,17 +75,6 @@ app.get('/demo-jsx', async (req, res) => {
 	res.send(result);
 });
 
-app.get('/digest-on-follow', (req, res) => {
-	res.render('digest-on-follow', Object.assign({
-		title: 'n-myft-ui digest on follow',
-		layout: 'demo-layout',
-		flags: {
-			myFtApi: true,
-			myFtApiWrite: true,
-		},
-		appIsStreamPage: false
-	}, fixtures.followButtonPlusDigest));
-});
 
 function runPa11yTests () {
 	const spawn = require('child_process').spawn;
