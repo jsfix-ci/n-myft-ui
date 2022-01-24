@@ -1,459 +1,482 @@
-<div class="o-grid-container o-grid-container--snappy demo-container">
-	<h1>{{title}}</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-	<section
-		id="follow-button"
-		class="demo-section">
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/public/main.css">
+</head>
+
+<body>
+
+	<div class="o-grid-container o-grid-container--snappy">
 		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2
-					class="demo-section__title">
-					Follow button
-				</h2>
+			<ul>
+				<li><a href="/">Basic</a></li>
+				<li><a href="/demo-jsx">JSX demo</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="o-grid-container o-grid-container--snappy demo-container">
+		<h1>{{title}}</h1>
 
-				{{#followButton}}
-					{{{renderReactComponent localPath="components/follow-button/follow-button" flags=@root.flags}}}
-				{{/followButton}}
-
-				<h2
-					class="demo-section__title">
-					x-dash follow button
-				</h2>
-
-				{{#followButton}}
-					{{{renderReactComponent localPath="components/follow-button/follow-button" buttonText=name flags=@root.flags}}}
-				{{/followButton}}
-
-				{{#saveButton}}
-					<h2 class="demo-section__title">
-						Save button
+		<section
+			id="follow-button"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<h2
+						class="demo-section__title">
+						Follow button
 					</h2>
-					{{> n-myft-ui/components/save-for-later/save-for-later }}
-				{{/saveButton}}
 
-				{{#saveButton}}
-					<h2 class="demo-section__title">
-						Unsave button
+					{{#followButton}}
+						{{{renderReactComponent localPath="components/follow-button/follow-button" flags=@root.flags}}}
+					{{/followButton}}
+
+					<h2
+						class="demo-section__title">
+						x-dash follow button
 					</h2>
-					{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true }}
-				{{/saveButton}}
 
-				{{#saveButton}}
+					{{#followButton}}
+						{{{renderReactComponent localPath="components/follow-button/follow-button" buttonText=name flags=@root.flags}}}
+					{{/followButton}}
+
+					{{#saveButton}}
+						<h2 class="demo-section__title">
+							Save button
+						</h2>
+						{{> n-myft-ui/components/save-for-later/save-for-later }}
+					{{/saveButton}}
+
+					{{#saveButton}}
+						<h2 class="demo-section__title">
+							Unsave button
+						</h2>
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true }}
+					{{/saveButton}}
+
+					{{#saveButton}}
+						<h2 class="demo-section__title">
+							Save button with icon
+						</h2>
+						{{> n-myft-ui/components/save-for-later/save-for-later saveButtonWithIcon=true }}
+					{{/saveButton}}
+
+					{{#saveButton}}
+						<h2 class="demo-section__title">
+							Unsave button with icon
+						</h2>
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
+					{{/saveButton}}
+
 					<h2 class="demo-section__title">
-						Save button with icon
+						Pin button
 					</h2>
-					{{> n-myft-ui/components/save-for-later/save-for-later saveButtonWithIcon=true }}
-				{{/saveButton}}
+					{{#each pinButton}}
+						{{> n-myft-ui/components/pin-button/pin-button }}
+					{{/each}}
 
-				{{#saveButton}}
+					{{#instantAlert}}
+						<h2 class="demo-section__title">
+							Instant Alert
+						</h2>
+						{{> n-myft-ui/components/instant-alert/instant-alert }}
+					{{/instantAlert}}
+
+
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="follow-concept"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
 					<h2 class="demo-section__title">
-						Unsave button with icon
+						Follow concept
 					</h2>
-					{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
-				{{/saveButton}}
+					<p class="demo-section__description">
+						These are used in a group of many suggested follows/unfollows such as
+						the myFT page cold start.
+					</p>
+					<div class="concept-collection concept-collection--standard">
+						<h3 class="concept-collection__title">
+							Standard
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<button class="n-myft-follow-button">
+									Books
+								</button>
+							</li>
+							<li>
+								<button
+									aria-pressed="true"
+									class="n-myft-follow-button">
+									Life &amp; Arts
+								</button>
+							</li>
+							<li>
+								<button
+									class="n-myft-follow-button">
+									Theo Leanse
+								</button>
+							</li>
+							<li>
+								<button
+									aria-pressed="true"
+									disabled
+									class="n-myft-follow-button">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-				<h2 class="demo-section__title">
-					Pin button
-				</h2>
-				{{#each pinButton}}
-					{{> n-myft-ui/components/pin-button/pin-button }}
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--inverse">
+						<h3 class="concept-collection__title">
+							Inverse
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--inverse">
+									Books
+								</button>
+							</li>
+							<li>
+								<button
+									aria-pressed="true"
+									class="n-myft-follow-button n-myft-follow-button--inverse">
+									Life &amp; Arts
+								</button>
+							</li>
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--inverse">
+									Theo Leanse
+								</button>
+							</li>
+							<li>
+								<button
+									aria-pressed="true"
+									disabled
+									class="n-myft-follow-button n-myft-follow-button--inverse">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--monochrome">
+						<h3 class="concept-collection__title">
+							Monochrome
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--monochrome"
+									aria-pressed="false">
+									Theo Leanse
+								</button>
+							</li>
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--monochrome"
+									aria-pressed="true">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</button>
+							</li>
+							<li>
+								<button
+									disabled
+									class="n-myft-follow-button n-myft-follow-button--monochrome"
+									aria-pressed="true">
+									chee
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--opinion">
+						<h3 class="concept-collection__title">
+							Opinion topper
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--opinion"
+									aria-pressed="false">
+									Theo Leanse
+								</button>
+							</li>
+							<li>
+								<button
+									class="n-myft-follow-button n-myft-follow-button--opinion"
+									aria-pressed="true">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</button>
+							</li>
+							<li>
+								<button
+									disabled
+									class="n-myft-follow-button n-myft-follow-button--opinion"
+									aria-pressed="false">
+									chee
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="onboarding-cta"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<h2 class="demo-section__title">
+						Onboarding call to action
+					</h2>
+
+					<p class="demo-section__description">
+						Used on the myFT section of the homepage.
+					</p>
+
+					<a class="n-myft-onboarding-cta" href="#">
+						See stories
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="concept-pill"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<h2 class="demo-section__title">
+						Concept pill
+					</h2>
+					<p class="demo-section__description">
+						Used for links to concepts (eg: on the email digest page)
+					</p>
+					<div class="concept-collection concept-collection--standard">
+						<h3 class="concept-collection__title">
+							Standard
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<a
+									class="n-myft-concept-pill"
+									href="#">
+									Books
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill"
+									href="#">
+									Life &amp; Arts
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill"
+									href="#">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</a>
+							</li>
+							<li>
+								<button
+									class="n-myft-concept-pill"
+									disabled>
+									Books
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--inverse">
+						<h3 class="concept-collection__title">
+							Inverse
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--inverse"
+									href="#">
+									Books
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--inverse"
+									href="#">
+									Life &amp; Arts
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--inverse"
+									href="#">
+									Theo Leanse
+								</a>
+							</li>
+							<li>
+								<button
+									class="n-myft-concept-pill n-myft-concept-pill--inverse"
+									disabled>
+									Books
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--monochrome">
+						<h3 class="concept-collection__title">
+							Monochrome
+						</h3>
+
+						<ul class="concept-collection__list">
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--monochrome"
+									aria-pressed="false">
+									Theo Leanse
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--monochrome"
+									aria-pressed="false">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</a>
+							</li>
+							<li>
+								<a
+									disabled
+									class="n-myft-concept-pill n-myft-concept-pill--monochrome"
+									aria-pressed="true">
+									chee
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<div class="concept-collection concept-collection--opinion">
+						<h3 class="concept-collection__title">
+							Opinion topper
+						</h3>
+						<ul class="concept-collection__list">
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--opinion"
+									aria-pressed="false">
+									Theo Leanse
+								</a>
+							</li>
+							<li>
+								<a
+									class="n-myft-concept-pill n-myft-concept-pill--opinion"
+									aria-pressed="false">
+									Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
+									say that they were perfectly normal, thank you very much.
+								</a>
+							</li>
+							<li>
+								<a
+									disabled
+									class="n-myft-concept-pill n-myft-concept-pill--opinion"
+									aria-pressed="true">
+									chee
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section
+			id="collections"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<h2 class="demo-section__title">
+						Collections
+					</h2>
+
+					<p class="demo-section__description">
+						Curated collections of topics to follow.
+					</p>
+				</div>
+
+				{{#collections}}
+					<div data-o-grid-colspan="3">
+						{{> n-myft-ui/components/collections/collections }}
+					</div>
+				{{/collections}}
+			</div>
+		</section>
+
+		<section
+			id="topic-list"
+			class="demo-section">
+			<div class="o-grid-row">
+				<div data-o-grid-colspan="12">
+					<h2 class="demo-section__title">
+						Topic list
+					</h2>
+
+					<p class="demo-section__description">
+						A list of topics to follow
+					</p>
+				</div>
+
+				{{#each conceptList}}
+					<div data-o-grid-colspan="3">
+						{{> n-myft-ui/components/concept-list/concept-list }}
+					</div>
 				{{/each}}
-
-				{{#instantAlert}}
-					<h2 class="demo-section__title">
-						Instant Alert
-					</h2>
-					{{> n-myft-ui/components/instant-alert/instant-alert }}
-				{{/instantAlert}}
-
-
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
+</body>
 
-	<section
-		id="follow-concept"
-		class="demo-section">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2 class="demo-section__title">
-					Follow concept
-				</h2>
-				<p class="demo-section__description">
-					These are used in a group of many suggested follows/unfollows such as
-					the myFT page cold start.
-				</p>
-				<div class="concept-collection concept-collection--standard">
-					<h3 class="concept-collection__title">
-						Standard
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<button class="n-myft-follow-button">
-								Books
-							</button>
-						</li>
-						<li>
-							<button
-								aria-pressed="true"
-								class="n-myft-follow-button">
-								Life &amp; Arts
-							</button>
-						</li>
-						<li>
-							<button
-								class="n-myft-follow-button">
-								Theo Leanse
-							</button>
-						</li>
-						<li>
-							<button
-								aria-pressed="true"
-								disabled
-								class="n-myft-follow-button">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--inverse">
-					<h3 class="concept-collection__title">
-						Inverse
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--inverse">
-								Books
-							</button>
-						</li>
-						<li>
-							<button
-								aria-pressed="true"
-								class="n-myft-follow-button n-myft-follow-button--inverse">
-								Life &amp; Arts
-							</button>
-						</li>
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--inverse">
-								Theo Leanse
-							</button>
-						</li>
-						<li>
-							<button
-								aria-pressed="true"
-								disabled
-								class="n-myft-follow-button n-myft-follow-button--inverse">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--monochrome">
-					<h3 class="concept-collection__title">
-						Monochrome
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--monochrome"
-								aria-pressed="false">
-								Theo Leanse
-							</button>
-						</li>
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--monochrome"
-								aria-pressed="true">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</button>
-						</li>
-						<li>
-							<button
-								disabled
-								class="n-myft-follow-button n-myft-follow-button--monochrome"
-								aria-pressed="true">
-								chee
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--opinion">
-					<h3 class="concept-collection__title">
-						Opinion topper
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--opinion"
-								aria-pressed="false">
-								Theo Leanse
-							</button>
-						</li>
-						<li>
-							<button
-								class="n-myft-follow-button n-myft-follow-button--opinion"
-								aria-pressed="true">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</button>
-						</li>
-						<li>
-							<button
-								disabled
-								class="n-myft-follow-button n-myft-follow-button--opinion"
-								aria-pressed="false">
-								chee
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section
-		id="onboarding-cta"
-		class="demo-section">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2 class="demo-section__title">
-					Onboarding call to action
-				</h2>
-
-				<p class="demo-section__description">
-					Used on the myFT section of the homepage.
-				</p>
-
-				<a class="n-myft-onboarding-cta" href="#">
-					See stories
-				</a>
-			</div>
-		</div>
-	</section>
-
-	<section
-		id="concept-pill"
-		class="demo-section">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2 class="demo-section__title">
-					Concept pill
-				</h2>
-				<p class="demo-section__description">
-					Used for links to concepts (eg: on the email digest page)
-				</p>
-				<div class="concept-collection concept-collection--standard">
-					<h3 class="concept-collection__title">
-						Standard
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<a
-								class="n-myft-concept-pill"
-								href="#">
-								Books
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill"
-								href="#">
-								Life &amp; Arts
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill"
-								href="#">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</a>
-						</li>
-						<li>
-							<button
-								class="n-myft-concept-pill"
-								disabled>
-								Books
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--inverse">
-					<h3 class="concept-collection__title">
-						Inverse
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--inverse"
-								href="#">
-								Books
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--inverse"
-								href="#">
-								Life &amp; Arts
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--inverse"
-								href="#">
-								Theo Leanse
-							</a>
-						</li>
-						<li>
-							<button
-								class="n-myft-concept-pill n-myft-concept-pill--inverse"
-								disabled>
-								Books
-							</button>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--monochrome">
-					<h3 class="concept-collection__title">
-						Monochrome
-					</h3>
-
-					<ul class="concept-collection__list">
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--monochrome"
-								aria-pressed="false">
-								Theo Leanse
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--monochrome"
-								aria-pressed="false">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</a>
-						</li>
-						<li>
-							<a
-								disabled
-								class="n-myft-concept-pill n-myft-concept-pill--monochrome"
-								aria-pressed="true">
-								chee
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<div class="concept-collection concept-collection--opinion">
-					<h3 class="concept-collection__title">
-						Opinion topper
-					</h3>
-					<ul class="concept-collection__list">
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--opinion"
-								aria-pressed="false">
-								Theo Leanse
-							</a>
-						</li>
-						<li>
-							<a
-								class="n-myft-concept-pill n-myft-concept-pill--opinion"
-								aria-pressed="false">
-								Mr. and Mrs. Dursley, of number four, Privet Drive, were proud to
-								say that they were perfectly normal, thank you very much.
-							</a>
-						</li>
-						<li>
-							<a
-								disabled
-								class="n-myft-concept-pill n-myft-concept-pill--opinion"
-								aria-pressed="true">
-								chee
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section
-		id="collections"
-		class="demo-section">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2 class="demo-section__title">
-					Collections
-				</h2>
-
-				<p class="demo-section__description">
-					Curated collections of topics to follow.
-				</p>
-			</div>
-
-			{{#collections}}
-				<div data-o-grid-colspan="3">
-					{{> n-myft-ui/components/collections/collections }}
-				</div>
-			{{/collections}}
-		</div>
-	</section>
-
-	<section
-		id="topic-list"
-		class="demo-section">
-		<div class="o-grid-row">
-			<div data-o-grid-colspan="12">
-				<h2 class="demo-section__title">
-					Topic list
-				</h2>
-
-				<p class="demo-section__description">
-					A list of topics to follow
-				</p>
-			</div>
-
-			{{#each conceptList}}
-				<div data-o-grid-colspan="3">
-					{{> n-myft-ui/components/concept-list/concept-list }}
-				</div>
-			{{/each}}
-		</div>
-	</section>
-</div>
+</html>
