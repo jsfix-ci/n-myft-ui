@@ -11,5 +11,3 @@ public/
 pa11y_screenCapture/
 .idea/
 .vscode/
-
-package-lock.json
