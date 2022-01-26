@@ -66,10 +66,6 @@ module.exports = function (karma) {
 											loose: true
 										}
 									]
-								],
-								plugins: [
-									'@babel/plugin-transform-runtime',
-									'@babel/plugin-transform-modules-commonjs'
 								]
 							}
 						},

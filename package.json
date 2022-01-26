@@ -102,8 +102,13 @@
     "sucrase": "^3.10.1",
     "webpack-cli": "^4.9.1"
   },
+  "volta": {
+    "node": "12.22.5",
+    "npm": "7.20.2"
+  },
   "engines": {
-    "node": "14.x"
+    "node": "12.x",
+    "npm": "7.x || 8.x"
   },
   "x-dash": {
     "engine": {
