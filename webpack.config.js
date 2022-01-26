@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
 	entry: './components/index.js',
@@ -15,9 +15,7 @@ module.exports = {
 						loader: 'babel-loader',
 						options: {
 							presets: [
-								[
-									'@babel/preset-env',
-								],
+								'@babel/preset-env',
 								'@babel/preset-react'
 							],
 							plugins: [
@@ -38,4 +36,4 @@ module.exports = {
 		libraryTarget: 'umd',
 		library: '@financial-times/n-myft-ui'
 	}
-}
+};

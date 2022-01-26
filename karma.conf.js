@@ -56,15 +56,24 @@ module.exports = function (karma) {
 							loader: 'babel-loader',
 							options: {
 								cacheDirectory: true,
-								presets: ['env'],
+								presets: [
+									[
+										'@babel/preset-env',
+										{
+											modules: 'umd',
+											useBuiltIns: 'usage',
+											corejs: 3,
+											loose: true
+										}
+									]
+								],
 								plugins: [
-									['transform-runtime'],
-									['add-module-exports', { loose: true }],
-									['transform-es2015-classes', { loose: true }]
+									'@babel/plugin-transform-runtime',
+									'@babel/plugin-transform-modules-commonjs'
 								]
 							}
 						},
-						exclude: /node_modules\/(?!(@financial-times\/n-teaser|@financial-times\/n-display-metadata)\/).*/,
+						exclude: /node_modules\/(?!(@financial-times\/n-teaser|@financial-times\/n-display-metadata)\/).*/
 					},
 					// set 'this' scope to window
 					{
