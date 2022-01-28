@@ -16,7 +16,7 @@ describe('Follow button', () => {
 
 	test('It renders default button', async () => {
 		render(<FollowButton {...props} />);
-		expect(screen.findByText('Add to myFT')).toBeTruthy();
+		expect(await screen.findByText('Add to myFT')).toBeTruthy();
 	});
 
 	test('It renders a variant', async () => {
@@ -29,12 +29,12 @@ describe('Follow button', () => {
 		expect(container.querySelector(`form[action='/myft/add/${props.conceptId}']`)).toBeTruthy();
 	});
 
-	test('Button state changes when attributes change', () => {
+	test('Button state changes when attributes change', async () => {
 		render(<FollowButton {...props}
 			variant={'standard'}
 			setFollowButtonStateToSelected={true}
 			cacheablePersonalisedUrl={true} />);
-		expect(screen.findByText('Added')).toBeTruthy();
+		expect(await screen.findByText('Added')).toBeTruthy();
 	});
 
 });

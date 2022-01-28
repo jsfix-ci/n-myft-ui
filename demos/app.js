@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 		flags: {
 			myFtApi: true,
 			myFtApiWrite: true
-		}
+		},
 	}, fixtures));
 });
 
