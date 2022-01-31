@@ -2,15 +2,17 @@ import React from 'react';
 import FollowButton from '../../components/follow-button/follow-button';
 import ConceptList from '../../components/concept-list/concept-list';
 import Collections from '../../components/collections/collections';
+import { SaveForLater } from '../../components';
 
-export default function Demo (props) {
+export default function Demo(props) {
 
 	const {
 		title,
 		flags,
 		followButton,
 		conceptList,
-		collections
+		collections,
+		saveButton
 	} = props;
 
 	const followButtonProps = { ...followButton, flags };
@@ -37,6 +39,29 @@ export default function Demo (props) {
 						</h2>
 
 						<FollowButton {...followButtonProps} buttonText={followButton.name} />
+
+
+						<h2 className="demo-section__title">
+							Save button
+						</h2>
+						<SaveForLater flags={flags} {...saveButton} />
+
+
+
+						<h2 className="demo-section__title">
+							Unsave button
+						</h2>
+						<SaveForLater flags={flags} {...saveButton} isSaved={true} />
+
+						<h2 className="demo-section__title">
+							Unsave button with icon
+						</h2>
+						<SaveForLater flags={flags} {...saveButton} saveButtonWithIcon={true} />
+
+						<h2 className="demo-section__title">
+							Save button with icon
+						</h2>
+						<SaveForLater flags={flags} {...saveButton} isSaved={true} saveButtonWithIcon={true} />
 
 					</div>
 				</div>
@@ -88,6 +113,7 @@ export default function Demo (props) {
 
 				</div>
 			</section>
+
 		</div>
 	)
 }
