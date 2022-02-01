@@ -21,7 +21,7 @@ const fixtures = [
 		directType: 'http://www.ft.com/ontology/Topic',
 		showPrioritiseButton: false
 	}
-]
+];
 
 
 describe('Pin Button', () => {
