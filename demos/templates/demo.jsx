@@ -3,8 +3,9 @@ import FollowButton from '../../components/follow-button/follow-button';
 import ConceptList from '../../components/concept-list/concept-list';
 import Collections from '../../components/collections/collections';
 import { SaveForLater } from '../../components';
+import { PinButton } from '../../components';
 
-export default function Demo(props) {
+export default function Demo (props) {
 
 	const {
 		title,
@@ -12,7 +13,8 @@ export default function Demo(props) {
 		followButton,
 		conceptList,
 		collections,
-		saveButton
+		saveButton,
+		pinButton
 	} = props;
 
 	const followButtonProps = { ...followButton, flags };
@@ -60,6 +62,12 @@ export default function Demo(props) {
 							Save button with icon
 						</h2>
 						<SaveForLater flags={flags} {...saveButton} isSaved={true} saveButtonWithIcon={true} />
+
+						<h2 className="demo-section__title">
+						Pin button
+						</h2>
+
+						{pinButton.map((item, index) => <PinButton key={index} {...item}/>)}
 
 					</div>
 				</div>
