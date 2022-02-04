@@ -41,9 +41,7 @@ app.set('view engine', '.html');
 app.engine('.html', new PageKitHandlebars({
 	cache: false,
 	handlebars,
-	helpers: {
-		...helpers
-	}
+	helpers
 }).engine);
 
 app.use('/public', nExpress.static(path.join(__dirname, '../public'), { redirect: false }));

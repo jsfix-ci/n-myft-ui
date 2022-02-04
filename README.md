@@ -38,3 +38,51 @@ make demo
 ```
 
 View the demo on `localhost:5005`
+
+
+## Migration Guide
+
+### Upgrading from v23 to v24
+
+V24 introduces some major changes to n-myft-ui components. Some of the components have been moved from handlebars to jsx. 
+
+These components include:
+- csrf-token
+- follow-button
+- save-for-later
+- pin-button
+- concept-list
+- collections
+
+A consumer of any of these components needs to render them directly as `jsx` components in a parent `jsx` component or use the `renderReactComponent` helper function provided by `@financial-times/dotcom-server-handlebars` in a consuming handlebars template/partial. 
+
+#### Example rendering in a jsx component
+```jsx
+import { SaveForLater } from '@financial-times/n-myft-ui';
+
+export default function Consumer() {
+	return (
+		<SaveForLater contentId={contentId} saveButtonWithIcon={true} flags={{myFtApiWrite:myFtApiWrite}}/>
+	)
+}
+```
+
+More examples of rendering these components can be found [here](https://github.com/Financial-Times/n-myft-ui/blob/main/demos/templates/demo.jsx) with component props passed in [here](https://github.com/Financial-Times/n-myft-ui/blob/dfbf06d10f78756871cfe8d2aeb863ce4bcca1e1/demos/app.js#L54).
+
+
+#### Example rendering in a handlebars partial
+To render a jsx component in a handlebars partial, consumers need to add the `helpers` provided by `@financial-times/dotcom-server-handlebars` to the PageKitHandlebars config in `express app engine` [see example](https://github.com/Financial-Times/n-myft-ui/blob/dfbf06d10f78756871cfe8d2aeb863ce4bcca1e1/demos/app.js#L41). 
+
+```hbs
+<div>
+	<h2 class="demo-section__title">
+		Follow button
+	</h2>
+
+	{{#followButton}}
+		{{{renderReactComponent localPath="node_modules/@financial-times/n-myft-ui/components/follow-button/follow-button" flags=@root.flags}}}
+	{{/followButton}}
+</div>
+```
+
+More examples of rendering jsx in handlebars partials can be found [here](https://github.com/Financial-Times/n-myft-ui/blob/main/demos/templates/demo.html)
