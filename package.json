@@ -8,7 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "preinstall": "npm_config_yes=true npx check-engine",
     "build-package": "webpack"
   },
   "repository": {
