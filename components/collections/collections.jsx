@@ -2,7 +2,7 @@ import React from 'react';
 import CsrfToken from '../csrf-token/input';
 import FollowButton from '../follow-button/follow-button';
 
-export default function Collections ({ title, liteStyle, flags, collectionName, trackable, concepts = [] }) {
+export default function Collections ({ title, liteStyle, flags, collectionName, trackable, concepts = [], csrfToken, cacheablePersonalisedUrl }) {
 	const getLiteStyleModifier = () => liteStyle ? 'lite' : 'regular';
 	let formProps = {
 		method: 'POST',
@@ -27,7 +27,7 @@ export default function Collections ({ title, liteStyle, flags, collectionName, 
 			<ul className="collection__concepts">
 				{concepts && concepts.map((concept, index) =>
 					<li className="collection__concept" key={index}>
-						<FollowButton variant={liteStyle ? 'primary' : 'inverse'} buttonText={concept.name} flags={flags} collectionName={collectionName} />
+						<FollowButton cacheablePersonalisedUrl={cacheablePersonalisedUrl} csrfToken={csrfToken} variant={liteStyle ? 'primary' : 'inverse'} buttonText={concept.name} flags={flags} collectionName={collectionName} />
 					</li>)
 				}
 			</ul>
@@ -41,7 +41,7 @@ export default function Collections ({ title, liteStyle, flags, collectionName, 
 						name="directType"
 						value={concepts.map(concept => concept.directType).join(',')}
 					/>
-					<CsrfToken />
+					<CsrfToken csrfToken={csrfToken} cacheablePersonalisedUrl={cacheablePersonalisedUrl} />
 					<input
 						type="hidden"
 						name="name"

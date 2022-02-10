@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import CsrfToken from '../csrf-token/input';
-export default function PinButton ({ showPrioritiseButton, id, name, directType, prioritised }) {
+export default function PinButton ({ showPrioritiseButton, id, name, directType, prioritised, csrfToken, cacheablePersonalisedUrl }) {
 
 	const getAction = () => `/__myft/api/core/prioritised/concept/${id}?method=${prioritised ? 'delete' : 'put'}`
 
@@ -11,7 +11,7 @@ export default function PinButton ({ showPrioritiseButton, id, name, directType,
 					<span className="myft-pin-divider"></span>
 					<div className="myft-pin-button-wrapper">
 						<form method="post" action={getAction()} data-myft-prioritise>
-							<CsrfToken />
+							<CsrfToken csrfToken={csrfToken} cacheablePersonalisedUrl={cacheablePersonalisedUrl} />
 							<input type="hidden" value={name} name="name" />
 							<input type="hidden" value={directType || 'http://www.ft.com/ontology/concept/Concept'} name="directType" />
 							<div

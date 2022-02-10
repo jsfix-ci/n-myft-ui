@@ -37,7 +37,7 @@ const ButtonContent = ({ saveButtonWithIcon, buttonText, isSaved, appIsStreamPag
 		}
 	</Fragment>);
 }
-export default function SaveForLater ({ flags, contentId, title, variant, trackableId, isSaved, appIsStreamPage, alternateText, saveButtonWithIcon, buttonText }) {
+export default function SaveForLater ({ flags, contentId, title, variant, trackableId, isSaved, appIsStreamPage, alternateText, saveButtonWithIcon, buttonText, csrfToken, cacheablePersonalisedUrl }) {
 
 	const { myFtApiWrite } = flags;
 
@@ -84,7 +84,7 @@ export default function SaveForLater ({ flags, contentId, title, variant, tracka
 					data-myft-ui="saved"
 					action={`/myft/save/${contentId}`}
 					data-js-action={`/__myft/api/core/saved/content/${contentId}?method=put`}>
-					<CsrfToken />
+					<CsrfToken csrfToken={csrfToken} cacheablePersonalisedUrl={cacheablePersonalisedUrl} />
 
 					<div
 						className="n-myft-ui__announcement o-normalise-visually-hidden"
