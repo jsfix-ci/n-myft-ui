@@ -83,9 +83,8 @@
 						<h2 class="demo-section__title">
 							Instant Alert
 						</h2>
-						{{> n-myft-ui/components/instant-alert/instant-alert }}
+						{{{renderReactComponent localPath="components/instant-alert/instant-alert" flags=@root.flags title=title conceptId=id name=name directType=directType }}}
 					{{/instantAlert}}
-
 
 				</div>
 			</div>
