@@ -1,5 +1,5 @@
 import React from 'react';
-import CsrfToken from '../input';
+import CsrfToken from './input';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -16,7 +16,7 @@ describe('Csrf Token Input', () => {
 
 	test('It renders csrf token attribute', async () => {
 		let { container } = render(<CsrfToken cacheablePersonalisedUrl={true} csrfToken={'test-token'} />);
-		expect(container.querySelector('[data-myft-csrf-token=\'test-token\']')).toBeTruthy();
+		expect(container.querySelector('[data-myft-csrf-token]')).toBeTruthy();
 	});
 
 
