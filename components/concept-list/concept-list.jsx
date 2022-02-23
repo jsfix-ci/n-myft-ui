@@ -47,6 +47,12 @@ export default function ConceptList ({ flags, concepts, contentType, conceptList
 							} = concept;
 							return (
 								<li key={index} className='concept-list__list-item'>
+									{/* The relativeUrl and url point to the same resource. The url is the base path + the relative url.
+									Example: browser_path = https://ft.com, relativeUrl = /capital-markets then url = https://www.ft.com/capital-markets.
+
+									Note: we don't need to compute these urls in the business logic of these components as they're passed in as props.
+
+									This note is just an explanation for why relativeUrl has preference over url.*/}
 									<a
 										href={relativeUrl || url}
 										{...generateTrackableProps(conceptTrackable, 'concept')}
