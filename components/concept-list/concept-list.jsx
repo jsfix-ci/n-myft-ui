@@ -8,9 +8,9 @@ export default function ConceptList ({ flags, concepts, contentType, conceptList
 		myFtApiWrite
 	} = flags;
 
-	const generateTrackableProps = (primary, seconday) => {
+	const generateTrackableProps = (primary, secondary) => {
 		return {
-			'data-trackable': primary ? primary : seconday
+			'data-trackable': primary ? primary : secondary
 		}
 	}
 
