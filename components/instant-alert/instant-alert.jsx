@@ -56,7 +56,7 @@ export default function InstantAlert (props) {
 	return (
 		<Fragment>
 			{flags.myFtApiWrite &&
-				<form className={`n-myft-ui n-myft-ui--instant${hideButtonText ? ' n-myft-ui--instant--hide-text' : ''}${extraClasses? ` ${extraClasses}`: ''}`}
+				<form className={`n-myft-ui n-myft-ui--instant${hideButtonText ? ' n-myft-ui--instant--hide-text' : ''}${extraClasses ? ` ${extraClasses}` : ''}`}
 					method="GET"
 					data-myft-ui="instant"
 					data-concept-id={conceptId}
