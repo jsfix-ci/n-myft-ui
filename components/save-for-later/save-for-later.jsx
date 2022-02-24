@@ -3,6 +3,19 @@ import CsrfToken from '../csrf-token/input';
 
 const ButtonContent = ({ saveButtonWithIcon, buttonText, isSaved, appIsStreamPage }) => {
 
+	const DefaultButtonText = () => {
+		if (appIsStreamPage !== true) {
+			return <Fragment>
+				<span className="save-button-longer-copy" data-variant-label>
+					{isSaved ? 'Saved ' : 'Save '}
+				</span>
+				<span className="n-myft-ui__button--viewport-large" aria-hidden="true">to myFT</span>
+			</Fragment>
+		}
+
+		return <span>{isSaved ? 'Saved' : 'Save'}</span>;
+	}
+
 	return (<Fragment>
 		{
 			saveButtonWithIcon &&
@@ -16,28 +29,13 @@ const ButtonContent = ({ saveButtonWithIcon, buttonText, isSaved, appIsStreamPag
 			!saveButtonWithIcon &&
 			<Fragment>
 				{buttonText && buttonText}
-				{!buttonText &&
-					<Fragment>
-						{
-							appIsStreamPage !== true &&
-							<Fragment>
-								<span className="save-button-longer-copy" data-variant-label>
-									{isSaved ? 'Saved ' : 'Save '}
-								</span>
-								<span className="n-myft-ui__button--viewport-large" aria-hidden="true">to myFT</span>
-							</Fragment>
-						}
-
-						{
-							appIsStreamPage === true && <span>{isSaved ? 'Saved' : 'Save'}</span>
-						}
-					</Fragment>
+				{!buttonText && <DefaultButtonText />
 				}
 			</Fragment>
 		}
 	</Fragment>);
 }
-export default function SaveForLater ({ flags, contentId, title, variant, trackableId, isSaved, appIsStreamPage, alternateText, saveButtonWithIcon, buttonText, csrfToken, cacheablePersonalisedUrl }) {
+export default function SaveForLater({ flags, contentId, title, variant, trackableId, isSaved, appIsStreamPage, alternateText, saveButtonWithIcon, buttonText, csrfToken, cacheablePersonalisedUrl }) {
 
 	const { myFtApiWrite } = flags;
 
@@ -93,7 +91,7 @@ export default function SaveForLater ({ flags, contentId, title, variant, tracka
 						data-unpressed-text="Removed article from My FT."
 					></div>
 					<button {...generateSubmitButtonProps()}>
-						<ButtonContent buttonText={buttonText} saveButtonWithIcon={saveButtonWithIcon} isSaved={isSaved} appIsStreamPage={appIsStreamPage}/>
+						<ButtonContent buttonText={buttonText} saveButtonWithIcon={saveButtonWithIcon} isSaved={isSaved} appIsStreamPage={appIsStreamPage} />
 					</button>
 				</form>
 			}
