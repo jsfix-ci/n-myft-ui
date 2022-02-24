@@ -34,7 +34,7 @@ describe('Pin Button', () => {
 
 	test('It renders unprioritised', () => {
 		const { container } = render(<PinButton flags={flags} {...fixtures[0]} />);
-		expect(container.querySelector('button[aria-label="Pin myFT Enterprises in myFT"]')).toBeTruthy();
+		expect(container.querySelector('button[aria-label="Pin myFT Enterprises in my F T"]')).toBeTruthy();
 		expect(container.querySelector('button[title="Pin myFT Enterprises"]')).toBeTruthy();
 		expect(container.querySelector('button[data-prioritised=false]')).toBeTruthy();
 		expect(container.querySelector(`button[data-concept-id="${fixtures[0].id}"]`)).toBeTruthy();
@@ -42,7 +42,7 @@ describe('Pin Button', () => {
 
 	test('It renders with prioritised', () => {
 		const { container } = render(<PinButton flags={flags} prioritised={true} {...fixtures[0]} />);
-		expect(container.querySelector('button[aria-label="Unpin myFT Enterprises from myFT"]')).toBeTruthy();
+		expect(container.querySelector('button[aria-label="Unpin myFT Enterprises from my F T"]')).toBeTruthy();
 		expect(container.querySelector('button[title="Unpin myFT Enterprises"]')).toBeTruthy();
 		expect(container.querySelector('button[data-prioritised=true]')).toBeTruthy();
 		expect(container.querySelector(`button[data-concept-id="${fixtures[0].id}"]`)).toBeTruthy();

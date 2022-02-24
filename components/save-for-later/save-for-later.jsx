@@ -51,7 +51,7 @@ export default function SaveForLater ({ flags, contentId, title, variant, tracka
 		};
 
 		if (isSaved) {
-			let titleText = `${title ? `${title} is` : ''} Saved to myFT`;
+			let titleText = `${title ? `${title} is` : ''} saved to myFT`;
 			props['title'] = title;
 			props['aria-label'] = titleText;
 			props['data-alternate-label'] = title ? `Save ${title} to myFT for later` : 'Save this article to myFT for later';
@@ -60,7 +60,7 @@ export default function SaveForLater ({ flags, contentId, title, variant, tracka
 			let titleText = title ? `Save ${title} to myFT for later` : 'Save this article to myFT for later';
 			props['title'] = titleText;
 			props['aria-label'] = titleText;
-			props['data-alternate-label'] = `${title ? `${title} is` : ''} Saved to myFT`;
+			props['data-alternate-label'] = `${title ? `${title} is` : ''} saved to myFT`;
 			props['aria-pressed'] = false;
 		}
 

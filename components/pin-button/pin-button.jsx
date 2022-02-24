@@ -26,7 +26,7 @@ export default function PinButton ({ showPrioritiseButton, id, name, directType,
 								data-trackable="prioritised"
 								data-concept-id={id}
 								data-prioritised={prioritised ? true : false}
-								aria-label={`${prioritised ? 'Unpin' : 'Pin'} ${name} ${prioritised ? 'from' : 'in'} myFT`}
+								aria-label={`${prioritised ? 'Unpin' : 'Pin'} ${name} ${prioritised ? 'from' : 'in'} my F T`}
 								aria-pressed={prioritised ? true : false}
 								title={`${prioritised ? 'Unpin' : 'Pin'} ${name}`}>
 							</button>
