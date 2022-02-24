@@ -5,7 +5,7 @@ export default function PinButton ({ showPrioritiseButton, id, name, directType,
 	const getAction = () => `/__myft/api/core/prioritised/concept/${id}?method=${prioritised ? 'delete' : 'put'}`;
 
 	if (!showPrioritiseButton) {
-		return <Fragment></Fragment>;
+		return null;
 	}
 
 	return (
