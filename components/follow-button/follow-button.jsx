@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import CsrfToken from '../csrf-token/input';
 
 function generateFormProps (props) {
@@ -140,6 +140,8 @@ export default function FollowButton (props) {
 		extraClasses,
 		conceptId,
 		variant,
+		csrfToken,
+		cacheablePersonalisedUrl
 	} = props;
 
 	const formProps = generateFormProps(props);
@@ -148,14 +150,14 @@ export default function FollowButton (props) {
 	const getVariantClass = (variant) => variant ? `n-myft-follow-button--${variant}` : '';
 
 	return (
-		<>
+		<Fragment>
 			{flags.myFtApiWrite && <form
 				className={`n-myft-ui n-myft-ui--follow ${extraClasses || ''}`}
 				method="GET"
 				data-myft-ui="follow"
 				data-concept-id={conceptId}
 				{...formProps}>
-				<CsrfToken cacheablePersonalisedUrl={props.cacheablePersonalisedUrl} csrfToken={props.csrfToken} />
+				<CsrfToken cacheablePersonalisedUrl={cacheablePersonalisedUrl} csrfToken={csrfToken} />
 				<div
 					className="n-myft-ui__announcement o-normalise-visually-hidden"
 					aria-live="assertive"
@@ -168,7 +170,7 @@ export default function FollowButton (props) {
 					{getButtonText(props)}
 				</button>
 			</form>}
-		</>
+		</Fragment>
 	);
 
 }
