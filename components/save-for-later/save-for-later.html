@@ -3,7 +3,8 @@
 	data-content-id="{{contentId}}"
 	data-myft-ui="saved"
 	action="/myft/save/{{contentId}}"
-	data-js-action="/__myft/api/core/saved/content/{{contentId}}?method=put">
+	data-js-action="/__myft/api/core/saved/content/{{contentId}}?method=put"
+	{{#ifEquals @root.flags.professorLists 'variant'}}data-myft-ui-variant="createListAndSaveArticleVariant"{{/ifEquals}}>
 	{{> n-myft-ui/components/csrf-token/input}}
 	<div
 		class="n-myft-ui__announcement o-normalise-visually-hidden"
