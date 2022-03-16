@@ -72,7 +72,7 @@ jobs:
     <<: *container_config_node
     steps:
       - checkout
-      - node/install-npm: null
+      - node/install-npm:
         version: "7"
       - run:
           name: Checkout next-ci-shared-helpers
