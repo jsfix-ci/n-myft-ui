@@ -471,7 +471,7 @@
 
 				{{#each conceptList}}
 					<div data-o-grid-colspan="3">
-						{{{renderReactComponent localPath="components/concept-list/concept-list" flags=@root.flags concepts=this.concepts contentType=this.contentType conceptListTitle=this.conceptListTitle trackable=this.trackable}}}
+						{{> n-myft-ui/components/concept-list/concept-list }}
 					</div>
 				{{/each}}
 			</div>
