@@ -87,3 +87,5 @@ To render a jsx component in a handlebars partial, consumers need to add the `he
 
 More examples of rendering jsx in handlebars partials can be found [here](https://github.com/Financial-Times/n-myft-ui/blob/main/demos/templates/demo.html)
 
+
+NB: This branch is the development branch for v25 and all bug fixes for breaking changes related to `jsx` go here.
