@@ -80,7 +80,7 @@ To render a jsx component in a handlebars partial, consumers need to add the `he
 	</h2>
 
 	{{#followButton}}
-		{{{renderReactComponent localPath="node_modules/@financial-times/n-myft-ui/components/follow-button/follow-button" flags=flags variant="standard" conceptId="0000-0000-0000-0000" name="Follow Item" directType="http://www.ft.com/ontology/product/Brand"}}}
+		{{{renderReactComponent localPath="node_modules/@financial-times/n-myft-ui/components/follow-button/follow-button" flags=@root.flags}}}
 	{{/followButton}}
 </div>
 ```
