@@ -1,9 +1,10 @@
-const express = require('@financial-times/n-internal-tool');
+const nExpress = require('@financial-times/n-express');
 const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
-
-const xHandlebars = require('@financial-times/x-handlebars');
+const path = require('path');
+const handlebars = require('handlebars');
+const { PageKitHandlebars, helpers } = require('@financial-times/dotcom-server-handlebars');
 
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
@@ -25,11 +26,20 @@ const app = module.exports = nExpress({
 	partialsDirectory: process.cwd(),
 	directory: process.cwd(),
 	demo: true,
-	s3o: false,
-	helpers: {
-		x: xHandlebars()
-	}
+	withBackendAuthentication: false,
 });
+
+app.set('views', path.join(__dirname, '/templates'));
+app.set('view engine', '.html');
+app.engine('.html', new PageKitHandlebars({
+	cache: false,
+	handlebars,
+	helpers: {
+		...helpers
+	}
+}).engine);
+
+app.use('/public', nExpress.static(path.join(__dirname, '../public'), { redirect: false }));
 
 app.get('/', (req, res) => {
 	res.render('demo', Object.assign({
@@ -39,18 +49,6 @@ app.get('/', (req, res) => {
 			myFtApiWrite: true
 		}
 	}, fixtures));
-});
-
-app.get('/digest-on-follow', (req, res) => {
-	res.render('digest-on-follow', Object.assign({
-		title: 'n-myft-ui digest on follow',
-		layout: 'demo-layout',
-		flags: {
-			myFtApi: true,
-			myFtApiWrite: true,
-		},
-		appIsStreamPage: false
-	}, fixtures.followButtonPlusDigest));
 });
 
 function runPa11yTests () {
