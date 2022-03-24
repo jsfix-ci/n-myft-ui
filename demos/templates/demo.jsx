@@ -1,7 +1,6 @@
 import React from 'react';
 import FollowButton from '../../components/follow-button/follow-button';
 import ConceptList from '../../components/concept-list/concept-list';
-import Collections from '../../components/collections/collections';
 
 export default function Demo (props) {
 
@@ -9,8 +8,7 @@ export default function Demo (props) {
 		title,
 		flags,
 		followButton,
-		conceptList,
-		collections
+		conceptList
 	} = props;
 
 	const followButtonProps = { ...followButton, flags };
@@ -62,29 +60,6 @@ export default function Demo (props) {
 								<ConceptList {...list} flags={flags} />
 							</div>)
 					}
-
-				</div>
-			</section>
-
-			<section
-				id="collections"
-				className="demo-section">
-				<div className="o-grid-row">
-					<div data-o-grid-colspan="12">
-						<h2 className="demo-section__title">
-							Collections
-						</h2>
-
-						<p className="demo-section__description">
-							Curated collections of topics to follow.
-						</p>
-					</div>
-
-					{collections.map((collection, index) => (
-						<div key={index} data-o-grid-colspan="3">
-							<Collections {...collection} flags={flags} />
-						</div>
-					))}
 
 				</div>
 			</section>
