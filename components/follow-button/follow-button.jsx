@@ -140,8 +140,6 @@ export default function FollowButton (props) {
 		extraClasses,
 		conceptId,
 		variant,
-		csrfToken,
-		cacheablePersonalisedUrl
 	} = props;
 
 	const formProps = generateFormProps(props);
@@ -157,7 +155,7 @@ export default function FollowButton (props) {
 				data-myft-ui="follow"
 				data-concept-id={conceptId}
 				{...formProps}>
-				<CsrfToken cacheablePersonalisedUrl={cacheablePersonalisedUrl} csrfToken={csrfToken} />
+				<CsrfToken cacheablePersonalisedUrl={props.cacheablePersonalisedUrl} csrfToken={props.csrfToken} />
 				<div
 					className="n-myft-ui__announcement o-normalise-visually-hidden"
 					aria-live="assertive"

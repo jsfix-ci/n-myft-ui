@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import FollowButton from '../follow-button/follow-button';
 
-export default function ConceptList ({ flags, concepts, contentType, conceptListTitle, trackable, csrfToken, cacheablePersonalisedUrl }) {
+export default function ConceptList ({ flags, concepts, contentType, conceptListTitle, trackable }) {
 
 	const {
 		myFtApi,
@@ -59,7 +59,7 @@ export default function ConceptList ({ flags, concepts, contentType, conceptList
 										className='concept-list__concept'>
 										{prefLabel}
 									</a>
-									<FollowButton csrfToken={csrfToken} cacheablePersonalisedUrl={cacheablePersonalisedUrl} conceptId={id} name={prefLabel} flags={flags} />
+									<FollowButton conceptId={id} name={prefLabel} flags={flags} />
 								</li>
 							)
 						})}
