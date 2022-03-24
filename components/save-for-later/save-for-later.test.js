@@ -45,7 +45,7 @@ describe('SaveForLater component', () => {
 
 	test('It renders the correct button data-text-variant attribute when appIsStreamPage=true', () => {
 		const { container } = render(<SaveForLater appIsStreamPage={true} flags={flags} {...fixture} buttonText={'Globetrotter'}/>);
-		const buttonElement = container.querySelector('button[data-text-variant="save-button-longer-copy"]');
+		const buttonElement = container.querySelector('button[data-text-variant="save-button-with-icon-copy"]');
 		expect(buttonElement).toBeTruthy();
 	});
 

@@ -48,28 +48,28 @@
 						<h2 class="demo-section__title">
 							Save button
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Unsave button
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId isSaved=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Save button with icon
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId saveButtonWithIcon=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later saveButtonWithIcon=true }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Unsave button with icon
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId saveButtonWithIcon=true isSaved=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
 					{{/saveButton}}
 
 					<h2 class="demo-section__title">
