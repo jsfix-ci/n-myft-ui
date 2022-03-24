@@ -145,7 +145,7 @@ export default function FollowButton (props) {
 	const formProps = generateFormProps(props);
 	const buttonProps = generateButtonProps(props);
 
-	const getVariantClass = (variant) => variant ? `n-myft-follow-button--${variant}` : '';
+	const getVariantClass = (variant) => variant? `n-myft-follow-button--${variant}`: '';
 
 	return (
 		<>
