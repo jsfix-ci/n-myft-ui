@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import CsrfToken from '../csrf-token/input';
 
 function generateFormProps (props) {
@@ -148,7 +148,7 @@ export default function FollowButton (props) {
 	const getVariantClass = (variant) => variant ? `n-myft-follow-button--${variant}` : '';
 
 	return (
-		<Fragment>
+		<>
 			{flags.myFtApiWrite && <form
 				className={`n-myft-ui n-myft-ui--follow ${extraClasses || ''}`}
 				method="GET"
@@ -168,7 +168,7 @@ export default function FollowButton (props) {
 					{getButtonText(props)}
 				</button>
 			</form>}
-		</Fragment>
+		</>
 	);
 
 }
