@@ -5,7 +5,7 @@
 			data-concept-id="{{conceptId}}"
 			action="/myft/add/{{conceptId}}?instant=true"
 			data-js-action="/__myft/api/core/followed/concept/{{conceptId}}?method=put">
-	{{{renderReactComponent localPath="components/csrf-token/input"}}}
+	{{> n-myft-ui/components/csrf-token/input}}
 	<input type="hidden" value="{{name}}" name="name">
 	{{#if directType}}
 	<input type="hidden" value="{{directType}}" name="directType">
