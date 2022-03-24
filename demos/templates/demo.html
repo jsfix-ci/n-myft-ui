@@ -76,7 +76,7 @@
 						Pin button
 					</h2>
 					{{#each pinButton}}
-						{{{renderReactComponent localPath="components/pin-button/pin-button" flags=@root.flags title=title id=id name=name directType=directType showPrioritiseButton=showPrioritiseButton }}}
+						{{> n-myft-ui/components/pin-button/pin-button }}
 					{{/each}}
 
 					{{#instantAlert}}

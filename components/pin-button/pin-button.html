@@ -1,0 +1,20 @@
+{{#if showPrioritiseButton}}
+<span class="myft-pin-divider"></span>
+<div class="myft-pin-button-wrapper">
+	<form method="post" action="/__myft/api/core/prioritised/concept/{{id}}?method={{#if prioritised}}delete{{else}}put{{/if}}" data-myft-prioritise>
+		{{{renderReactComponent localPath="components/csrf-token/input"}}}
+		<input type="hidden" value="{{name}}" name="name"> {{#if directType}}
+		<input type="hidden" value="{{directType}}" name="directType"> {{else}}
+		<input type="hidden" value="http://www.ft.com/ontology/concept/Concept" name="directType"> {{/if}}
+		<div
+			class="n-myft-ui__announcement o-normalise-visually-hidden"
+			aria-live="assertive"
+			data-pressed-text="{{name}} pinned in myFT."
+			data-unpressed-text="Unpinned {{name}} from myFT."
+		></div>
+		<button id="myft-pin-button__{{id}}" class="myft-pin-button" data-prioritise-button data-trackable="prioritised" data-concept-id="{{id}}" data-prioritised="{{#if prioritised}}true{{else}}false{{/if}}"
+				aria-label="{{#if prioritised}}Unpin{{else}}Pin{{/if}} {{name}} {{#if prioritised}}from{{else}}in{{/if}} myFT" aria-pressed="{{#if prioritised}}true{{else}}false{{/if}}" title="{{#if prioritised}}Unpin{{else}}Pin{{/if}} {{name}}">
+		</button>
+	</form>
+</div>
+{{/if}}
