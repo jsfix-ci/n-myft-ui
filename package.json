@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "build-package": "webpack --mode='production'"
+    "build-package": "webpack"
   },
   "repository": {
     "type": "git",

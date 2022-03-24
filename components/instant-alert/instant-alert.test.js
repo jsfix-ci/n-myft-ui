@@ -1,6 +1,6 @@
 import React from 'react';
 import InstantAlert from './instant-alert';
-import { render, screen } from '@testing-library/react';
+import { render, screen, getByRole } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 const props = {
