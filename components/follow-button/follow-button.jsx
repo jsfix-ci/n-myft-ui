@@ -1,5 +1,5 @@
 import React from 'react';
-import Csrf_Token from '../csrf-token/input';
+import Csrf_Token from './csrf-token/input';
 
 
 function generateFormProps (props) {

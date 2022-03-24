@@ -1,15 +1,9 @@
-require('sucrase/register')
 const express = require('@financial-times/n-internal-tool');
 const chalk = require('chalk');
 const errorHighlight = chalk.bold.red;
 const highlight = chalk.bold.green;
-const { PageKitReactJSX } = require('@financial-times/dotcom-server-react-jsx');
-var fs = require('fs');
-const path = require('path');
-const handlebars = require('handlebars');
 
-const demoJSX = require('./templates/demo').default;
-const demoLayoutSource = fs.readFileSync(path.join(__dirname, './templates/demo-layout.html'),'utf8').toString();
+const xHandlebars = require('@financial-times/x-handlebars');
 
 const fixtures = {
 	followButton: require('./fixtures/follow-button'),
@@ -34,23 +28,8 @@ const app = module.exports = nExpress({
 	s3o: false,
 	helpers: {
 		x: xHandlebars()
-	},
-});
-
-app.set('views', path.join(__dirname, '/templates'));
-app.set('view engine', '.html');
-
-app.engine('.html', new PageKitHandlebars({
-	cache: false,
-	handlebars,
-	helpers: {
-		...helpers
 	}
-}).engine);
-
-app.use('/public', nExpress.static(path.join(__dirname, '../public'), { redirect: false }));
-
-const jsxRenderer = (new PageKitReactJSX({ includeDoctype: false }));
+});
 
 app.get('/', (req, res) => {
 	res.render('demo', Object.assign({
@@ -62,21 +41,17 @@ app.get('/', (req, res) => {
 	}, fixtures));
 });
 
-app.get('/demo-jsx', async (req, res) => {
-	let demo = await jsxRenderer.render(demoJSX, Object.assign({
-		title: 'n-myft-ui demo',
+app.get('/digest-on-follow', (req, res) => {
+	res.render('digest-on-follow', Object.assign({
+		title: 'n-myft-ui digest on follow',
+		layout: 'demo-layout',
 		flags: {
 			myFtApi: true,
-			myFtApiWrite: true
-		}
-	}, fixtures));
-
-	var template = handlebars.compile(demoLayoutSource);
-	var result = template({body: demo});
-
-	res.send(result);
+			myFtApiWrite: true,
+		},
+		appIsStreamPage: false
+	}, fixtures.followButtonPlusDigest));
 });
-
 
 function runPa11yTests () {
 	const spawn = require('child_process').spawn;
