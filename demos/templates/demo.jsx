@@ -4,12 +4,8 @@ import FollowButton from '../../components/follow-button/follow-button';
 export default function Demo (props) {
 
 	const {
-		title,
-		flags,
-		followButton,
+		title, flags
 	} = props;
-
-	const followButtonProps = {...followButton, flags};
 
 	return (
 		<div className="o-grid-container o-grid-container--snappy demo-container">
@@ -24,7 +20,7 @@ export default function Demo (props) {
 							className="demo-section__title">
 							Follow button
 						</h2>
-						<FollowButton {...followButtonProps} />
+						<FollowButton {...{...props.followButton, flags}} />
 					</div>
 				</div>
 			</section>
