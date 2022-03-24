@@ -12,4 +12,3 @@ Currently we have migrated the following `handlebars` partials to `jsx`:
 - components/follow-button/follow-button.jsx (handlebars found here)[https://github.com/Financial-Times/n-myft-ui/blob/bf2145fcfd211001dfab6a3a271dd72808d062bd/components/follow-button/follow-button.html]
 - components/pin-button/pin-button.jsx (handlebars found here)[https://github.com/Financial-Times/n-myft-ui/blob/dfbf06d10f78756871cfe8d2aeb863ce4bcca1e1/components/pin-button/pin-button.html]
 - components/save-for-later/save-for-later.jsx (handlebars found here)[https://github.com/Financial-Times/n-myft-ui/blob/11d483364bb0f002c3a0b45bc024c83bb055268e/components/save-for-later/save-for-later.jsx]
-- components/instant-alert/instant-alert.jsx (handlebars found here)[https://github.com/Financial-Times/n-myft-ui/blob/dfbf06d10f78756871cfe8d2aeb863ce4bcca1e1/components/instant-alert/instant-alert.html]

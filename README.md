@@ -44,7 +44,7 @@ View the demo on `localhost:5005`
 
 ### Upgrading from v25
 
-V25 introduces some major changes to n-myft-ui components. Some of the components have been moved from handlebars to jsx. 
+V24 introduces some major changes to n-myft-ui components. Some of the components have been moved from handlebars to jsx. 
 
 These components include:
 - csrf-token
@@ -53,7 +53,6 @@ These components include:
 - pin-button
 - concept-list
 - collections
-- InstantAlert
 
 A consumer of any of these components needs to render them directly as `jsx` components in a parent `jsx` component or use the `renderReactComponent` helper function provided by `@financial-times/dotcom-server-handlebars` in a consuming handlebars template/partial. 
 
