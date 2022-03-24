@@ -14,19 +14,11 @@ export default function ConceptList ({ flags, concepts, contentType, conceptList
 		}
 	}
 
-	const shouldDisplay = () => {
-		if(myFtApi && myFtApiWrite && Array.isArray(concepts) && concepts.length) {
-			return true
-		}
-
-		return false;
-	}
-
 
 	return (
 
 		<Fragment>
-			{shouldDisplay() &&
+			{(myFtApi && myFtApiWrite && concepts && concepts.length) &&
 				<div
 					className='concept-list'
 					{...generateTrackableProps(trackable, 'concept-list')}>
