@@ -1,0 +1,77 @@
+<section
+	class="collection {{#if liteStyle}}collection--lite{{else}}collection--regular{{/if}}"
+	data-trackable="{{#if trackable}}{{trackable}}{{else}}collection{{/if}}">
+	<header class="collection__header {{#if liteStyle}}collection__header--lite{{else}}collection__header--regular{{/if}}">
+		<h2 class="collection__title {{#if liteStyle}}collection__title--lite{{else}}collection__title--regular{{/if}}">
+			{{title}}
+		</h2>
+	</header>
+	<ul class="collection__concepts">
+		{{#concepts}}
+			<li class="collection__concept">
+				{{#if ../liteStyle}}
+					{{{renderReactComponent localPath="components/follow-button/follow-button" variant="primary" buttonText=name flags=@root.flags collectionName=../collectionName}}}
+				{{else}}
+					{{{renderReactComponent localPath="components/follow-button/follow-button" variant="inverse" buttonText=name flags=@root.flags collectionName=../collectionName}}}
+				{{/if}}
+			</li>
+		{{/concepts}}
+	</ul>
+	<div class="collection__meta">
+		<form
+			method="POST"
+			action="#"
+			data-myft-ui="follow"
+			{{#if collectionName}}data-myft-tracking="collectionName={{collectionName}}"{{/if}}
+			data-concept-id="
+				{{~#concepts~}}
+					{{conceptId}}
+					{{~#unless @last~}}
+						,
+					{{~/unless~}}
+				{{~/concepts~}}"
+			class="n-myft-ui n-myft-ui--follow n-ui-hide-core collection-follow-all">
+			<input
+				type="hidden"
+				name="directType"
+				value="
+					{{~#concepts~}}
+						{{directType}}
+						{{~#unless @last~}}
+							,
+						{{~/unless~}}
+					{{~/concepts~}}"
+			/>
+			{{{renderReactComponent localPath="components/csrf-token/input"}}}
+			<input
+				type="hidden"
+				name="name"
+				value="
+					{{~#concepts~}}
+						{{name}}
+					{{~#unless @last~}}
+						,
+					{{~/unless~}}
+				{{~/concepts~}}"
+			/>
+			<button
+				type="submit"
+				aria-pressed="false"
+				class="collection-follow-all__button {{#if liteStyle}}collection-follow-all__button--lite{{else}}collection-follow-all__button--regular{{/if}}"
+				data-trackable="follow all"
+				data-concept-id="
+					{{~#concepts~}}
+						{{conceptId}}
+						{{~#unless @last~}}
+							,
+						{{~/unless~}}
+					{{~/concepts~}}"
+				aria-label="Add all topics in the {{title}} collection to my F T"
+				data-alternate-label="Remove all topics in the {{title}} collection from my F T"
+				data-alternate-text="Added"
+				title="Add all topics in the {{title}} collection to my F T">
+				Add all to myFT
+			</button>
+		</form>
+	</div>
+</section>
