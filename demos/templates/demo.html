@@ -12,14 +12,33 @@
 
 	<div class="o-grid-container o-grid-container--snappy">
 		<div class="o-grid-row">
-			<ul>
-				<li><a href="/">Basic</a></li>
-				<li><a href="/demo-jsx">JSX demo</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="o-grid-container o-grid-container--snappy demo-container">
-		<h1>{{title}}</h1>
+			<div data-o-grid-colspan="12">
+				<h2
+					class="demo-section__title">
+					Follow button
+				</h2>
+
+				{{#followButton}}
+					{{> n-myft-ui/components/follow-button/follow-button}}
+				{{/followButton}}
+
+				<h2
+					class="demo-section__title">
+					x-dash follow button
+				</h2>
+
+				{{#followButton}}
+					{{>	n-myft-ui/components/follow-button/follow-button
+						buttonText=name
+					}}
+				{{/followButton}}
+
+				{{#saveButton}}
+					<h2 class="demo-section__title">
+						Save button
+					</h2>
+					{{> n-myft-ui/components/save-for-later/save-for-later }}
+				{{/saveButton}}
 
 		<section
 			id="follow-button"

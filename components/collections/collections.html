@@ -10,9 +10,17 @@
 		{{#concepts}}
 			<li class="collection__concept">
 				{{#if ../liteStyle}}
-					{{{renderReactComponent localPath="components/follow-button/follow-button" variant="primary" buttonText=name flags=@root.flags collectionName=../collectionName}}}
+					{{>	n-myft-ui/components/follow-button/follow-button
+						variant="primary"
+						buttonText=name
+						collectionName=../collectionName
+					}}
 				{{else}}
-					{{{renderReactComponent localPath="components/follow-button/follow-button" variant="inverse" buttonText=name flags=@root.flags collectionName=../collectionName}}}
+					{{>	n-myft-ui/components/follow-button/follow-button
+						variant="inverse"
+						buttonText=name
+						collectionName=../collectionName
+					}}
 				{{/if}}
 			</li>
 		{{/concepts}}
@@ -42,7 +50,7 @@
 						{{~/unless~}}
 					{{~/concepts~}}"
 			/>
-			{{{renderReactComponent localPath="components/csrf-token/input"}}}
+			{{> n-myft-ui/components/csrf-token/input}}
 			<input
 				type="hidden"
 				name="name"

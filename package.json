@@ -25,7 +25,6 @@
     "@financial-times/dotcom-build-js": "0.4.1",
     "@financial-times/dotcom-build-sass": "0.4.1",
     "@financial-times/dotcom-page-kit-cli": "0.4.1",
-    "@financial-times/dotcom-server-handlebars": "^3.0.0",
     "@financial-times/dotcom-server-react-jsx": "^2.6.2",
     "@financial-times/n-express": "^22.4.1",
     "@financial-times/n-gage": "^8.3.2",

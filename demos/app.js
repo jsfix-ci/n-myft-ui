@@ -7,7 +7,6 @@ const { PageKitReactJSX } = require('@financial-times/dotcom-server-react-jsx');
 let fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
-const { PageKitHandlebars, helpers } = require('@financial-times/dotcom-server-handlebars');
 
 const demoJSX = require('./templates/demo').default;
 const demoLayoutSource = fs.readFileSync(path.join(__dirname, './templates/demo-layout.html'),'utf8').toString();
@@ -32,7 +31,10 @@ const app = module.exports = nExpress({
 	partialsDirectory: process.cwd(),
 	directory: process.cwd(),
 	demo: true,
-	withBackendAuthentication: false,
+	s3o: false,
+	helpers: {
+		x: xHandlebars()
+	},
 });
 
 app.set('views', path.join(__dirname, '/templates'));
