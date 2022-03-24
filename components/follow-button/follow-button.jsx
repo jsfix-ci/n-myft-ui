@@ -1,6 +1,7 @@
 import React from 'react';
 import CsrfToken from '../csrf-token/input';
 
+
 function generateFormProps (props) {
 	let generatedProps = {};
 
@@ -116,6 +117,7 @@ function getButtonText (props) {
 
 	return outputText;
 }
+
 
 /**
  *
