@@ -38,3 +38,7 @@ make demo
 ```
 
 View the demo on `localhost:5005`
+
+## Unstable versions
+
+v24, v25, v26 has JSX migration code. They are not stable therefore v27 is released. It is to remove JSX and rollback to handlebars. Please use ^v27.
