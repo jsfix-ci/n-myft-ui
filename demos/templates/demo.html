@@ -32,7 +32,7 @@
 					</h2>
 
 					{{#followButton}}
-						{{{renderReactComponent localPath="components/follow-button/follow-button" flags=@root.flags}}}
+						{{> n-myft-ui/components/follow-button/follow-button}}
 					{{/followButton}}
 
 					<h2
@@ -41,50 +41,51 @@
 					</h2>
 
 					{{#followButton}}
-						{{{renderReactComponent localPath="components/follow-button/follow-button" buttonText=name flags=@root.flags}}}
+						{{> n-myft-ui/components/follow-button/follow-button buttonText=name}}
 					{{/followButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Save button
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Unsave button
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId isSaved=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Save button with icon
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId saveButtonWithIcon=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later saveButtonWithIcon=true }}
 					{{/saveButton}}
 
 					{{#saveButton}}
 						<h2 class="demo-section__title">
 							Unsave button with icon
 						</h2>
-						{{{renderReactComponent localPath="components/save-for-later/save-for-later" flags=@root.flags title=title contentId=contentId saveButtonWithIcon=true isSaved=true }}}
+						{{> n-myft-ui/components/save-for-later/save-for-later isSaved=true saveButtonWithIcon=true }}
 					{{/saveButton}}
 
 					<h2 class="demo-section__title">
 						Pin button
 					</h2>
 					{{#each pinButton}}
-						{{{renderReactComponent localPath="components/pin-button/pin-button" flags=@root.flags title=title id=id name=name directType=directType showPrioritiseButton=showPrioritiseButton }}}
+						{{> n-myft-ui/components/pin-button/pin-button }}
 					{{/each}}
 
 					{{#instantAlert}}
 						<h2 class="demo-section__title">
 							Instant Alert
 						</h2>
-						{{{renderReactComponent localPath="components/instant-alert/instant-alert" flags=@root.flags title=title conceptId=id name=name directType=directType }}}
+						{{> n-myft-ui/components/instant-alert/instant-alert }}
 					{{/instantAlert}}
+
 
 				</div>
 			</div>
@@ -448,7 +449,7 @@
 
 				{{#collections}}
 					<div data-o-grid-colspan="3">
-						{{{renderReactComponent localPath="components/collections/collections" flags=@root.flags concepts=this.concepts title=this.title liteStyle=this.liteStyle collectionName=this.collectionName trackable=this.trackable}}}
+						{{> n-myft-ui/components/collections/collections }}
 					</div>
 				{{/collections}}
 			</div>
@@ -470,7 +471,7 @@
 
 				{{#each conceptList}}
 					<div data-o-grid-colspan="3">
-						{{{renderReactComponent localPath="components/concept-list/concept-list" flags=@root.flags concepts=this.concepts contentType=this.contentType conceptListTitle=this.conceptListTitle trackable=this.trackable}}}
+						{{> n-myft-ui/components/concept-list/concept-list }}
 					</div>
 				{{/each}}
 			</div>
