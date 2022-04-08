@@ -23,6 +23,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
+					triggerCreateListEvent(contentId)
 				});
 			});
 	}
@@ -285,4 +286,15 @@ async function getLists () {
 		.then(lists => {
 			return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false }));
 		});
+}
+
+function triggerCreateListEvent (contentId) {
+	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'myFT',
+			action: 'create-list-success',
+			article_id: contentId
+		},
+		bubbles: true
+	}));
 }
