@@ -187,7 +187,6 @@ function openCreateListAndAddArticleOverlay (contentId) {
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
-		const userid = event.detail.actorId;
 		const contentId = event.detail.subject;
 
 		// Checks if the createListAndSaveArticle variant is active
