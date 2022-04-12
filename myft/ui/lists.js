@@ -190,7 +190,7 @@ function initialEventListeners () {
 		const contentId = event.detail.subject;
 
 		// Checks if the createListAndSaveArticle variant is active
-		// and will show the variant overlay if there the user has no lists,
+		// and will show the variant overlay if the user has no lists,
 		// otherwise it will show the classic overlay
 		const createListVariant = event.currentTarget.querySelector('[data-myft-ui-variant="createListAndSaveArticleVariant"]');
 		if (createListVariant) {
