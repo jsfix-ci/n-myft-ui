@@ -17,7 +17,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.push({ name: list, subject: createdList.actorId, checked: true });
+					lists.push({ name: list, uuid: createdList.actorId, checked: true });
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
@@ -30,7 +30,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			return;
 		}
 
-		myFtClient.add('list', list.subject, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
+		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
 			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: true };
 			const listElement = ListsElement(lists, addToList, removeFromList);
@@ -44,7 +44,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			return;
 		}
 
-		myFtClient.remove('list', list.subject, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
+		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
 			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false };
 			const listElement = ListsElement(lists, addToList, removeFromList);
@@ -273,6 +273,6 @@ function calculateLargerScreenHalf (target) {
 
 async function getLists () {
 	return myFtClient.getAll('created', 'list').then(lists => {
-		return lists.map(list => ({ name: list.name, subject: list.uuid, checked: false }));
+		return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false }));
 	});
 }
