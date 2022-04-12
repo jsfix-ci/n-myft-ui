@@ -195,7 +195,7 @@ function initialEventListeners () {
 		// otherwise it will show the classic overlay
 		const createListVariant = event.currentTarget.querySelector('[data-myft-ui-variant="createListAndSaveArticleVariant"]');
 		if (createListVariant) {
-			return openCreateListAndAddArticleOverlay(userid, contentId);
+			return openCreateListAndAddArticleOverlay(contentId);
 		}
 
 		handleArticleSaved(contentId);
