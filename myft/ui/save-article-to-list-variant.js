@@ -213,7 +213,12 @@ function ListCheckboxElement (addToList, removeFromList) {
 	return function (list) {
 		const listCheckbox = `<label>
 		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
-		<span class="o-forms-input__label">${list.name}</span>
+		<span class="o-forms-input__label">
+			<span class="o-normalise-visually-hidden">
+			${list.checked ? "Remove article from " : "Add article to " }
+			</span>
+			${list.name}
+		</span>
 	</label>
 	`;
 
