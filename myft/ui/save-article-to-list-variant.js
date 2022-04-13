@@ -139,10 +139,10 @@ function stringToHTMLElement (string) {
 
 function FormElement (createList) {
 	const formString = `
-	<form class='myft-ui-create-list-variant-form'>
+	<form class="myft-ui-create-list-variant-form">
 		<label class="o-forms-field">
 			<span class="o-forms-input o-forms-input--text">
-					<input type="text" name="list-name">
+				<input type="text" name="list-name" aria-label="List name">
 			</span>
 		</label>
 		<button class="o-buttons o-buttons--secondary" type="submit">
