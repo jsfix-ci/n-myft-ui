@@ -88,6 +88,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 		const overlayContent = document.querySelector('.o-overlay__content');
 		overlayContent.insertAdjacentElement('beforeend', formElement);
+		formElement.elements[0].focus();
 	}
 
 	createListOverlay.open();
