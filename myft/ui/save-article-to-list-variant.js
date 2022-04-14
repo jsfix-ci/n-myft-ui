@@ -280,7 +280,9 @@ function calculateLargerScreenHalf (target) {
 }
 
 async function getLists () {
-	return myFtClient.getAll('created', 'list').then(lists => {
-		return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false }));
-	});
+	return myFtClient.getAll('created', 'list')
+		.then(lists => lists.filter(list => !list.isRedirect))
+		.then(lists => {
+			return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false }));
+		});
 }
