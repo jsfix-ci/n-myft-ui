@@ -21,6 +21,8 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
+					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
+					announceListContainer.textContent = `${list} created`;
 				});
 			});
 	}
