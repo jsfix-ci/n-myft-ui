@@ -173,3 +173,148 @@ $spacing-unit: 20px;
 	}
 
 }
+
+.share-nav {
+	&.data-overlap-initialised {
+		.o-overlay {
+			transition: opacity 0.15s ease-in;
+			opacity: 0;
+			z-index: -1;
+		}
+	}
+
+	.myft-ui-create-list-variant {
+		border-radius: 10px;
+		border: 1px solid oColorsByName('black-5');
+		background: oColorsByName('white-80');
+
+		.o-overlay__heading {
+			border-radius: 10px 10px 0 0;
+			background: oColorsByName('white-60');
+			@include oTypographySans($scale: 2);
+			color: oColorsByName('black-80');
+		}
+
+		.o-overlay__content {
+			@include oTypographySans($scale: 0);
+			color: oColorsByName('black-80');
+			padding: 0;
+		}
+
+		.o-overlay__title {
+			margin: 8px 14px 0 8px;
+		}
+
+		&-container {
+			display: block;
+			width: 340px;
+			top: 115.5px;
+			left: 50px;
+		}
+
+		&-add {
+			border: 0;
+			background: none;
+			@include oTypographySans($scale: 1, $weight: 'semibold');
+			color: oColorsByName('black-80');
+
+			padding-left: 0;
+			margin-left: -8px;
+
+			&:hover {
+				text-decoration: underline;
+			}
+
+			&::before {
+				content: '';
+				@include oIconsContent(
+					'plus',
+					oColorsByName('black-80'),
+					28,
+					$iconset-version: 1
+				);
+				vertical-align: middle;
+				margin-top: -2px;
+			}
+		}
+
+		&-add-description {
+			margin: 4px 0;
+		}
+
+		&-heading {
+			&::before {
+				content: '';
+				@include oIconsContent(
+					'tick',
+					oColorsByName('teal'),
+					32,
+					$iconset-version: 1
+				);
+				vertical-align: middle;
+				margin-top: -2px;
+			}
+		}
+
+		&-footer {
+			border-top: 1px solid oColorsByName('black-5');
+			padding: 16px;
+		}
+
+		&-icon {
+			&::before {
+				content: "";
+				display: inline-block;
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-position: 50%;
+				background-color: transparent;
+				background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1:brand-myft?source=next-article);
+				width: 42px;
+				height: 42px;
+				vertical-align: middle;
+				margin-top: -2px;
+			}
+
+			&-visually-hidden {
+				clip: rect(0 0 0 0);
+				clip-path: inset(50%);
+				height: 1px;
+				overflow: hidden;
+				position: absolute;
+				white-space: nowrap;
+				width: 1px;
+			}
+		}
+
+		&-form {
+			display: flex;
+			width: calc(100% - 32px);
+			justify-content: space-between;
+			height: 40px;
+			gap: 8px;
+			padding: 0 16px 16px;
+
+			& > * {
+				flex: 1 1 auto;
+			}
+
+			.o-forms-input {
+				margin-top: 0;
+			}
+		}
+
+		&-lists {
+			padding: 16px 16px 0;
+			@include oTypographySans($scale: 1);
+			&-text {
+				@include oTypographySans($weight: 'semibold');
+				color: oColorsByName('black-80');
+				margin-bottom: 16px;
+			}
+			&-container {
+				margin-top: 0;
+			}
+		}
+	}
+}
