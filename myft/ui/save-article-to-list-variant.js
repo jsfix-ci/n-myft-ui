@@ -194,7 +194,7 @@ function ListsElement (lists, addToList, removeFromList) {
 	const listCheckboxElement = ListCheckboxElement(addToList, removeFromList);
 
 	const listsTemplate = `
-	<div class="myft-ui-create-list-variant-lists o-forms-field o-forms-field--optional" role="group" aria-labelledby="checkbox-group-title" aria-describedby="checkbox-group-info">
+	<div class="myft-ui-create-list-variant-lists o-forms-field o-forms-field--optional" role="group">
 		<span class="myft-ui-create-list-variant-lists-text">Add to a list</span>
 		<span class="myft-ui-create-list-variant-lists-container o-forms-input o-forms-input--checkbox">
 		</span>
