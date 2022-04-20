@@ -23,7 +23,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
-					triggerCreateListEvent(contentId)
+					triggerCreateListEvent(contentId);
 				});
 			});
 	}
@@ -39,6 +39,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			triggerAddToListEvent(contentId);
 		});
 	}
 
@@ -53,6 +54,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			triggerRemoveFromListEvent(contentId);
 		});
 	}
 
@@ -218,7 +220,7 @@ function ListCheckboxElement (addToList, removeFromList) {
 		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
 		<span class="o-forms-input__label">
 			<span class="o-normalise-visually-hidden">
-			${list.checked ? "Remove article from " : "Add article to " }
+			${list.checked ? 'Remove article from ' : 'Add article to ' }
 			</span>
 			${list.name}
 		</span>
@@ -288,7 +290,44 @@ async function getLists () {
 		});
 }
 
+function triggerAddToListEvent (contentId) {
+	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'professorLists',
+			action: 'add-to-list',
+			article_id: contentId,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+function triggerRemoveFromListEvent (contentId) {
+	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'professorLists',
+			action: 'remove-from-list',
+			article_id: contentId,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
 function triggerCreateListEvent (contentId) {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'professorLists',
+			action: 'create-list',
+			article_id: contentId,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+
 	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
 			category: 'myFT',
