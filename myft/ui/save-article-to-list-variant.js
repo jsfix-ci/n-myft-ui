@@ -9,28 +9,30 @@ const csrfToken = getToken();
 
 let lists;
 
-oErrors.init({
-	sentryEndpoint: 'https://d63d3b29fd374c3d95fa814a38c9bac9@o16684.ingest.sentry.io/79480',
-	transformError: function (data) {
-		const { context } = data;
+function initialiseErrorTracking () {
+	oErrors.init({
+		sentryEndpoint: 'https://d63d3b29fd374c3d95fa814a38c9bac9@o16684.ingest.sentry.io/79480',
+		transformError: function (data) {
+			const { context } = data;
 
-		if (context) {
-			const { extra = {} } = context;
-			const { info = {} } = extra;
+			if (context) {
+				const { extra = {} } = context;
+				const { info = {} } = extra;
 
-			if (info.component === 'professorLists') {
-				data.error.message = `[professorLists]: ${data.error.message}`;
+				if (info.component === 'professorLists') {
+					data.error.message = `[professorLists]: ${data.error.message}`;
+				}
 			}
+
+			return data;
+		},
+		filterError: function (data) {
+			const { error = { message: '' }, errormessage = '' } = data;
+
+			return errormessage.includes('[professorLists]') || error.message.includes('[professorLists]');
 		}
-
-		return data;
-	},
-	filterError: function (data) {
-		const { error = { message: '' }, errormessage = '' } = data;
-
-		return errormessage.includes('[professorLists]') || error.message.includes('[professorLists]');
-	}
-});
+	});
+}
 
 export default async function showSaveArticleToListVariant (name, contentId) {
 	try {
@@ -390,6 +392,7 @@ function triggerCreateListEvent (contentId) {
 }
 
 function handleError (error) {
+	initialiseErrorTracking();
 	document.body.dispatchEvent(new CustomEvent('oErrors.log', {
 		bubbles: true,
 		detail: {
