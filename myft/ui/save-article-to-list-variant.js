@@ -8,7 +8,15 @@ const csrfToken = getToken();
 
 let lists;
 
-export default async function openSaveArticleToListVariant (name, contentId) {
+export default async function showSaveArticleToListVariant (name, contentId) {
+	try {
+		await openSaveArticleToListVariant (name, contentId);
+	} catch(error) {
+		handleError(error);
+	}
+}
+
+async function openSaveArticleToListVariant (name, contentId) {
 	function createList (list) {
 		if(!list) {
 			return;
@@ -82,18 +90,25 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	const realignListener = realignOverlay(window.scrollY);
 
 	function outsideClickHandler (e) {
-		const overlayContent = document.querySelector('.o-overlay__content');
-		if(!overlayContent || !overlayContent.contains(e.target)) {
-			createListOverlay.close();
+		try {
+			const overlayContent = document.querySelector('.o-overlay__content');
+			if(!overlayContent || !overlayContent.contains(e.target)) {
+				createListOverlay.close();
+			}
+		} catch(error) {
+			handleError(error);
 		}
 	}
 
 	function openFormHandler () {
-		const formElement = FormElement(createList);
-
-		const overlayContent = document.querySelector('.o-overlay__content');
-		overlayContent.insertAdjacentElement('beforeend', formElement);
-		formElement.elements[0].focus();
+		try {
+			const formElement = FormElement(createList);
+			const overlayContent = document.querySelector('.o-overlay__content');
+			overlayContent.insertAdjacentElement('beforeend', formElement);
+			formElement.elements[0].focus();
+		} catch(error) {
+			handleError(error);
+		}
 	}
 
 	createListOverlay.open();
@@ -159,14 +174,20 @@ function FormElement (createList) {
 
 	const formElement = stringToHTMLElement(formString);
 
-	formElement.querySelector('button[type="submit"]').addEventListener('click', (e) => {
-		e.preventDefault();
-		e.stopPropagation();
-		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value);
-		inputListName.value = '';
-		formElement.remove();
-	});
+	function handleSubmit (event) {
+		try {
+			event.preventDefault();
+			event.stopPropagation();
+			const inputListName = formElement.querySelector('input[name="list-name"]');
+			createList(inputListName.value);
+			inputListName.value = '';
+			formElement.remove();
+		} catch(error) {
+			handleError(error);
+		}
+	}
+
+	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
 
 	return formElement;
 }
@@ -231,10 +252,12 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 		const [ input ] = listCheckboxElement.children;
 
-		input.addEventListener('click', function (e) {
-			e.preventDefault();
-			return e.target.checked ? addToList(list) : removeFromList(list);
-		});
+		function handleCheck (event) {
+			event.preventDefault();
+			return event.target.checked ? addToList(list) : removeFromList(list);
+		}
+
+		input.addEventListener('click', handleCheck);
 
 		return listCheckboxElement;
 	};
@@ -242,26 +265,30 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 function realignOverlay (originalScrollPosition) {
 	return function (target, currentScrollPosition) {
-		if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
-			return;
-		}
+		try {
+			if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
+				return;
+			}
 
-		originalScrollPosition = currentScrollPosition;
+			originalScrollPosition = currentScrollPosition;
 
-		target.style['min-width'] = '340px';
-		target.style['width'] = '100%';
-		target.style['margin-top'] = '-50px';
-		target.style['left'] = 0;
+			target.style['min-width'] = '340px';
+			target.style['width'] = '100%';
+			target.style['margin-top'] = '-50px';
+			target.style['left'] = 0;
 
-		if (isMobile()) {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = 0;
-			target.style['margin-top'] = 0;
-			target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
-		} else {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = '45px';
-			target.style['top'] = '220px';
+			if (isMobile()) {
+				target.style['position'] = 'absolute';
+				target.style['margin-left'] = 0;
+				target.style['margin-top'] = 0;
+				target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
+			} else {
+				target.style['position'] = 'absolute';
+				target.style['margin-left'] = '45px';
+				target.style['top'] = '220px';
+			}
+		} catch (error) {
+			handleError(error);
 		}
 	};
 }
@@ -335,5 +362,15 @@ function triggerCreateListEvent (contentId) {
 			article_id: contentId
 		},
 		bubbles: true
+	}));
+}
+
+function handleError (error) {
+	document.body.dispatchEvent(new CustomEvent('oErrors.log', {
+		bubbles: true,
+		detail: {
+			error,
+			info: { component: 'professorLists' },
+		}
 	}));
 }
