@@ -16,14 +16,6 @@ export default async function showSaveArticleToListVariant (name, contentId) {
 }
 
 async function openSaveArticleToListVariant (name, contentId) {
-	if (!lists) {
-		lists = await getLists(contentId);
-	}
-
-	const headingElement = HeadingElement();
-	const descriptionElement = DescriptionElement();
-	const contentElement = ContentElement(descriptionElement);
-
 	function createList (list) {
 		if(!list) {
 			return;
@@ -39,10 +31,8 @@ async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					triggerCreateListEvent(contentId);
-					if (document.querySelector('.myft-ui-create-list-variant-add-description')) {
-						descriptionElement.remove();
-						contentElement.addEventListener('click', openFormHandler, { once: true });
-					}
+					removeDescription();
+					contentElement.addEventListener('click', openFormHandler, { once: true });
 				});
 			});
 	}
@@ -77,11 +67,18 @@ async function openSaveArticleToListVariant (name, contentId) {
 		});
 	}
 
+	if (!lists) {
+		lists = await getLists(contentId);
+	}
+
 	const overlays = Overlay.getOverlays();
 	const existingOverlay = overlays[name];
 	if (existingOverlay) {
 		existingOverlay.destroy();
 	}
+
+	const headingElement = HeadingElement();
+	let [contentElement, removeDescription] = ContentElement(!lists.length);
 
 	const createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -177,26 +174,26 @@ function FormElement (createList) {
 	return formElement;
 }
 
-function ContentElement (descriptionElement) {
+function ContentElement (description) {
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
 			<button class="myft-ui-create-list-variant-add">Add to a new list</button>
+			${description ? `
+			<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>
+		` : ''}
 		</div>
 	`;
 
 	const contentElement = stringToHTMLElement(content);
 
-	if (!lists.length) {
-		contentElement.insertAdjacentElement('beforeend', descriptionElement);
+	function removeDescription () {
+		const descriptionElement = contentElement.querySelector('.myft-ui-create-list-variant-add-description');
+		if (descriptionElement) {
+			descriptionElement.remove();
+		}
 	}
 
-	return contentElement;
-}
-
-function DescriptionElement () {
-	const description = '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>';
-
-	return stringToHTMLElement(description);
+	return [contentElement, removeDescription];
 }
 
 function HeadingElement () {
