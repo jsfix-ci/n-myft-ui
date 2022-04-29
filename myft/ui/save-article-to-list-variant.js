@@ -2,7 +2,6 @@ import Overlay from 'o-overlay';
 import myFtClient from 'next-myft-client';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
-import oTooltip from 'o-tooltip';
 
 const csrfToken = getToken();
 
@@ -17,6 +16,14 @@ export default async function showSaveArticleToListVariant (name, contentId) {
 }
 
 async function openSaveArticleToListVariant (name, contentId) {
+	if (!lists) {
+		lists = await getLists(contentId);
+	}
+
+	const headingElement = HeadingElement();
+	const descriptionElement = DescriptionElement();
+	const contentElement = ContentElement(descriptionElement);
+
 	function createList (list) {
 		if(!list) {
 			return;
@@ -32,6 +39,10 @@ async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					triggerCreateListEvent(contentId);
+					if (document.querySelector('.myft-ui-create-list-variant-add-description')) {
+						descriptionElement.remove();
+						contentElement.addEventListener('click', openFormHandler, { once: true });
+					}
 				});
 			});
 	}
@@ -66,18 +77,11 @@ async function openSaveArticleToListVariant (name, contentId) {
 		});
 	}
 
-	if (!lists) {
-		lists = await getLists(contentId);
-	}
-
 	const overlays = Overlay.getOverlays();
 	const existingOverlay = overlays[name];
 	if (existingOverlay) {
 		existingOverlay.destroy();
 	}
-
-	const contentElement = ContentElement();
-	const headingElement = HeadingElement();
 
 	const createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -121,31 +125,12 @@ async function openSaveArticleToListVariant (name, contentId) {
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
 
-		contentElement.addEventListener('click', openFormHandler);
+		contentElement.addEventListener('click', openFormHandler, { once: true });
 
-		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
+		document.querySelector('.article-content').addEventListener('click', outsideClickHandler, { once: true });
 	});
 
-	createListOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
-		const tooltipTemplate = document.createElement('div');
-		const opts = {
-			target: 'o-header-top-link-myft',
-			content: 'Go to saved articles in myFT to find your lists',
-			showOnConstruction: true,
-			closeAfter: 5,
-			position: 'below'
-		};
-
-		new oTooltip(tooltipTemplate, opts);
-
-		contentElement.removeEventListener('click', openFormHandler);
-
-		document.querySelector('.article-content').removeEventListener('click', outsideClickHandler);
-	});
-
-	window.addEventListener('scroll', function () {
-		realignListener(createListOverlay.wrapper, window.scrollY);
-	});
+	window.addEventListener('scroll', realignListener(createListOverlay.wrapper, window.scrollY));
 
 	window.addEventListener('oViewport.resize', () => {
 		realignListener(createListOverlay.wrapper);
@@ -192,15 +177,26 @@ function FormElement (createList) {
 	return formElement;
 }
 
-function ContentElement () {
-	let content = `
+function ContentElement (descriptionElement) {
+	const content = `
 		<div class="myft-ui-create-list-variant-footer">
 			<button class="myft-ui-create-list-variant-add">Add to a new list</button>
-			${!lists.length ? '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>' : ''}
 		</div>
 	`;
 
-	return stringToHTMLElement(content);
+	const contentElement = stringToHTMLElement(content);
+
+	if (!lists.length) {
+		contentElement.insertAdjacentElement('beforeend', descriptionElement);
+	}
+
+	return contentElement;
+}
+
+function DescriptionElement () {
+	const description = '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>';
+
+	return stringToHTMLElement(description);
 }
 
 function HeadingElement () {
