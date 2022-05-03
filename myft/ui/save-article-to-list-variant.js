@@ -31,7 +31,6 @@ async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					triggerCreateListEvent(contentId);
-					removeDescription();
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 				});
 			});
@@ -105,6 +104,7 @@ async function openSaveArticleToListVariant (name, contentId) {
 		try {
 			const formElement = FormElement(createList);
 			const overlayContent = document.querySelector('.o-overlay__content');
+			removeDescription();
 			overlayContent.insertAdjacentElement('beforeend', formElement);
 			formElement.elements[0].focus();
 		} catch(error) {
