@@ -10,7 +10,8 @@ let lists;
 export default async function openSaveArticleToListVariant (name, contentId) {
 	function createList (list) {
 		if(!list) {
-			return;
+			if (!lists.length) attachDescription();
+			return contentElement.addEventListener('click', openFormHandler, { once: true });
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
@@ -25,6 +26,10 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					triggerCreateListEvent(contentId);
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 				});
+			})
+			.catch(() => {
+				if (!lists.length) attachDescription();
+				return contentElement.addEventListener('click', openFormHandler, { once: true });
 			});
 	}
 
@@ -69,7 +74,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	}
 
 	const headingElement = HeadingElement();
-	let [contentElement, removeDescription] = ContentElement(!lists.length);
+	let [contentElement, removeDescription, attachDescription] = ContentElement(!lists.length);
 
 	const createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -96,6 +101,14 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		formElement.elements[0].focus();
 	}
 
+	function scrollHandler () {
+		realignListener(createListOverlay.wrapper, window.scrollY);
+	}
+
+	function resizeHandler () {
+		realignListener(createListOverlay.wrapper);
+	}
+
 	createListOverlay.open();
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
 		realignListener(data.currentTarget);
@@ -109,12 +122,16 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		contentElement.addEventListener('click', openFormHandler, { once: true });
 
 		document.querySelector('.article-content').addEventListener('click', outsideClickHandler, { once: true });
+
+		window.addEventListener('scroll', scrollHandler);
+
+		window.addEventListener('oViewport.resize', resizeHandler);
 	});
 
-	window.addEventListener('scroll', realignListener(createListOverlay.wrapper, window.scrollY));
+	createListOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
+		window.removeEventListener('scroll', scrollHandler);
 
-	window.addEventListener('oViewport.resize', () => {
-		realignListener(createListOverlay.wrapper);
+		window.removeEventListener('oViewport.resize', resizeHandler);
 	});
 }
 
@@ -154,12 +171,14 @@ function FormElement (createList) {
 	return formElement;
 }
 
-function ContentElement (description) {
+function ContentElement (hasDescription) {
+	const description = '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>';
+
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
 			<button class="myft-ui-create-list-variant-add">Add to a new list</button>
-			${description ? `
-			<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>
+			${hasDescription ? `
+			${description}
 		` : ''}
 		</div>
 	`;
@@ -173,7 +192,12 @@ function ContentElement (description) {
 		}
 	}
 
-	return [contentElement, removeDescription];
+	function attachDescription () {
+		const descriptionElement = stringToHTMLElement(description);
+		contentElement.insertAdjacentElement('beforeend', descriptionElement);
+	}
+
+	return [contentElement, removeDescription, attachDescription];
 }
 
 function HeadingElement () {
