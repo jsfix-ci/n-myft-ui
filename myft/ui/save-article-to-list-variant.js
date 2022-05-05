@@ -109,6 +109,14 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		realignListener(createListOverlay.wrapper);
 	}
 
+	function scrollHandler () {
+		realignListener(createListOverlay.wrapper, window.scrollY);
+	}
+
+	function resizeHandler () {
+		realignListener(createListOverlay.wrapper);
+	}
+
 	createListOverlay.open();
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
 		realignListener(data.currentTarget);
