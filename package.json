@@ -116,5 +116,8 @@
     "@financial-times/o-overlay": "^4.2.4",
     "@financial-times/o-spacing": "^3.2.1",
     "@financial-times/o-tooltip": "^5.2.2"
+  },
+  "dependencies": {
+    "next-session-client": "^4.0.0"
   }
 }
