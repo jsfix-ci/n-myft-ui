@@ -2,7 +2,7 @@ import myFtClient from 'next-myft-client';
 import Delegate from 'ftdomdelegate';
 import Overlay from '@financial-times/o-overlay';
 import * as myFtUiButtonStates from './lib/button-states';
-import nNotification from 'n-notification';
+import nNotification from '@financial-times/n-notification';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
 import oForms from '@financial-times/o-forms';

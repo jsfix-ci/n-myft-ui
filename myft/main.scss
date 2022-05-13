@@ -9,7 +9,7 @@
 @import '@financial-times/o-spacing/main';
 
 $n-notification-is-silent: false !default;
-@import 'n-notification/main';
+@import '@financial-times/n-notification/main';
 
 @import './ui/myft-buttons/main';
 @import './ui/lists';
