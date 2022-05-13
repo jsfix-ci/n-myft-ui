@@ -10,9 +10,6 @@ run:
 	cp -rf $(shell cat _test-server/template-copy-list.txt) bower_components/n-ui
 	node _test-server/app
 
-prevent-npm-dependencies:
-	@node scripts/prevent-npm-deps.js
-
 # copy project files into bower components so that we can reference component partials
 # in the same way that apps that use the components do
 demo-build:
@@ -20,7 +17,7 @@ demo-build:
 	@mkdir bower_components/n-myft-ui
 	@mkdir bower_components/n-myft-ui/myft
 	@cp -r components bower_components/n-myft-ui/components/
-	@node-sass demos/src/demo.scss public/main.css --include-path bower_components node_modules
+	@sass demos/src/demo.scss public/main.css --load-path bower_components --load-path node_modules
 	@$(DONE)
 
 demo: demo-build
@@ -41,7 +38,6 @@ a11y: demo-build
 	@$(DONE)
 
 test:
-	make prevent-npm-dependencies
 	make verify
 	make test-unit
 	make test-build
