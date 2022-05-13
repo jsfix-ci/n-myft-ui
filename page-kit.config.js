@@ -1,8 +1,9 @@
 const path = require('path');
+const { PageKitJsPlugin } = require('@financial-times/dotcom-build-js');
 
 module.exports = {
 	plugins: [
-		require('@financial-times/dotcom-build-js').plugin(),
+		new PageKitJsPlugin(),
 		require('@financial-times/dotcom-build-sass').plugin(),
 		require('@financial-times/dotcom-build-bower-resolve').plugin()
 	],
