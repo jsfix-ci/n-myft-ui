@@ -26,7 +26,6 @@
     "next-session-client": "^3.0.1",
     "o-forms": "^8.0.0",
     "o-grid": "^5.0.0",
-    "o-normalise": "^2.0.1",
-    "o-overlay": "^3.0.0"
+    "o-normalise": "^2.0.1"
   }
 }
