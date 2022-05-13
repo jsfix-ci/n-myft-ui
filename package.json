@@ -118,6 +118,7 @@
     "@financial-times/o-tooltip": "^5.2.2"
   },
   "dependencies": {
+    "next-myft-client": "^9.0.0",
     "next-session-client": "^4.0.0"
   }
 }

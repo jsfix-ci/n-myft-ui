@@ -20,7 +20,6 @@
     "fetchres": "^1.7.2",
     "form-serialize": "^0.7.2",
     "js-cookie": "^2.2.0",
-    "n-ui-foundations": "^6.0.0",
-    "next-myft-client": "^7.8.0"
+    "n-ui-foundations": "^6.0.0"
   }
 }
