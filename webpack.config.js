@@ -14,7 +14,7 @@ module.exports = {
 			'./myft/index.js',
 			'./myft-common/index.js'
 		],
-		
+
 		styles: './myft/test.scss'
 	},
 	output: {
