@@ -1,4 +1,4 @@
-import Overlay from 'o-overlay';
+import Overlay from '@financial-times/o-overlay';
 import myFtClient from 'next-myft-client';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';

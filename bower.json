@@ -23,9 +23,6 @@
     "n-notification": "^7.0.0",
     "n-ui-foundations": "^6.0.0",
     "next-myft-client": "^7.8.0",
-    "next-session-client": "^3.0.1",
-    "o-forms": "^8.0.0",
-    "o-grid": "^5.0.0",
-    "o-normalise": "^2.0.1"
+    "next-session-client": "^3.0.1"
   }
 }
