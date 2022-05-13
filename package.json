@@ -105,5 +105,8 @@
       "pre-commit": "node_modules/.bin/secret-squirrel",
       "pre-push": "make verify -j3"
     }
+  },
+  "peerDependencies": {
+    "@financial-times/o-editorial-typography": "^2.3.2"
   }
 }
