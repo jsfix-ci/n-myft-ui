@@ -75,18 +75,27 @@
     "mocha": "6.2.2",
     "mockery": "2.1.0",
     "node-fetch": "2.6.0",
-    "node-sass": "^6.0.1",
     "nodemon": "^1.9.2",
     "npm-prepublish": "^1.2.1",
     "pa11y-ci": "^2.1.1",
     "postcss-loader": "^0.9.1",
     "regenerator-runtime": "^0.13.3",
+    "sass": "^1.51.0",
     "semver": "6.3.0",
     "sinon": "^7.1.0",
     "sinon-chai": "^3.2.0",
     "snyk": "^1.216.5",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.9.2"
+  },
+  "peerDependencies": {
+    "n-ui-foundations": "^9.0.0"
+  },
+  "dependencies": {
+    "ftdomdelegate": "^4.0.6",
+    "next-myft-client": "^9.0.0",
+    "next-session-client": "^4.0.0",
+    "superstore-sync": "^2.1.1"
   },
   "volta": {
     "node": "16.14.2",
