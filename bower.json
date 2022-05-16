@@ -20,14 +20,6 @@
     "fetchres": "^1.7.2",
     "form-serialize": "^0.7.2",
     "js-cookie": "^2.2.0",
-    "n-notification": "^7.0.0",
-    "o-editorial-typography": "^1.0.1",
-    "o-errors": "^4.0.2",
-    "o-forms": "^8.0.0",
-    "o-grid": "^5.0.0",
-    "o-normalise": "^2.0.1",
-    "o-overlay": "^3.0.0",
-    "o-spacing": "^2.0.0",
-    "o-tooltip": "^4.0.0"
+    "n-notification": "^7.0.0"
   }
 }

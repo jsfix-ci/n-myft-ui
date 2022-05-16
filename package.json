@@ -89,9 +89,25 @@
     "webpack-cli": "^4.9.2"
   },
   "peerDependencies": {
+    "@financial-times/o-forms": "^8.0.0",
+    "@financial-times/o-overlay": "^3.0.0",
+    "@financial-times/o-errors": "^4.0.2",
+    "@financial-times/o-grid": "^6.1.1",
+    "@financial-times/o-normalise": "^3.0.0",
+    "@financial-times/o-spacing": "^3.0.0",
+    "@financial-times/o-tooltip": "^4.0.0",
+    "@financial-times/o-editorial-typography": "^1.0.1",
     "n-ui-foundations": "^9.0.0"
   },
   "dependencies": {
+    "@financial-times/o-forms": "^8.0.0",
+    "@financial-times/o-overlay": "^3.0.0",
+    "@financial-times/o-errors": "^4.0.2",
+    "@financial-times/o-grid": "^6.1.1",
+    "@financial-times/o-normalise": "^3.0.0",
+    "@financial-times/o-spacing": "^3.0.0",
+    "@financial-times/o-tooltip": "^4.0.0",
+    "@financial-times/o-editorial-typography": "^1.0.1",
     "ftdomdelegate": "^4.0.6",
     "next-myft-client": "^9.0.0",
     "next-session-client": "^4.0.0",
