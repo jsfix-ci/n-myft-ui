@@ -25,7 +25,7 @@ test-build:
 	webpack --mode=development
 
 test-unit:
-	karma start --autoWatch=true --singleRun=true karma.conf.js
+	node_modules/karma/bin/karma start --autoWatch=true --singleRun=false
 
 a11y: demo-build
 	@node .pa11yci.js
