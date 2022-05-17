@@ -40,7 +40,7 @@ If `isSaved=true` is specified then the button will start in the *saved* state, 
 
 ## Releasing
 
-This is a bower module, to release update the git tag.
+This is an NPM module, to release update the git tag.
 
 ## Testing
 

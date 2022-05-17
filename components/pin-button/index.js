@@ -1,7 +1,7 @@
 import Delegate from 'ftdomdelegate';
 import myftApiClient from 'next-myft-client';
 import serialize from 'form-serialize';
-import Tooltip from 'o-tooltip';
+import Tooltip from '@finacial-times/o-tooltip';
 
 const delegate = new Delegate(document.body);
 

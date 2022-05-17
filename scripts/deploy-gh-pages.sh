@@ -15,7 +15,6 @@ cd honk
 
 git checkout -b gh-pages
 
-mv ../bower_components .
 mv ../node_modules .
 cp ../scripts/* scripts/
 

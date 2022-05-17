@@ -1,7 +1,7 @@
 /* global expect */
 import sinon from 'sinon';
-import addMinutes from 'date-fns/src/addMinutes';
-import parseISO from 'date-fns/src/parseISO';
+import addMinutes from 'date-fns/addMinutes';
+import parseISO from 'date-fns/parseISO';
 
 const expiryTimestamp = parseISO('2018-06-14T12:00:00.000Z');
 const timestampBeforeExpiry = '2018-06-14T11:40:00.000Z';

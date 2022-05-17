@@ -1,6 +1,5 @@
 // Karma configuration
 // Generated on Fri Apr 18 2014 18:19:03 GMT+0100 (BST)
-const BowerResolvePlugin = require('bower-resolve-webpack-plugin');
 module.exports = function (karma) {
 
 
@@ -41,9 +40,9 @@ module.exports = function (karma) {
 		},
 		webpack: {
 			resolve: {
-				plugins: [new BowerResolvePlugin()],
-				modules: ['bower_components', 'node_modules'],
-				descriptionFiles: ['bower.json', 'package.json'],
+				plugins: [],
+				modules: ['node_modules'],
+				descriptionFiles: ['package.json'],
 				mainFields: ['browser', 'main'],
 				mainFiles: ['index', 'main'],
 				extensions: ['.js', '.json']

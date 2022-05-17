@@ -1,0 +1,56 @@
+.demo-container {
+  margin-bottom: 400px;
+}
+
+.concept-collection {
+  padding: 1em;
+}
+
+.concept-collection__title {
+  margin-top: 0;
+}
+
+.concept-collection__list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+.concept-collection--standard {
+  background-color: oColorsByName("paper");
+}
+
+.concept-collection--inverse {
+  background-color: oColorsByName("claret-60");
+  color: oColorsByName("white");
+}
+
+.concept-collection--opinion {
+  background-color: oColorsByName("sky");
+  color: oColorsByName("oxford");
+}
+
+.concept-collection--monochrome {
+  background-color: oColorsByName("black");
+  color: oColorsByName("white");
+}
+
+.demo-section {
+  padding-bottom: 1em;
+  font-family: MetricWeb, sans-serif;
+}
+
+.demo-section__title {
+  padding-top: 0.2em;
+}
+
+.demo-section__description {
+  font-style: italic;
+  font-size: 1.2em;
+  margin: 12px 0;
+  color: oColorsByName("black-70");
+}
+
+/*# sourceMappingURL=main.css.map */
