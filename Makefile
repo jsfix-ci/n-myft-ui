@@ -8,6 +8,10 @@ run:
 	node _test-server/app
 
 demo-build:
+	@rm -rf node_modules/@financial-times/n-myft-ui
+	@mkdir node_modules/@financial-times/n-myft-ui
+	@mkdir node_modules/@financial-times/n-myft-ui/myft
+	@cp -r components node_modules/@financial-times/n-myft-ui/components/
 	@sass demos/src/demo.scss public/main.css --load-path node_modules
 	@$(DONE)
 
