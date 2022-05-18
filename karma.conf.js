@@ -40,7 +40,6 @@ module.exports = function (karma) {
 		},
 		webpack: {
 			resolve: {
-				plugins: [],
 				modules: ['node_modules'],
 				descriptionFiles: ['package.json'],
 				mainFields: ['browser', 'main'],

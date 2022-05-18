@@ -14,6 +14,6 @@ module.exports = {
 		styles: './myft/test.scss',
 	},
 	output: {
-		path: path.resolve(__dirname, 'public'),
+		path: path.resolve(__dirname, 'public')
 	},
 };
