@@ -1,4 +1,4 @@
-import {startOfDay} from './date-fns';
+import { startOfDay } from 'date-fns';
 import * as storage from './storage';
 import initialiseFeedStartTime from './initialise-feed-start-time';
 import sessionClient from 'next-session-client';
@@ -8,7 +8,7 @@ let userId;
 
 async function getValidSession () {
 	if (!userId) {
-		const {uuid} = await sessionClient.uuid();
+		const { uuid } = await sessionClient.uuid();
 		if (!uuid) throw new Error('No userId');
 		userId = uuid;
 	}
@@ -24,7 +24,7 @@ export async function getNewArticlesSinceTime () {
 	if (!initialFeedStartTime && storage.isAvailable()) {
 		try {
 			initialFeedStartTime = await initialiseFeedStartTime(user, new Date());
-		} catch(e) {}
+		} catch (e) {}
 	}
 
 	return initialFeedStartTime || dayStart;

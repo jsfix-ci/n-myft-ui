@@ -5,19 +5,14 @@ node_modules/@financial-times/n-gage/index.mk:
 -include node_modules/@financial-times/n-gage/index.mk
 
 run:
-	rm -rf bower_components/n-ui
-	mkdir bower_components/n-ui
-	cp -rf $(shell cat _test-server/template-copy-list.txt) bower_components/n-ui
 	node _test-server/app
 
-# copy project files into bower components so that we can reference component partials
-# in the same way that apps that use the components do
 demo-build:
-	@rm -rf bower_components/n-myft-ui
-	@mkdir bower_components/n-myft-ui
-	@mkdir bower_components/n-myft-ui/myft
-	@cp -r components bower_components/n-myft-ui/components/
-	@sass demos/src/demo.scss public/main.css --load-path bower_components --load-path node_modules
+	@rm -rf node_modules/@financial-times/n-myft-ui
+	@mkdir node_modules/@financial-times/n-myft-ui
+	@mkdir node_modules/@financial-times/n-myft-ui/myft
+	@cp -r components node_modules/@financial-times/n-myft-ui/components/
+	@sass demos/src/demo.scss public/main.css --load-path node_modules
 	@$(DONE)
 
 demo: demo-build
@@ -30,7 +25,7 @@ test-build:
 	webpack --mode=development
 
 test-unit:
-	karma start karma.conf.js
+	node_modules/karma/bin/karma start
 
 a11y: demo-build
 	@node .pa11yci.js

@@ -3,7 +3,7 @@ import * as tracking from '../lib/tracking';
 import * as loadedRelationships from '../lib/loaded-relationships';
 import relationshipConfig from '../lib/relationship-config';
 import setTokens from '../lib/set-tokens';
-import nNotification from 'n-notification';
+import nNotification from '@financial-times/n-notification';
 import Delegate from 'ftdomdelegate';
 import personaliseLinks from '../personalise-links';
 import doFormSubmit from './do-form-submit';

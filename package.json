@@ -21,7 +21,6 @@
   "homepage": "https://github.com/Financial-Times/n-myft-ui#readme",
   "devDependencies": {
     "@financial-times/dotcom-build-base": "^7.0.0",
-    "@financial-times/dotcom-build-bower-resolve": "^2.6.2",
     "@financial-times/dotcom-build-code-splitting": "^5.0.0",
     "@financial-times/dotcom-build-js": "^5.0.0",
     "@financial-times/dotcom-build-sass": "^5.0.0",
@@ -41,9 +40,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.6.0",
     "babel-runtime": "^6.9.2",
-    "bower": "^1.8.8",
-    "bower-resolve-webpack-plugin": "^1.0.5",
-    "bower-webpack-plugin": "^0.1.9",
     "brotli": "^1.3.1",
     "chai": "4.2.0",
     "chalk": "2.4.2",
@@ -89,10 +85,24 @@
     "webpack-cli": "^4.9.2"
   },
   "peerDependencies": {
+    "@financial-times/n-notification": "^8.2.2",
+    "@financial-times/o-editorial-typography": "^2.3.2",
+    "@financial-times/o-errors": "^4.0.2",
+    "@financial-times/o-forms": "^9.4.0",
+    "@financial-times/o-grid": "^6.1.1",
+    "@financial-times/o-normalise": "^3.0.0",
+    "@financial-times/o-overlay": "^4.0.0",
+    "@financial-times/o-spacing": "^3.0.0",
+    "@financial-times/o-tooltip": "^5.0.0",
     "n-ui-foundations": "^9.0.0"
   },
   "dependencies": {
+    "@financial-times/o-topper": "^5.2.3",
+    "date-fns": "2.16.1",
+    "fetchres": "^1.7.2",
+    "form-serialize": "^0.7.2",
     "ftdomdelegate": "^4.0.6",
+    "js-cookie": "^2.2.1",
     "next-myft-client": "^9.0.0",
     "next-session-client": "^4.0.0",
     "superstore-sync": "^2.1.1"

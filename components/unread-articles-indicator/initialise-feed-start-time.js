@@ -1,16 +1,18 @@
-import {isToday, startOfDay} from './date-fns';
+import { isToday, startOfDay } from 'date-fns';
 import DeviceSession from './device-session';
 import * as storage from './storage';
-import {json as fetchJson} from 'fetchres';
+import { json as fetchJson } from 'fetchres';
 
 const deviceSession = new DeviceSession();
 
 export const fetchUserLastVisitedAt = (userId) => {
-	const url = '/__myft/users/:userId/last-seen?source=next-myft'
-		.replace(':userId', userId);
-	return fetch(url, {credentials: 'include'})
+	const url = '/__myft/users/:userId/last-seen?source=next-myft'.replace(
+		':userId',
+		userId
+	);
+	return fetch(url, { credentials: 'include' })
 		.then(fetchJson)
-		.then(({lastSeen}) => new Date(lastSeen));
+		.then(({ lastSeen }) => new Date(lastSeen));
 };
 
 /**
@@ -19,12 +21,18 @@ export const fetchUserLastVisitedAt = (userId) => {
  * @return {Promise<Date>} date when we now determine articles to be 'new' for the user
  */
 const determineFeedStartTime = (userId, now, previousFeedStartTime) => {
-	if (previousFeedStartTime && isToday(previousFeedStartTime) && !deviceSession.isNewSession()) {
+	if (
+		previousFeedStartTime &&
+		isToday(previousFeedStartTime) &&
+		!deviceSession.isNewSession()
+	) {
 		return Promise.resolve(previousFeedStartTime);
 	}
 
 	return fetchUserLastVisitedAt(userId)
-		.then(userLastVisitedAt => isToday(userLastVisitedAt) ? userLastVisitedAt : Promise.reject())
+		.then((userLastVisitedAt) =>
+			isToday(userLastVisitedAt) ? userLastVisitedAt : Promise.reject()
+		)
 		.catch(() => startOfDay(now));
 };
 
@@ -33,12 +41,14 @@ const determineFeedStartTime = (userId, now, previousFeedStartTime) => {
  * @param {Date} now  Date representing the time now
  */
 export default (userId, now) => {
-	const previousFeedStartTime = (storage.isAvailable() && storage.getFeedStartTime());
-	return determineFeedStartTime(userId, now, previousFeedStartTime)
-		.then(startTime => {
+	const previousFeedStartTime =
+		storage.isAvailable() && storage.getFeedStartTime();
+	return determineFeedStartTime(userId, now, previousFeedStartTime).then(
+		(startTime) => {
 			if (storage.isAvailable()) {
 				storage.setFeedStartTime(startTime);
 			}
 			return startTime;
-		});
+		}
+	);
 };

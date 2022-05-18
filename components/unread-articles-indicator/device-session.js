@@ -1,9 +1,8 @@
-import {isAfter, addMinutes} from './date-fns';
+import { isAfter, addMinutes } from 'date-fns';
 import * as storage from './storage';
 const SESSION_THRESHOLD_MINUTES = 30;
 
 export default class DeviceSession {
-
 	constructor () {
 		this.expiry = storage.getDeviceSessionExpiry();
 		const newExpiry = addMinutes(new Date(), SESSION_THRESHOLD_MINUTES);
@@ -17,5 +16,4 @@ export default class DeviceSession {
 			return true;
 		}
 	}
-
 }

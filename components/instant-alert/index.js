@@ -1,4 +1,4 @@
-import * as nNotification from 'n-notification/main';
+import * as nNotification from '@financial-times/n-notification/main';
 import Delegate from 'ftdomdelegate';
 import myftClient from 'next-myft-client';
 import { $, $$ } from 'n-ui-foundations/main';
