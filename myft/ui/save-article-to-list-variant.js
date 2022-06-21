@@ -8,11 +8,7 @@ const csrfToken = getToken();
 let lists;
 
 export default async function showSaveArticleToListVariant (name, contentId) {
-	try {
-		await openSaveArticleToListVariant (name, contentId);
-	} catch(error) {
-		handleError(error);
-	}
+	await openSaveArticleToListVariant (name, contentId);
 }
 
 async function openSaveArticleToListVariant (name, contentId) {
@@ -90,26 +86,18 @@ async function openSaveArticleToListVariant (name, contentId) {
 	const realignListener = realignOverlay(window.scrollY);
 
 	function outsideClickHandler (e) {
-		try {
-			const overlayContent = document.querySelector('.o-overlay__content');
-			if(!overlayContent || !overlayContent.contains(e.target)) {
-				createListOverlay.close();
-			}
-		} catch(error) {
-			handleError(error);
+		const overlayContent = document.querySelector('.o-overlay__content');
+		if(!overlayContent || !overlayContent.contains(e.target)) {
+			createListOverlay.close();
 		}
 	}
 
 	function openFormHandler () {
-		try {
-			const formElement = FormElement(createList);
-			const overlayContent = document.querySelector('.o-overlay__content');
-			removeDescription();
-			overlayContent.insertAdjacentElement('beforeend', formElement);
-			formElement.elements[0].focus();
-		} catch(error) {
-			handleError(error);
-		}
+		const formElement = FormElement(createList);
+		const overlayContent = document.querySelector('.o-overlay__content');
+		removeDescription();
+		overlayContent.insertAdjacentElement('beforeend', formElement);
+		formElement.elements[0].focus();
 	}
 
 	createListOverlay.open();
@@ -157,16 +145,12 @@ function FormElement (createList) {
 	const formElement = stringToHTMLElement(formString);
 
 	function handleSubmit (event) {
-		try {
-			event.preventDefault();
-			event.stopPropagation();
-			const inputListName = formElement.querySelector('input[name="list-name"]');
-			createList(inputListName.value);
-			inputListName.value = '';
-			formElement.remove();
-		} catch(error) {
-			handleError(error);
-		}
+		event.preventDefault();
+		event.stopPropagation();
+		const inputListName = formElement.querySelector('input[name="list-name"]');
+		createList(inputListName.value);
+		inputListName.value = '';
+		formElement.remove();
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
@@ -258,30 +242,26 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 function realignOverlay (originalScrollPosition) {
 	return function (target, currentScrollPosition) {
-		try {
-			if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
-				return;
-			}
+		if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
+			return;
+		}
 
-			originalScrollPosition = currentScrollPosition;
+		originalScrollPosition = currentScrollPosition;
 
-			target.style['min-width'] = '340px';
-			target.style['width'] = '100%';
-			target.style['margin-top'] = '-50px';
-			target.style['left'] = 0;
+		target.style['min-width'] = '340px';
+		target.style['width'] = '100%';
+		target.style['margin-top'] = '-50px';
+		target.style['left'] = 0;
 
-			if (isMobile()) {
-				target.style['position'] = 'absolute';
-				target.style['margin-left'] = 0;
-				target.style['margin-top'] = 0;
-				target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
-			} else {
-				target.style['position'] = 'absolute';
-				target.style['margin-left'] = '45px';
-				target.style['top'] = '220px';
-			}
-		} catch (error) {
-			handleError(error);
+		if (isMobile()) {
+			target.style['position'] = 'absolute';
+			target.style['margin-left'] = 0;
+			target.style['margin-top'] = 0;
+			target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
+		} else {
+			target.style['position'] = 'absolute';
+			target.style['margin-left'] = '45px';
+			target.style['top'] = '220px';
 		}
 	};
 }
@@ -355,15 +335,5 @@ function triggerCreateListEvent (contentId) {
 			article_id: contentId
 		},
 		bubbles: true
-	}));
-}
-
-function handleError (error) {
-	document.body.dispatchEvent(new CustomEvent('oErrors.log', {
-		bubbles: true,
-		detail: {
-			error,
-			info: { component: 'professorLists' },
-		}
 	}));
 }
