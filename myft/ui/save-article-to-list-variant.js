@@ -7,11 +7,7 @@ const csrfToken = getToken();
 
 let lists;
 
-export default async function showSaveArticleToListVariant (name, contentId) {
-	await openSaveArticleToListVariant (name, contentId);
-}
-
-async function openSaveArticleToListVariant (name, contentId) {
+export default async function openSaveArticleToListVariant (name, contentId) {
 	function createList (list) {
 		if(!list) {
 			return;
