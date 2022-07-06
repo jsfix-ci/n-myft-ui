@@ -6,7 +6,6 @@ import nNotification from '@financial-times/n-notification';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
 import oForms from '@financial-times/o-forms';
-import openSaveArticleToListVariant from './save-article-to-list-variant';
 
 const delegate = new Delegate(document.body);
 const csrfToken = getToken();
@@ -162,10 +161,6 @@ function showArticleSavedOverlay (contentId) {
 	showListsOverlay('Article saved', `/myft/list?fragment=true&fromArticleSaved=true&contentId=${contentId}`, contentId);
 }
 
-function showCreateListAndAddArticleOverlay (contentId, name = 'myft-ui-create-list-variant') {
-	return openSaveArticleToListVariant(name, contentId);
-}
-
 function handleArticleSaved (contentId) {
 	return myFtClient.getAll('created', 'list')
 		.then(createdLists => createdLists.filter(list => !list.isRedirect))
@@ -176,26 +171,10 @@ function handleArticleSaved (contentId) {
 		});
 }
 
-function openCreateListAndAddArticleOverlay (contentId) {
-	return myFtClient.getAll('created', 'list')
-		.then(createdLists => createdLists.filter(list => !list.isRedirect))
-		.then(createdLists => {
-			return !createdLists.length ? showCreateListAndAddArticleOverlay(contentId) : showArticleSavedOverlay(contentId);
-		});
-}
-
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
 		const contentId = event.detail.subject;
-
-		// Checks if the createListAndSaveArticle variant is active
-		// and will show the variant overlay if the user has no lists,
-		// otherwise it will show the classic overlay
-		const createListVariant = event.currentTarget.querySelector('[data-myft-ui-variant="createListAndSaveArticleVariant"]');
-		if (createListVariant) {
-			return openCreateListAndAddArticleOverlay(contentId);
-		}
 
 		handleArticleSaved(contentId);
 	});
