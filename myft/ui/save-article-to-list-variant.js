@@ -5,7 +5,8 @@ import getToken from './lib/get-csrf-token';
 
 const csrfToken = getToken();
 
-let lists;
+let lists = [];
+let haveLoadedLists = false;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
 	function createList (list) {
@@ -63,8 +64,9 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		});
 	}
 
-	if (!lists) {
+	if (!haveLoadedLists) {
 		lists = await getLists(contentId);
+		haveLoadedLists = true;
 	}
 
 	const overlays = Overlay.getOverlays();
@@ -88,7 +90,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 	function outsideClickHandler (e) {
 		const overlayContent = document.querySelector('.o-overlay__content');
-		if(!overlayContent || !overlayContent.contains(e.target)) {
+		if(createListOverlay.visible && (!overlayContent || !overlayContent.contains(e.target))) {
 			createListOverlay.close();
 		}
 	}
@@ -121,7 +123,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
 		realignListener(data.currentTarget);
 
-		if (lists && lists.length) {
+		if (lists.length) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
@@ -274,7 +276,9 @@ function realignOverlay (originalScrollPosition) {
 			return;
 		}
 
-		originalScrollPosition = currentScrollPosition;
+		if (currentScrollPosition) {
+			originalScrollPosition = currentScrollPosition;
+		}
 
 		target.style['min-width'] = '340px';
 		target.style['width'] = '100%';
