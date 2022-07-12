@@ -86,8 +86,6 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		class: 'myft-ui-create-list-variant',
 	});
 
-	const realignListener = realignOverlay(window.scrollY);
-
 	function outsideClickHandler (e) {
 		const overlayContent = document.querySelector('.o-overlay__content');
 		if(createListOverlay.visible && (!overlayContent || !overlayContent.contains(e.target))) {
@@ -103,25 +101,20 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		formElement.elements[0].focus();
 	}
 
-	function scrollHandler () {
-		realignListener(createListOverlay.wrapper, window.scrollY);
+	function getScrollHandler (target) {
+		return realignOverlay(window.scrollY, target);
 	}
 
 	function resizeHandler () {
-		realignListener(createListOverlay.wrapper);
-	}
-
-	function scrollHandler () {
-		realignListener(createListOverlay.wrapper, window.scrollY);
-	}
-
-	function resizeHandler () {
-		realignListener(createListOverlay.wrapper);
+		positionOverlay(createListOverlay.wrapper);
 	}
 
 	createListOverlay.open();
+
+	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
+
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
-		realignListener(data.currentTarget);
+		positionOverlay(data.currentTarget);
 
 		if (lists.length) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
@@ -270,32 +263,39 @@ function ListCheckboxElement (addToList, removeFromList) {
 	};
 }
 
-function realignOverlay (originalScrollPosition) {
-	return function (target, currentScrollPosition) {
-		if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
+function realignOverlay (originalScrollPosition, target) {
+	return function () {
+		const currentScrollPosition = window.scrollY;
+
+		if(Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
 			return;
 		}
 
 		if (currentScrollPosition) {
-			originalScrollPosition = currentScrollPosition;
+			originalScrollPosition = currentScrollPosition;;
 		}
 
-		target.style['min-width'] = '340px';
-		target.style['width'] = '100%';
-		target.style['margin-top'] = '-50px';
-		target.style['left'] = 0;
-
-		if (isMobile()) {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = 0;
-			target.style['margin-top'] = 0;
-			target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
-		} else {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = '45px';
-			target.style['top'] = '220px';
-		}
+		positionOverlay(target);
 	};
+}
+
+function positionOverlay (target) {
+	target.style['min-width'] = '340px';
+	target.style['width'] = '100%';
+	target.style['margin-top'] = '-50px';
+	target.style['left'] = 0;
+
+	if (isMobile()) {
+		const shareNavComponent = document.querySelector('.share-nav__horizontal');
+		target.style['position'] = 'absolute';
+		target.style['margin-left'] = 0;
+		target.style['margin-top'] = 0;
+		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? '-120px' : '50px';
+	} else {
+		target.style['position'] = 'absolute';
+		target.style['margin-left'] = '45px';
+		target.style['top'] = '220px';
+	}
 }
 
 function isMobile () {
@@ -305,6 +305,10 @@ function isMobile () {
 }
 
 function calculateLargerScreenHalf (target) {
+	if (!target) {
+		return 'BELOW';
+	}
+
 	const vh = Math.min(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
 	const targetBox = target.getBoundingClientRect();
