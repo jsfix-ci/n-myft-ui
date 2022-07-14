@@ -5,12 +5,14 @@ import getToken from './lib/get-csrf-token';
 
 const csrfToken = getToken();
 
-let lists;
+let lists = [];
+let haveLoadedLists = false;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
 	function createList (list) {
 		if(!list) {
-			return;
+			if (!lists.length) attachDescription();
+			return contentElement.addEventListener('click', openFormHandler, { once: true });
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
@@ -25,6 +27,10 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					triggerCreateListEvent(contentId);
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 				});
+			})
+			.catch(() => {
+				if (!lists.length) attachDescription();
+				return contentElement.addEventListener('click', openFormHandler, { once: true });
 			});
 	}
 
@@ -58,8 +64,9 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		});
 	}
 
-	if (!lists) {
+	if (!haveLoadedLists) {
 		lists = await getLists(contentId);
+		haveLoadedLists = true;
 	}
 
 	const overlays = Overlay.getOverlays();
@@ -69,7 +76,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	}
 
 	const headingElement = HeadingElement();
-	let [contentElement, removeDescription] = ContentElement(!lists.length);
+	let [contentElement, removeDescription, attachDescription] = ContentElement(!lists.length);
 
 	const createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -79,11 +86,9 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		class: 'myft-ui-create-list-variant',
 	});
 
-	const realignListener = realignOverlay(window.scrollY);
-
 	function outsideClickHandler (e) {
 		const overlayContent = document.querySelector('.o-overlay__content');
-		if(!overlayContent || !overlayContent.contains(e.target)) {
+		if(createListOverlay.visible && (!overlayContent || !overlayContent.contains(e.target))) {
 			createListOverlay.close();
 		}
 	}
@@ -96,11 +101,22 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		formElement.elements[0].focus();
 	}
 
-	createListOverlay.open();
-	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
-		realignListener(data.currentTarget);
+	function getScrollHandler (target) {
+		return realignOverlay(window.scrollY, target);
+	}
 
-		if (lists && lists.length) {
+	function resizeHandler () {
+		positionOverlay(createListOverlay.wrapper);
+	}
+
+	createListOverlay.open();
+
+	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
+
+	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
+		positionOverlay(data.currentTarget);
+
+		if (lists.length) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
@@ -109,12 +125,16 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		contentElement.addEventListener('click', openFormHandler, { once: true });
 
 		document.querySelector('.article-content').addEventListener('click', outsideClickHandler, { once: true });
+
+		window.addEventListener('scroll', scrollHandler);
+
+		window.addEventListener('oViewport.resize', resizeHandler);
 	});
 
-	window.addEventListener('scroll', realignListener(createListOverlay.wrapper, window.scrollY));
+	createListOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
+		window.removeEventListener('scroll', scrollHandler);
 
-	window.addEventListener('oViewport.resize', () => {
-		realignListener(createListOverlay.wrapper);
+		window.removeEventListener('oViewport.resize', resizeHandler);
 	});
 }
 
@@ -154,12 +174,14 @@ function FormElement (createList) {
 	return formElement;
 }
 
-function ContentElement (description) {
+function ContentElement (hasDescription) {
+	const description = '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>';
+
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
 			<button class="myft-ui-create-list-variant-add">Add to a new list</button>
-			${description ? `
-			<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>
+			${hasDescription ? `
+			${description}
 		` : ''}
 		</div>
 	`;
@@ -173,7 +195,12 @@ function ContentElement (description) {
 		}
 	}
 
-	return [contentElement, removeDescription];
+	function attachDescription () {
+		const descriptionElement = stringToHTMLElement(description);
+		contentElement.insertAdjacentElement('beforeend', descriptionElement);
+	}
+
+	return [contentElement, removeDescription, attachDescription];
 }
 
 function HeadingElement () {
@@ -236,30 +263,39 @@ function ListCheckboxElement (addToList, removeFromList) {
 	};
 }
 
-function realignOverlay (originalScrollPosition) {
-	return function (target, currentScrollPosition) {
-		if(currentScrollPosition && Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
+function realignOverlay (originalScrollPosition, target) {
+	return function () {
+		const currentScrollPosition = window.scrollY;
+
+		if(Math.abs(currentScrollPosition - originalScrollPosition) < 120) {
 			return;
 		}
 
-		originalScrollPosition = currentScrollPosition;
-
-		target.style['min-width'] = '340px';
-		target.style['width'] = '100%';
-		target.style['margin-top'] = '-50px';
-		target.style['left'] = 0;
-
-		if (isMobile()) {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = 0;
-			target.style['margin-top'] = 0;
-			target.style['top'] = calculateLargerScreenHalf(target) === 'ABOVE' ? '-120px' : '50px';
-		} else {
-			target.style['position'] = 'absolute';
-			target.style['margin-left'] = '45px';
-			target.style['top'] = '220px';
+		if (currentScrollPosition) {
+			originalScrollPosition = currentScrollPosition;;
 		}
+
+		positionOverlay(target);
 	};
+}
+
+function positionOverlay (target) {
+	target.style['min-width'] = '340px';
+	target.style['width'] = '100%';
+	target.style['margin-top'] = '-50px';
+	target.style['left'] = 0;
+
+	if (isMobile()) {
+		const shareNavComponent = document.querySelector('.share-nav__horizontal');
+		target.style['position'] = 'absolute';
+		target.style['margin-left'] = 0;
+		target.style['margin-top'] = 0;
+		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? '-120px' : '50px';
+	} else {
+		target.style['position'] = 'absolute';
+		target.style['margin-left'] = '45px';
+		target.style['top'] = '220px';
+	}
 }
 
 function isMobile () {
@@ -269,6 +305,10 @@ function isMobile () {
 }
 
 function calculateLargerScreenHalf (target) {
+	if (!target) {
+		return 'BELOW';
+	}
+
 	const vh = Math.min(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
 	const targetBox = target.getBoundingClientRect();
