@@ -179,8 +179,8 @@ function handleArticleSaved (contentId) {
 function openCreateListAndAddArticleOverlay (contentId) {
 	return myFtClient.getAll('created', 'list')
 		.then(createdLists => createdLists.filter(list => !list.isRedirect))
-		.then(createdLists => {
-			return !createdLists.length ? showCreateListAndAddArticleOverlay(contentId) : showArticleSavedOverlay(contentId);
+		.then(() => {
+			return showCreateListAndAddArticleOverlay(contentId);
 		});
 }
 
@@ -192,8 +192,8 @@ function initialEventListeners () {
 		// Checks if the createListAndSaveArticle variant is active
 		// and will show the variant overlay if the user has no lists,
 		// otherwise it will show the classic overlay
-		const createListVariant = event.currentTarget.querySelector('[data-myft-ui-variant="createListAndSaveArticleVariant"]');
-		if (createListVariant) {
+		const createNewListDesign = event.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
+		if (createNewListDesign) {
 			return openCreateListAndAddArticleOverlay(contentId);
 		}
 
