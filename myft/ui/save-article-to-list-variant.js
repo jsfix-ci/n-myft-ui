@@ -179,7 +179,7 @@ function ContentElement (hasDescription) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-a-new-list">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
