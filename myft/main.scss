@@ -314,6 +314,11 @@ $spacing-unit: 20px;
 			}
 			&-container {
 				margin-top: 0;
+				height: 92px;
+				overflow-y: auto;
+				@include oGridRespondTo($from: M) {
+					height: 126px;
+				}
 			}
 		}
 	}
