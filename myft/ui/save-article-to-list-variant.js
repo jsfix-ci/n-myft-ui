@@ -7,9 +7,10 @@ const csrfToken = getToken();
 
 let lists = [];
 let haveLoadedLists = false;
+let createListOverlay;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
-	function createList (list) {
+	function createList (list, callback) {
 		if(!list) {
 			if (!lists.length) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
@@ -24,8 +25,8 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
-					triggerCreateListEvent(contentId);
 					contentElement.addEventListener('click', openFormHandler, { once: true });
+					callback(createdList.actorId);
 				});
 			})
 			.catch(() => {
@@ -70,7 +71,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	const headingElement = HeadingElement();
 	let [contentElement, removeDescription, attachDescription] = ContentElement(!lists.length);
 
-	const createListOverlay = new Overlay(name, {
+	createListOverlay = new Overlay(name, {
 		html: contentElement,
 		heading: { title: headingElement.outerHTML },
 		modal: false,
@@ -106,13 +107,13 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
 
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
-		positionOverlay(data.currentTarget);
-
 		if (lists.length) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
+
+		positionOverlay(data.currentTarget);
 
 		contentElement.addEventListener('click', openFormHandler, { once: true });
 
@@ -156,7 +157,10 @@ function FormElement (createList) {
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value);
+		createList(inputListName.value, (contentId => {
+			triggerCreateListEvent(contentId);
+			positionOverlay(createListOverlay.wrapper);
+		}));
 		inputListName.value = '';
 		formElement.remove();
 	}
@@ -288,10 +292,11 @@ function positionOverlay (target) {
 
 	if (isMobile()) {
 		const shareNavComponent = document.querySelector('.share-nav__horizontal');
+		const topHalfOffset = target.clientHeight + 10;
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = 0;
 		target.style['margin-top'] = 0;
-		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? '-120px' : '50px';
+		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? `-${topHalfOffset}px` : '50px';
 	} else {
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = '45px';
