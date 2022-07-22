@@ -3,14 +3,12 @@ import myFtClient from 'next-myft-client';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
 
-
 const csrfToken = getToken();
 
 let lists = [];
 let haveLoadedLists = false;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
-
 	function createList (list) {
 		if(!list) {
 			if (!lists.length) attachDescription();
@@ -44,7 +42,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
 			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: true };
-			const listElement = ListsElement(lists, addToList, removeFromList);
+			const listElement = ListsElement(lists, contentId, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 			triggerAddToListEvent(contentId);
@@ -58,8 +56,8 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
-			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false };
-			const listElement = ListsElement(lists, addToList, removeFromList);
+			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false, content: [] };
+			const listElement = ListsElement(lists, contentId, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 			triggerRemoveFromListEvent(contentId);
@@ -239,11 +237,14 @@ function ListsElement (lists, contentId, addToList, removeFromList) {
 
 function ListCheckboxElement (contentId, addToList, removeFromList) {
 	return function (list) {
-		list.content.forEach((item) => {
-			if (!list.checked && item.uuid === contentId) {
-				list.checked === true;
-			}
-		});
+		if (list.content) {
+			list.content.map(item => {
+				if (item.uuid === contentId) {
+					list.checked = true;
+				}
+			});
+		}
+
 		const listCheckbox = `<label>
 		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
 		<span class="o-forms-input__label">
@@ -251,7 +252,6 @@ function ListCheckboxElement (contentId, addToList, removeFromList) {
 			${list.checked ? 'Remove article from ' : 'Add article to ' }
 			</span>
 			${list.name}
-			${list.rel}
 		</span>
 	</label>
 	`;
@@ -328,9 +328,8 @@ function calculateLargerScreenHalf (target) {
 
 async function getLists () {
 	return myFtClient.getListsContent()
-		.then(lists => lists.filter(list => !list.isRedirect))
-		.then(lists => {
-			return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false, content:list.content }));
+		.then(results => {
+			return results.items.map(list => ({ name: list.name, uuid: list.uuid, checked: false, content: list.content }));
 		});
 }
 
