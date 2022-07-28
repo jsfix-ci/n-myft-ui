@@ -18,7 +18,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.push({ name: list, uuid: createdList.actorId, checked: true });
+					lists.unshift({ name: list, uuid: createdList.actorId, checked: true });
 					const listElement = ListsElement(lists, contentId, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
