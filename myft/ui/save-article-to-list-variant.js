@@ -19,7 +19,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
 					lists.unshift({ name: list, uuid: createdList.actorId, checked: true });
-					const listElement = ListsElement(lists, contentId, addToList, removeFromList);
+					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
@@ -42,7 +42,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
 			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: true };
-			const listElement = ListsElement(lists, contentId, addToList, removeFromList);
+			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 			triggerAddToListEvent(contentId);
@@ -57,7 +57,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
 			const indexToUpdate = lists.indexOf(list);
 			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false, content: [] };
-			const listElement = ListsElement(lists, contentId, addToList, removeFromList);
+			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 			triggerRemoveFromListEvent(contentId);
@@ -65,7 +65,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	}
 
 	if (!haveLoadedLists) {
-		lists = await getLists();
+		lists = await getLists(contentId);
 		haveLoadedLists = true;
 	}
 
@@ -117,7 +117,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		positionOverlay(data.currentTarget);
 
 		if (lists.length) {
-			const listElement = ListsElement(lists, contentId, addToList, removeFromList);
+			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
@@ -211,13 +211,13 @@ function HeadingElement () {
 	return stringToHTMLElement(heading);
 }
 
-function ListsElement (lists, contentId, addToList, removeFromList) {
+function ListsElement (lists, addToList, removeFromList) {
 	const currentList = document.querySelector('.myft-ui-create-list-variant-lists');
 	if (currentList) {
 		currentList.remove();
 	}
 
-	const listCheckboxElement = ListCheckboxElement(contentId, addToList, removeFromList);
+	const listCheckboxElement = ListCheckboxElement(addToList, removeFromList);
 
 	const listsTemplate = `
 	<div class="myft-ui-create-list-variant-lists o-forms-field o-forms-field--optional" role="group">
@@ -235,15 +235,8 @@ function ListsElement (lists, contentId, addToList, removeFromList) {
 	return listsElement;
 }
 
-function ListCheckboxElement (contentId, addToList, removeFromList) {
+function ListCheckboxElement (addToList, removeFromList) {
 	return function (list) {
-		if (list.content) {
-			list.content.map(item => {
-				if (item.uuid === contentId) {
-					list.checked = true;
-				}
-			});
-		}
 
 		const listCheckbox = `<label>
 		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
@@ -326,11 +319,12 @@ function calculateLargerScreenHalf (target) {
 	return spaceBelow < spaceAbove ? 'ABOVE' : 'BELOW';
 }
 
-async function getLists () {
+async function getLists (contentId) {
 	return myFtClient.getListsContent()
-		.then(results => {
-			return results.items.map(list => ({ name: list.name, uuid: list.uuid, checked: false, content: list.content }));
-		});
+		.then(results => results.items.map(list => {
+			const isChecked = !!list.content && list.content.length && list.content.some(content => content.uuid === contentId);
+			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content };
+		}));
 }
 
 function triggerAddToListEvent (contentId) {
