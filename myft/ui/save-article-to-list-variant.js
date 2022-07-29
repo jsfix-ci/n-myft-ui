@@ -34,32 +34,24 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			});
 	}
 
-	function addToList (list) {
+	function addToList (list, cb) {
 		if(!list) {
 			return;
 		}
 
 		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
-			const indexToUpdate = lists.indexOf(list);
-			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: true };
-			const listElement = ListsElement(lists, addToList, removeFromList);
-			const overlayContent = document.querySelector('.o-overlay__content');
-			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			cb();
 			triggerAddToListEvent(contentId);
 		});
 	}
 
-	function removeFromList (list) {
+	function removeFromList (list, cb) {
 		if(!list) {
 			return;
 		}
 
 		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
-			const indexToUpdate = lists.indexOf(list);
-			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false, content: [] };
-			const listElement = ListsElement(lists, addToList, removeFromList);
-			const overlayContent = document.querySelector('.o-overlay__content');
-			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			cb();
 			triggerRemoveFromListEvent(contentId);
 		});
 	}
@@ -239,7 +231,7 @@ function ListCheckboxElement (addToList, removeFromList) {
 	return function (list) {
 
 		const listCheckbox = `<label>
-		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
+		<input type="checkbox" name="default" value="${list.uuid}" ${list.checked ? 'checked' : ''}>
 		<span class="o-forms-input__label">
 			<span class="o-normalise-visually-hidden">
 			${list.checked ? 'Remove article from ' : 'Add article to ' }
@@ -255,7 +247,15 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 		function handleCheck (event) {
 			event.preventDefault();
-			return event.target.checked ? addToList(list) : removeFromList(list);
+			const isChecked = event.target.checked;
+
+			function onListUpdated () {
+				const indexToUpdate = lists.indexOf(list);
+				lists[indexToUpdate] = { ...lists[indexToUpdate], checked: isChecked };
+				listCheckboxElement.querySelector('input').checked = isChecked;
+			}
+
+			return isChecked ? addToList(list, onListUpdated) : removeFromList(list, onListUpdated);
 		}
 
 		input.addEventListener('click', handleCheck);
