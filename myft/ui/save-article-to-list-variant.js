@@ -117,7 +117,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 		contentElement.addEventListener('click', openFormHandler, { once: true });
 
-		document.querySelector('.article-content').addEventListener('click', outsideClickHandler, { once: true });
+		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
 
 		window.addEventListener('scroll', scrollHandler);
 
@@ -128,6 +128,8 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		window.removeEventListener('scroll', scrollHandler);
 
 		window.removeEventListener('oViewport.resize', resizeHandler);
+
+		document.querySelector('.article-content').removeEventListener('click', outsideClickHandler);
 	});
 }
 
