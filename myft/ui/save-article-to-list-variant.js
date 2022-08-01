@@ -10,7 +10,7 @@ let haveLoadedLists = false;
 let createListOverlay;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
-	function createList (list, callback) {
+	function createList (list, cb) {
 		if(!list) {
 			if (!lists.length) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
@@ -26,7 +26,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					contentElement.addEventListener('click', openFormHandler, { once: true });
-					callback(createdList.actorId);
+					cb(createdList.actorId);
 				});
 			})
 			.catch(() => {
