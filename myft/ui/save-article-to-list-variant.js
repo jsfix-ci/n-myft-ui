@@ -322,7 +322,7 @@ function calculateLargerScreenHalf (target) {
 async function getLists (contentId) {
 	return myFtClient.getListsContent()
 		.then(results => results.items.map(list => {
-			const isChecked = !!list.content && list.content.length && list.content.some(content => content.uuid === contentId);
+			const isChecked = Array.isArray(list.content) && list.content.some(content => content.uuid === contentId);
 			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content };
 		}));
 }
