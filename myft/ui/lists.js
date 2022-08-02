@@ -5,6 +5,7 @@ import * as myFtUiButtonStates from './lib/button-states';
 import nNotification from '@financial-times/n-notification';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
+import isMobile from './lib/is-mobile';
 import oForms from '@financial-times/o-forms';
 import openSaveArticleToListVariant from './save-article-to-list-variant';
 import notification from './notification';
@@ -202,7 +203,15 @@ function initialEventListeners () {
 	});
 
 	document.body.addEventListener('myft.user.saved.content.remove', () => {
-		notification.show();
+
+		const content = `
+			<p>Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
+		`;
+
+		notification.show({
+			parentSelector: isMobile() ? '.o-share--horizontal' : '.o-share--vertical',
+			content
+		});
 	});
 
 	delegate.on('click', '[data-myft-ui="copy-to-list"]', event => {

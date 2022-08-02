@@ -10,7 +10,7 @@ module.exports = function (karma) {
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
+		frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai', 'viewport'],
 
 		// list of files / patterns to load in the browser
 		files: [
@@ -110,7 +110,8 @@ module.exports = function (karma) {
 			require('karma-webpack'),
 			require('karma-chrome-launcher'),
 			require('karma-browserstack-launcher'),
-			require('karma-html-reporter')
+			require('karma-html-reporter'),
+			require('karma-viewport')
 		],
 		client: {
 			mocha: {

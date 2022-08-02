@@ -1,3 +1,5 @@
+import stringToHTMLElement from './lib/convert-string-to-html-element';
+
 let isShowing = false;
 let container;
 let timeout;
@@ -22,37 +24,20 @@ function focusTrap (event) {
 	}
 }
 
-function isMobile () {
-	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-	return vw <= 980;
-}
-
-function stringToHTMLElement (string) {
-	const template = document.createElement('template');
-	template.innerHTML = string.trim();
-	return template.content.firstChild;
-}
-
-const messageTemplate = `
-	<p>Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
-`;
-
 function show (options) {
-	if (isShowing) {
+	if (isShowing || !options.content || !options.parentSelector) {
 		return;
 	}
 
 	options = Object.assign({}, defaults, options);
 
-	const messageNode = stringToHTMLElement(messageTemplate);
+	const contentNode = stringToHTMLElement(options.content);
 
 	container = document.createElement('div');
 	container.className = 'myft-notification';
-	container.appendChild(messageNode);
+	container.appendChild(contentNode);
 
-	const parentNodeClass = isMobile() ? '.o-share--horizontal' : '.o-share--vertical';
-	const parentNode = document.querySelector(parentNodeClass);
+	const parentNode = document.querySelector(options.parentSelector);
 
 	if (parentNode) {
 		parentNode.appendChild(container);
@@ -70,10 +55,10 @@ function show (options) {
 function hide () {
 	clearTimeout(timeout);
 	isShowing = false;
+	document.removeEventListener('keydown', focusTrap);
 
-	if (container) {
+	if (container && container.parentNode) {
 		container.parentNode.removeChild(container);
-		document.removeEventListener('keydown', focusTrap);
 	}
 }
 
