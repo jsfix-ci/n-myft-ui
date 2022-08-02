@@ -7,6 +7,7 @@ import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
 import oForms from '@financial-times/o-forms';
 import openSaveArticleToListVariant from './save-article-to-list-variant';
+import notification from './notification';
 
 const delegate = new Delegate(document.body);
 const csrfToken = getToken();
@@ -187,6 +188,7 @@ function openCreateListAndAddArticleOverlay (contentId) {
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
+		notification.destroy();
 		const contentId = event.detail.subject;
 
 		// Checks if the createListAndSaveArticle variant is active
@@ -198,6 +200,10 @@ function initialEventListeners () {
 		}
 
 		handleArticleSaved(contentId);
+	});
+
+	document.body.addEventListener('myft.user.saved.content.remove', () => {
+		notification.init();
 	});
 
 	delegate.on('click', '[data-myft-ui="copy-to-list"]', event => {
