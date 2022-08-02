@@ -188,7 +188,6 @@ function openCreateListAndAddArticleOverlay (contentId) {
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
-		notification.destroy();
 		const contentId = event.detail.subject;
 
 		// Checks if the createListAndSaveArticle variant is active
@@ -203,7 +202,7 @@ function initialEventListeners () {
 	});
 
 	document.body.addEventListener('myft.user.saved.content.remove', () => {
-		notification.init();
+		notification.show();
 	});
 
 	delegate.on('click', '[data-myft-ui="copy-to-list"]', event => {
