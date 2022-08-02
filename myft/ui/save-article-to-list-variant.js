@@ -366,14 +366,4 @@ function triggerCreateListEvent (contentId, listId) {
 		},
 		bubbles: true
 	}));
-
-	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
-		detail: {
-			category: 'myFT',
-			action: 'create-list-success',
-			article_id: contentId,
-			list_id: listId,
-		},
-		bubbles: true
-	}));
 }
