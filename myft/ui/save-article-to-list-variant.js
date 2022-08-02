@@ -329,8 +329,8 @@ async function getLists () {
 function triggerAddToListEvent (contentId, listId) {
 	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'add-to-list',
+			category: 'list',
+			action: 'add-success',
 			article_id: contentId,
 			list_id: listId,
 			teamName: 'customer-products-us-growth',
@@ -343,8 +343,8 @@ function triggerAddToListEvent (contentId, listId) {
 function triggerRemoveFromListEvent (contentId, listId) {
 	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'remove-from-list',
+			category: 'list',
+			action: 'remove-success',
 			article_id: contentId,
 			list_id: listId,
 			teamName: 'customer-products-us-growth',
@@ -357,8 +357,8 @@ function triggerRemoveFromListEvent (contentId, listId) {
 function triggerCreateListEvent (contentId, listId) {
 	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'create-list',
+			category: 'list',
+			action: 'create-success',
 			article_id: contentId,
 			list_id: listId,
 			teamName: 'customer-products-us-growth',
