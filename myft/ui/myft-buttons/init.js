@@ -65,6 +65,14 @@ function signedInEventListeners () {
 						const resultData = event.detail.results && event.detail.results[0];
 						const isPressed = !!event.detail.results;
 						buttonStates.setStateOfButton(relationshipName, event.detail.subject, isPressed, undefined, resultData, true);
+
+						// don't send tracking events for list actions, as any
+						// list-related code will send its own `list` category
+						// tracking events
+						if (actorType === 'list') {
+							return;
+						}
+
 						tracking.custom({
 							subjectType,
 							action,
