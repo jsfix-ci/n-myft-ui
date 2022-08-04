@@ -25,6 +25,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					triggerCreateListEvent(contentId, createdList.actorId);
+					triggerAddToListEvent(contentId, createdList.actorId);
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 				});
 			})
