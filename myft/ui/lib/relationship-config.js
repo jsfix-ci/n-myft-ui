@@ -11,12 +11,6 @@ const relationshipConfig = {
 		subjectType: 'concept',
 		uiSelector: '[data-myft-ui="follow"]'
 	},
-	contained: {
-		actorType: 'list',
-		idProperty: 'data-content-id',
-		subjectType: 'content',
-		uiSelector: '[data-myft-ui="contained"]'
-	}
 };
 
 export default relationshipConfig;

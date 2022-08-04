@@ -184,6 +184,51 @@ function openCreateListAndAddArticleOverlay (contentId) {
 		});
 }
 
+function handleRemoveToggleSubmit (event) {
+	event.preventDefault();
+
+	const formEl = event.target;
+	const submitBtnEl = formEl.querySelector('button[type="submit"]');
+
+	if (submitBtnEl.hasAttribute('disabled')) {
+		return;
+	}
+
+	const isSubmitBtnPressed = submitBtnEl.getAttribute('aria-pressed') === 'true';
+	const action = isSubmitBtnPressed ? 'remove' : 'add';
+	const contentId = formEl.dataset.contentId;
+	const listId = formEl.dataset.actorId;
+	const csrfToken = formEl.elements.token;
+
+	if (!csrfToken || !csrfToken.value) {
+		document.body.dispatchEvent(new CustomEvent('oErrors.log', {
+			bubbles: true,
+			detail: {
+				error: new Error('myFT form submitted without a CSRF token'),
+				info: {
+					action,
+					actorType: 'list',
+					actorId: listId,
+					relationshipName: 'contained',
+					subjectType: 'content',
+					subjectId: contentId,
+				},
+			},
+		}));
+	}
+
+	submitBtnEl.setAttribute('disabled', '');
+
+	myFtClient[action]('list', listId, 'contained', 'content', contentId, { token: csrfToken.value })
+		.then(() => {
+			myFtUiButtonStates.toggleButton(submitBtnEl, !isSubmitBtnPressed);
+		})
+		.catch(error => {
+			setTimeout(() => submitBtnEl.removeAttribute('disabled'));
+			throw error;
+		});
+}
+
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
@@ -208,6 +253,8 @@ function initialEventListeners () {
 		ev.preventDefault();
 		showCreateListOverlay();
 	});
+
+	delegate.on('submit', '[data-myft-ui="contained"]', handleRemoveToggleSubmit);
 }
 
 export function init () {
