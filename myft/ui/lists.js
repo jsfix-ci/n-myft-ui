@@ -8,7 +8,7 @@ import getToken from './lib/get-csrf-token';
 import isMobile from './lib/is-mobile';
 import oForms from '@financial-times/o-forms';
 import openSaveArticleToListVariant from './save-article-to-list-variant';
-import notification from './notification';
+import stringToHTMLElement from './lib/convert-string-to-html-element';
 
 const delegate = new Delegate(document.body);
 const csrfToken = getToken();
@@ -202,17 +202,7 @@ function initialEventListeners () {
 		handleArticleSaved(contentId);
 	});
 
-	document.body.addEventListener('myft.user.saved.content.remove', () => {
-
-		const content = `
-			<p>Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
-		`;
-
-		notification.show({
-			parentSelector: isMobile() ? '.o-share--horizontal' : '.o-share--vertical',
-			content
-		});
-	});
+	document.body.addEventListener('myft.user.saved.content.remove', showUnsavedNotification);
 
 	delegate.on('click', '[data-myft-ui="copy-to-list"]', event => {
 		event.preventDefault();
@@ -222,6 +212,34 @@ function initialEventListeners () {
 		ev.preventDefault();
 		showCreateListOverlay();
 	});
+}
+
+function showUnsavedNotification () {
+	const parentSelector = isMobile() ? '.o-share--horizontal' : '.o-share--vertical';
+	const parentNode = document.querySelector(parentSelector);
+
+	// We're not supporting multiple notifications for now
+	// If a notification is present, we'll silently avoid showing another
+	if (document.querySelector('.myft-notification') || !parentNode) {
+		return;
+	}
+
+	const content = `
+		<p role="alert">Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
+	`;
+
+	const contentNode = stringToHTMLElement(content);
+
+	const container = document.createElement('div');
+	container.className = 'myft-notification';
+	container.appendChild(contentNode);
+
+	parentNode.appendChild(container);
+
+	setTimeout(
+		() => parentNode.removeChild(container),
+		5 * 1000
+	);
 }
 
 export function init () {
