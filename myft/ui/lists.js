@@ -222,6 +222,18 @@ function handleRemoveToggleSubmit (event) {
 	myFtClient[action]('list', listId, 'contained', 'content', contentId, { token: csrfToken.value })
 		.then(() => {
 			myFtUiButtonStates.toggleButton(submitBtnEl, !isSubmitBtnPressed);
+
+			document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+				detail: {
+					category: 'list',
+					action: action === 'add' ? 'add-success' : 'remove-success',
+					article_id: contentId,
+					list_id: listId,
+					teamName: 'customer-products-us-growth',
+					amplitudeExploratory: true
+				},
+				bubbles: true
+			}));
 		})
 		.catch(error => {
 			setTimeout(() => submitBtnEl.removeAttribute('disabled'));
