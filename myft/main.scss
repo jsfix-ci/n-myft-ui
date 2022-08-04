@@ -323,4 +323,47 @@ $spacing-unit: 20px;
 			}
 		}
 	}
+	.share-nav__vertical {
+		.myft-notification {
+			background: oColorsByName('white-80');
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: 175px;
+			width: 340px;
+			height: 44px;
+			left: 50px;
+			font-size: 16px;
+			border-radius: 5px;
+			
+			p {
+				margin: auto;
+			}
+		}
+	}
+
+	.share-nav__horizontal {
+		.myft-notification {
+			background: oColorsByName('white-80');
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: -52px;
+			width: 340px;
+			height: 44px;
+			font-size: 16px;
+			border-radius: 5px;
+			z-index: 10;
+
+			p {
+				margin: auto;
+			}
+		}
+	}
+	
 }
+

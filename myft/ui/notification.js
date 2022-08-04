@@ -35,7 +35,7 @@ function stringToHTMLElement (string) {
 }
 
 const messageTemplate = `
-	<p>Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
+	<p>Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT</p>
 `;
 
 function show (options) {
