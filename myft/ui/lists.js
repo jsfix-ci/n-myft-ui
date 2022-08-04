@@ -51,6 +51,18 @@ function updateAfterAddToList (listId, contentId, wasAdded) {
 				content: message,
 				trackable: 'myft-feedback-notification'
 			});
+
+			document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+				detail: {
+					category: 'list',
+					action: 'copy-success',
+					article_id: contentId,
+					list_id: listId,
+					teamName: 'customer-products-us-growth',
+					amplitudeExploratory: true
+				},
+				bubbles: true
+			}));
 		});
 }
 
