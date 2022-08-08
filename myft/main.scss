@@ -289,18 +289,32 @@ $spacing-unit: 20px;
 
 		&-form {
 			display: flex;
+			flex-direction: column;
 			width: calc(100% - 32px);
-			justify-content: space-between;
-			height: 40px;
-			gap: 8px;
-			padding: 0 16px 16px;
+			gap: 16px;
+			padding: 0 16px 12px;
 
 			& > * {
 				flex: 1 1 auto;
+				margin-bottom: 0;
 			}
 
 			.o-forms-input {
 				margin-top: 0;
+			}
+
+			&-toggle {
+				position: absolute;
+			}
+
+			&-toggle-label::after {
+				background-color: oColorsByName('white');
+			}
+
+			&-buttons {
+				display: flex;
+				justify-content: flex-end;
+				@include oTypographySans($scale: 2);
 			}
 		}
 

@@ -12,21 +12,21 @@ let haveLoadedLists = false;
 let createListOverlay;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
-	function createList (list, cb) {
-		if(!list) {
-			if (!lists.length) attachDescription();
+	function createList (newList, cb) {
+		if(!newList || !newList.name) {
+			if (!newList && !newList.name) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
 		}
 
-		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
+		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.unshift({ name: list, uuid: createdList.actorId, checked: true });
+					lists.unshift({ name: newList.name, uuid: createdList.actorId, checked: true, isShareable: !!newList.isShareable });
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
-					announceListContainer.textContent = `${list} created`;
+					announceListContainer.textContent = `${newList.name} created`;
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 					cb(contentId, createdList.actorId);
 				});
@@ -144,12 +144,31 @@ function FormElement (createList) {
 	<form class="myft-ui-create-list-variant-form">
 		<label class="o-forms-field">
 			<span class="o-forms-input o-forms-input--text">
-				<input type="text" name="list-name" aria-label="List name">
+				<input class="myft-ui-create-list-variant-text" type="text" name="list-name" aria-label="List name">
 			</span>
 		</label>
-		<button class="o-buttons o-buttons--secondary" type="submit">
-			Save
-		</button>
+
+		<div class="o-forms-field" role="group">
+			<span class="o-forms-input o-forms-input--toggle">
+				<label>
+					<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
+					<span class="o-forms-input__label myft-ui-create-list-variant-form-toggle-label">
+						<span class="o-forms-input__label__main">
+							Public
+						</span>
+						<span id="toggle-group-option-1-description" class="o-forms-input__label__prompt">
+							Your list & profession will be visible to others
+						</span>
+					</span>
+				</label>
+			</span>
+		</div>
+
+		<div class="myft-ui-create-list-variant-form-buttons">
+			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
+			Add
+			</button>
+		</div>
 	</form>
 	`;
 
@@ -159,12 +178,20 @@ function FormElement (createList) {
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value, ((contentId, listId) => {
+		const inputIsShareable = formElement.querySelector('input[name="is-shareable"]');
+
+		const newList = {
+			name: inputListName.value,
+			isShareable: inputIsShareable.checked
+		};
+
+		createList(newList, ((contentId, listId) => {
 			triggerCreateListEvent(contentId, listId);
 			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
 		}));
 		inputListName.value = '';
+		inputIsShareable.value = true;
 		formElement.remove();
 	}
 
@@ -325,7 +352,7 @@ async function getLists (contentId) {
 	return myFtClient.getListsContent()
 		.then(results => results.items.map(list => {
 			const isChecked = Array.isArray(list.content) && list.content.some(content => content.uuid === contentId);
-			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content };
+			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content, isShareable: false };
 		}));
 }
 
