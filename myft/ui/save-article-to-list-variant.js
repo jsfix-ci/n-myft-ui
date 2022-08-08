@@ -7,9 +7,10 @@ const csrfToken = getToken();
 
 let lists = [];
 let haveLoadedLists = false;
+let createListOverlay;
 
 export default async function openSaveArticleToListVariant (name, contentId) {
-	function createList (list) {
+	function createList (list, cb) {
 		if(!list) {
 			if (!lists.length) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
@@ -18,15 +19,14 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.push({ name: list, uuid: createdList.actorId, checked: true });
+					lists.unshift({ name: list, uuid: createdList.actorId, checked: true });
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
-					triggerCreateListEvent(contentId, createdList.actorId);
-					triggerAddToListEvent(contentId, createdList.actorId);
 					contentElement.addEventListener('click', openFormHandler, { once: true });
+					cb(contentId, createdList.actorId);
 				});
 			})
 			.catch(() => {
@@ -35,32 +35,24 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			});
 	}
 
-	function addToList (list) {
+	function addToList (list, cb) {
 		if(!list) {
 			return;
 		}
 
 		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then((addedList) => {
-			const indexToUpdate = lists.indexOf(list);
-			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: true };
-			const listElement = ListsElement(lists, addToList, removeFromList);
-			const overlayContent = document.querySelector('.o-overlay__content');
-			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			cb();
 			triggerAddToListEvent(contentId, addedList.actorId);
 		});
 	}
 
-	function removeFromList (list) {
+	function removeFromList (list, cb) {
 		if(!list) {
 			return;
 		}
 
 		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then((removedList) => {
-			const indexToUpdate = lists.indexOf(list);
-			lists[indexToUpdate] = { ...lists[indexToUpdate], checked: false };
-			const listElement = ListsElement(lists, addToList, removeFromList);
-			const overlayContent = document.querySelector('.o-overlay__content');
-			overlayContent.insertAdjacentElement('afterbegin', listElement);
+			cb();
 			triggerRemoveFromListEvent(contentId, removedList.actorId);
 		});
 	}
@@ -79,7 +71,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	const headingElement = HeadingElement();
 	let [contentElement, removeDescription, attachDescription] = ContentElement(!lists.length);
 
-	const createListOverlay = new Overlay(name, {
+	createListOverlay = new Overlay(name, {
 		html: contentElement,
 		heading: { title: headingElement.outerHTML },
 		modal: false,
@@ -89,7 +81,11 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 	function outsideClickHandler (e) {
 		const overlayContent = document.querySelector('.o-overlay__content');
-		if(createListOverlay.visible && (!overlayContent || !overlayContent.contains(e.target))) {
+		const overlayContainer = document.querySelector('.o-overlay');
+		// we don't want to close the overlay if the click happened inside the
+		// overlay, except if the click happened on the overlay close button
+		const isTargetInsideOverlay = overlayContainer.contains(e.target) && !e.target.classList.contains('o-overlay__close');
+		if(createListOverlay.visible && (!overlayContent || !isTargetInsideOverlay)) {
 			createListOverlay.close();
 		}
 	}
@@ -115,17 +111,17 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
 
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
-		positionOverlay(data.currentTarget);
-
 		if (lists.length) {
 			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
 
+		positionOverlay(data.currentTarget);
+
 		contentElement.addEventListener('click', openFormHandler, { once: true });
 
-		document.querySelector('.article-content').addEventListener('click', outsideClickHandler, { once: true });
+		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
 
 		window.addEventListener('scroll', scrollHandler);
 
@@ -136,6 +132,8 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 		window.removeEventListener('scroll', scrollHandler);
 
 		window.removeEventListener('oViewport.resize', resizeHandler);
+
+		document.querySelector('.article-content').removeEventListener('click', outsideClickHandler);
 	});
 }
 
@@ -165,7 +163,11 @@ function FormElement (createList) {
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value);
+		createList(inputListName.value, ((contentId, listId) => {
+			triggerCreateListEvent(contentId, listId);
+			triggerAddToListEvent(contentId, listId);
+			positionOverlay(createListOverlay.wrapper);
+		}));
 		inputListName.value = '';
 		formElement.remove();
 	}
@@ -238,8 +240,9 @@ function ListsElement (lists, addToList, removeFromList) {
 
 function ListCheckboxElement (addToList, removeFromList) {
 	return function (list) {
+
 		const listCheckbox = `<label>
-		<input type="checkbox" name="default" value="${list.name}" ${list.checked ? 'checked' : ''}>
+		<input type="checkbox" name="default" value="${list.uuid}" ${list.checked ? 'checked' : ''}>
 		<span class="o-forms-input__label">
 			<span class="o-normalise-visually-hidden">
 			${list.checked ? 'Remove article from ' : 'Add article to ' }
@@ -255,7 +258,15 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 		function handleCheck (event) {
 			event.preventDefault();
-			return event.target.checked ? addToList(list) : removeFromList(list);
+			const isChecked = event.target.checked;
+
+			function onListUpdated () {
+				const indexToUpdate = lists.indexOf(list);
+				lists[indexToUpdate] = { ...lists[indexToUpdate], checked: isChecked };
+				listCheckboxElement.querySelector('input').checked = isChecked;
+			}
+
+			return isChecked ? addToList(list, onListUpdated) : removeFromList(list, onListUpdated);
 		}
 
 		input.addEventListener('click', handleCheck);
@@ -288,10 +299,11 @@ function positionOverlay (target) {
 
 	if (isMobile()) {
 		const shareNavComponent = document.querySelector('.share-nav__horizontal');
+		const topHalfOffset = target.clientHeight + 10;
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = 0;
 		target.style['margin-top'] = 0;
-		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? '-120px' : '50px';
+		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? `-${topHalfOffset}px` : '50px';
 	} else {
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = '45px';
@@ -319,12 +331,12 @@ function calculateLargerScreenHalf (target) {
 	return spaceBelow < spaceAbove ? 'ABOVE' : 'BELOW';
 }
 
-async function getLists () {
-	return myFtClient.getAll('created', 'list')
-		.then(lists => lists.filter(list => !list.isRedirect))
-		.then(lists => {
-			return lists.map(list => ({ name: list.name, uuid: list.uuid, checked: false }));
-		});
+async function getLists (contentId) {
+	return myFtClient.getListsContent()
+		.then(results => results.items.map(list => {
+			const isChecked = Array.isArray(list.content) && list.content.some(content => content.uuid === contentId);
+			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content };
+		}));
 }
 
 function triggerAddToListEvent (contentId, listId) {

@@ -103,13 +103,13 @@
     "form-serialize": "^0.7.2",
     "ftdomdelegate": "^4.0.6",
     "js-cookie": "^2.2.1",
-    "next-myft-client": "^10.1.0",
+    "next-myft-client": "^10.3.0",
     "next-session-client": "^4.0.0",
     "superstore-sync": "^2.1.1"
   },
   "volta": {
     "node": "16.14.2",
-    "npm": "7.20.2"
+    "npm": "7.24.2"
   },
   "engines": {
     "node": "14.x || 16.x",
