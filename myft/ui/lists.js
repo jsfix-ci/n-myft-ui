@@ -202,7 +202,14 @@ function initialEventListeners () {
 		handleArticleSaved(contentId);
 	});
 
-	document.body.addEventListener('myft.user.saved.content.remove', showUnsavedNotification);
+	document.body.addEventListener('myft.user.saved.content.remove', unsavedEvent => {
+		const contentId = unsavedEvent.detail.subject;
+
+		const createUnsavedNotificationDesign = unsavedEvent.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
+		if (createUnsavedNotificationDesign) {
+			return showUnsavedNotification(contentId);
+		}
+	});
 
 	delegate.on('click', '[data-myft-ui="copy-to-list"]', event => {
 		event.preventDefault();
