@@ -51,6 +51,18 @@ function updateAfterAddToList (listId, contentId, wasAdded) {
 				content: message,
 				trackable: 'myft-feedback-notification'
 			});
+
+			document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+				detail: {
+					category: 'list',
+					action: 'copy-success',
+					article_id: contentId,
+					list_id: listId,
+					teamName: 'customer-products-us-growth',
+					amplitudeExploratory: true
+				},
+				bubbles: true
+			}));
 		});
 }
 
@@ -82,6 +94,10 @@ function setUpCreateListListeners (overlay, contentId) {
 
 	const createListButton = overlay.content.querySelector('.js-create-list');
 	const nameInput = overlay.content.querySelector('.js-name');
+
+	if (!createListButton) {
+		return;
+	}
 
 	createListButton.addEventListener('click', event => {
 		event.preventDefault();
@@ -184,6 +200,63 @@ function openCreateListAndAddArticleOverlay (contentId) {
 		});
 }
 
+function handleRemoveToggleSubmit (event) {
+	event.preventDefault();
+
+	const formEl = event.target;
+	const submitBtnEl = formEl.querySelector('button[type="submit"]');
+
+	if (submitBtnEl.hasAttribute('disabled')) {
+		return;
+	}
+
+	const isSubmitBtnPressed = submitBtnEl.getAttribute('aria-pressed') === 'true';
+	const action = isSubmitBtnPressed ? 'remove' : 'add';
+	const contentId = formEl.dataset.contentId;
+	const listId = formEl.dataset.actorId;
+	const csrfToken = formEl.elements.token;
+
+	if (!csrfToken || !csrfToken.value) {
+		document.body.dispatchEvent(new CustomEvent('oErrors.log', {
+			bubbles: true,
+			detail: {
+				error: new Error('myFT form submitted without a CSRF token'),
+				info: {
+					action,
+					actorType: 'list',
+					actorId: listId,
+					relationshipName: 'contained',
+					subjectType: 'content',
+					subjectId: contentId,
+				},
+			},
+		}));
+	}
+
+	submitBtnEl.setAttribute('disabled', '');
+
+	myFtClient[action]('list', listId, 'contained', 'content', contentId, { token: csrfToken.value })
+		.then(() => {
+			myFtUiButtonStates.toggleButton(submitBtnEl, !isSubmitBtnPressed);
+
+			document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+				detail: {
+					category: 'list',
+					action: action === 'add' ? 'add-success' : 'remove-success',
+					article_id: contentId,
+					list_id: listId,
+					teamName: 'customer-products-us-growth',
+					amplitudeExploratory: true
+				},
+				bubbles: true
+			}));
+		})
+		.catch(error => {
+			setTimeout(() => submitBtnEl.removeAttribute('disabled'));
+			throw error;
+		});
+}
+
 function initialEventListeners () {
 
 	document.body.addEventListener('myft.user.saved.content.add', event => {
@@ -208,6 +281,8 @@ function initialEventListeners () {
 		ev.preventDefault();
 		showCreateListOverlay();
 	});
+
+	delegate.on('submit', '[data-myft-ui="contained"]', handleRemoveToggleSubmit);
 }
 
 export function init () {

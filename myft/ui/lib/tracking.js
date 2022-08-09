@@ -39,12 +39,10 @@ const getExtraContext = (subjectType, subjectId) => {
  * @param {Object} postedData Event's extra data (required for checking if an instant alert was turned on or off)
  * @return {String} label for the action to send in the custom event
  */
-const getAction = (subjectType, action, postedData, resultData) => {
+const getAction = (subjectType, action, postedData) => {
 	if (action === 'update' && subjectType === 'concept') {
 		const updateState = (postedData && postedData._rel && postedData._rel.instant && postedData._rel.instant === 'true') ? 'on' : 'off';
 		return `instant-alert-${updateState}`;
-	} else if (resultData && resultData.rel && resultData.rel.type && resultData.rel.type === 'contained') {
-		return `${action}-to-list-success`;
 	} else {
 		return customDataSettings[subjectType][action];
 	}
@@ -57,7 +55,7 @@ const getAction = (subjectType, action, postedData, resultData) => {
 export function custom (eventData) {
 	if (Object.keys(customDataSettings).indexOf(eventData.subjectType) !== -1) {
 		const options = Object.assign(
-			{action: getAction(eventData.subjectType, eventData.action, eventData.postedData, eventData.resultData)},
+			{action: getAction(eventData.subjectType, eventData.action, eventData.postedData)},
 			eventData.trackingInfo);
 		const extraContext = getExtraContext(eventData.subjectType, eventData.subjectId);
 		Object.assign(options, extraContext);

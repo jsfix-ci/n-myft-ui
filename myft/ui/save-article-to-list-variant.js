@@ -26,7 +26,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${list} created`;
 					contentElement.addEventListener('click', openFormHandler, { once: true });
-					cb(createdList.actorId);
+					cb(contentId, createdList.actorId);
 				});
 			})
 			.catch(() => {
@@ -40,9 +40,9 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			return;
 		}
 
-		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
+		myFtClient.add('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then((addedList) => {
 			cb();
-			triggerAddToListEvent(contentId);
+			triggerAddToListEvent(contentId, addedList.actorId);
 		});
 	}
 
@@ -51,9 +51,9 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 			return;
 		}
 
-		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then(() => {
+		myFtClient.remove('list', list.uuid, 'contained', 'content', contentId, { token: csrfToken }).then((removedList) => {
 			cb();
-			triggerRemoveFromListEvent(contentId);
+			triggerRemoveFromListEvent(contentId, removedList.actorId);
 		});
 	}
 
@@ -163,8 +163,9 @@ function FormElement (createList) {
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value, (contentId => {
-			triggerCreateListEvent(contentId);
+		createList(inputListName.value, ((contentId, listId) => {
+			triggerCreateListEvent(contentId, listId);
+			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
 		}));
 		inputListName.value = '';
@@ -181,7 +182,7 @@ function ContentElement (hasDescription) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="Add to a new list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
@@ -207,7 +208,7 @@ function ContentElement (hasDescription) {
 
 function HeadingElement () {
 	const heading = `
-		<span class="myft-ui-create-list-variant-heading">Added to <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in <span class="myft-ui-create-list-variant-icon"><span class="myft-ui-create-list-variant-icon-visually-hidden">my FT</span></span></span>
+		<span class="myft-ui-create-list-variant-heading">Added to <a href="https://www.ft.com/myft/saved-articles" data-trackable="saved-articles">saved articles</a> in <span class="myft-ui-create-list-variant-icon"><span class="myft-ui-create-list-variant-icon-visually-hidden">my FT</span></span></span>
 		`;
 
 	return stringToHTMLElement(heading);
@@ -338,12 +339,13 @@ async function getLists (contentId) {
 		}));
 }
 
-function triggerAddToListEvent (contentId) {
+function triggerAddToListEvent (contentId, listId) {
 	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'add-to-list',
+			category: 'list',
+			action: 'add-success',
 			article_id: contentId,
+			list_id: listId,
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
@@ -351,12 +353,13 @@ function triggerAddToListEvent (contentId) {
 	}));
 }
 
-function triggerRemoveFromListEvent (contentId) {
+function triggerRemoveFromListEvent (contentId, listId) {
 	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'remove-from-list',
+			category: 'list',
+			action: 'remove-success',
 			article_id: contentId,
+			list_id: listId,
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
@@ -364,23 +367,15 @@ function triggerRemoveFromListEvent (contentId) {
 	}));
 }
 
-function triggerCreateListEvent (contentId) {
+function triggerCreateListEvent (contentId, listId) {
 	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'professorLists',
-			action: 'create-list',
+			category: 'list',
+			action: 'create-success',
 			article_id: contentId,
+			list_id: listId,
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
-		},
-		bubbles: true
-	}));
-
-	return document.body.dispatchEvent(new CustomEvent('oTracking.event', {
-		detail: {
-			category: 'myFT',
-			action: 'create-list-success',
-			article_id: contentId
 		},
 		bubbles: true
 	}));

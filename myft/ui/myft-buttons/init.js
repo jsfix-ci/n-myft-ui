@@ -65,6 +65,7 @@ function signedInEventListeners () {
 						const resultData = event.detail.results && event.detail.results[0];
 						const isPressed = !!event.detail.results;
 						buttonStates.setStateOfButton(relationshipName, event.detail.subject, isPressed, undefined, resultData, true);
+
 						tracking.custom({
 							subjectType,
 							action,
