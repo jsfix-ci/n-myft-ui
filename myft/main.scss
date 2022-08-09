@@ -16,6 +16,8 @@ $n-notification-is-silent: false !default;
 @import '../components/pin-button/main';
 @import '../components/instant-alert/main';
 
+@include oTypography();
+
 // TODO Fix below
 $spacing-unit: 20px;
 
@@ -323,45 +325,34 @@ $spacing-unit: 20px;
 			}
 		}
 	}
+
+	.myft-notification {
+		background: oColorsByName('white-80');
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		border-radius: 5px;
+		font-family: MetricWeb, sans-serif;
+		font-size: 16px;
+	}
+
 	.share-nav__vertical {
 		.myft-notification {
-			background: oColorsByName('white-80');
-			box-sizing: border-box;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			position: absolute;
 			top: 175px;
 			width: 340px;
 			height: 44px;
 			left: 50px;
-			font-size: 16px;
-			border-radius: 5px;
-
-			p {
-				margin: auto;
-			}
 		}
 	}
 
 	.share-nav__horizontal {
 		.myft-notification {
-			background: oColorsByName('white-80');
-			box-sizing: border-box;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			position: absolute;
 			top: -52px;
 			width: 340px;
 			height: 44px;
-			font-size: 16px;
-			border-radius: 5px;
 			z-index: 10;
-
-			p {
-				margin: auto;
-			}
 		}
 	}
 }
