@@ -194,19 +194,19 @@ function initialEventListeners () {
 		// Checks if the createListAndSaveArticle variant is active
 		// and will show the variant overlay if the user has no lists,
 		// otherwise it will show the classic overlay
-		const createNewListDesign = event.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
-		if (createNewListDesign) {
+		const newListDesign = event.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
+		if (newListDesign) {
 			return openCreateListAndAddArticleOverlay(contentId);
 		}
 
 		handleArticleSaved(contentId);
 	});
 
-	document.body.addEventListener('myft.user.saved.content.remove', unsavedEvent => {
-		const contentId = unsavedEvent.detail.subject;
+	document.body.addEventListener('myft.user.saved.content.remove', event => {
+		const contentId = event.detail.subject;
 
-		const createUnsavedNotificationDesign = unsavedEvent.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
-		if (createUnsavedNotificationDesign) {
+		const newListDesign = event.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
+		if (newListDesign) {
 			return showUnsavedNotification(contentId);
 		}
 	});
@@ -232,7 +232,7 @@ function showUnsavedNotification () {
 	}
 
 	const content = `
-		<p role="alert">Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT only.</p>
+		<p role="alert">Removed from <a href="https://www.ft.com/myft/saved-articles">saved articles</a> in myFT</p>
 	`;
 
 	const contentNode = stringToHTMLElement(content);
