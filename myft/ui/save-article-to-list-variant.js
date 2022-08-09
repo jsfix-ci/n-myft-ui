@@ -11,7 +11,9 @@ let lists = [];
 let haveLoadedLists = false;
 let createListOverlay;
 
-export default async function openSaveArticleToListVariant (name, contentId) {
+export default async function openSaveArticleToListVariant (contentId, options = {}) {
+	const { name, showPublicToggle = false } = options;
+
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
 			if (!newList && !newList.name) attachDescription();
@@ -93,7 +95,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	}
 
 	function openFormHandler () {
-		const formElement = FormElement(createList);
+		const formElement = FormElement(createList, showPublicToggle);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -139,7 +141,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	});
 }
 
-function FormElement (createList) {
+function FormElement (createList, showPublicToggle) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
 		<label class="o-forms-field">
@@ -148,21 +150,25 @@ function FormElement (createList) {
 			</span>
 		</label>
 
-		<div class="o-forms-field" role="group">
-			<span class="o-forms-input o-forms-input--toggle">
-				<label>
-					<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
-					<span class="o-forms-input__label myft-ui-create-list-variant-form-toggle-label">
-						<span class="o-forms-input__label__main">
-							Public
+		${showPublicToggle ?
+		`<div class="o-forms-field" role="group">
+				<span class="o-forms-input o-forms-input--toggle">
+					<label>
+						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
+						<span class="o-forms-input__label myft-ui-create-list-variant-form-toggle-label">
+							<span class="o-forms-input__label__main">
+								Public
+							</span>
+							<span id="toggle-group-option-1-description" class="o-forms-input__label__prompt">
+								Your list & profession will be visible to others
+							</span>
 						</span>
-						<span id="toggle-group-option-1-description" class="o-forms-input__label__prompt">
-							Your list & profession will be visible to others
-						</span>
-					</span>
-				</label>
-			</span>
-		</div>
+					</label>
+				</span>
+			</div>` :
+		''
+}
+
 
 		<div class="myft-ui-create-list-variant-form-buttons">
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
@@ -182,7 +188,7 @@ function FormElement (createList) {
 
 		const newList = {
 			name: inputListName.value,
-			isShareable: inputIsShareable.checked
+			isShareable: inputIsShareable ? inputIsShareable.checked : false
 		};
 
 		createList(newList, ((contentId, listId) => {
@@ -190,8 +196,6 @@ function FormElement (createList) {
 			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
 		}));
-		inputListName.value = '';
-		inputIsShareable.value = true;
 		formElement.remove();
 	}
 
@@ -317,20 +321,19 @@ function realignOverlay (originalScrollPosition, target) {
 function positionOverlay (target) {
 	target.style['min-width'] = '340px';
 	target.style['width'] = '100%';
-	target.style['margin-top'] = '-50px';
+	target.style['margin-top'] = 0;
 	target.style['left'] = 0;
+	target.style['top'] = 0;
 
 	if (isMobile()) {
 		const shareNavComponent = document.querySelector('.share-nav__horizontal');
 		const topHalfOffset = target.clientHeight + 10;
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = 0;
-		target.style['margin-top'] = 0;
 		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? `-${topHalfOffset}px` : '50px';
 	} else {
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = '45px';
-		target.style['top'] = '220px';
 	}
 }
 

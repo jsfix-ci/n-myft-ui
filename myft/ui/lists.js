@@ -180,8 +180,13 @@ function showArticleSavedOverlay (contentId) {
 	showListsOverlay('Article saved', `/myft/list?fragment=true&fromArticleSaved=true&contentId=${contentId}`, contentId);
 }
 
-function showCreateListAndAddArticleOverlay (contentId, name = 'myft-ui-create-list-variant') {
-	return openSaveArticleToListVariant(name, contentId);
+function showCreateListAndAddArticleOverlay (contentId, config) {
+	const options = {
+		name: 'myft-ui-create-list-variant',
+		...config
+	};
+
+	return openSaveArticleToListVariant(contentId, options);
 }
 
 function handleArticleSaved (contentId) {
@@ -194,11 +199,11 @@ function handleArticleSaved (contentId) {
 		});
 }
 
-function openCreateListAndAddArticleOverlay (contentId) {
+function openCreateListAndAddArticleOverlay (contentId, config) {
 	return myFtClient.getAll('created', 'list')
 		.then(createdLists => createdLists.filter(list => !list.isRedirect))
 		.then(() => {
-			return showCreateListAndAddArticleOverlay(contentId);
+			return showCreateListAndAddArticleOverlay(contentId, config);
 		});
 }
 
@@ -269,7 +274,9 @@ function initialEventListeners () {
 		// otherwise it will show the classic overlay
 		const newListDesign = event.currentTarget.querySelector('[data-myft-ui-save-new="manageArticleLists"]');
 		if (newListDesign) {
-			return openCreateListAndAddArticleOverlay(contentId);
+			const configKeys = newListDesign.dataset.myftUiSaveNewConfig.split(',');
+			const config = configKeys.reduce((configObj, key) => (key ? { ...configObj, [key]: true} : configObj), {});
+			return openCreateListAndAddArticleOverlay(contentId, config);
 		}
 
 		handleArticleSaved(contentId);
