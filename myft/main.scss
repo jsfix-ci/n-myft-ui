@@ -316,6 +316,11 @@ $spacing-unit: 20px;
 				justify-content: flex-end;
 				@include oTypographySans($scale: 2);
 			}
+
+			&-public {
+				width: calc(100% - 14px);
+				padding: 0 3px;
+			}
 		}
 
 		&-lists {

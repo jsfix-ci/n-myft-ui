@@ -144,23 +144,23 @@ export default async function openSaveArticleToListVariant (contentId, options =
 function FormElement (createList, showPublicToggle) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
-		<label class="o-forms-field">
+		<label class="myft-ui-create-list-variant-form-name o-forms-field">
 			<span class="o-forms-input o-forms-input--text">
 				<input class="myft-ui-create-list-variant-text" type="text" name="list-name" aria-label="List name">
 			</span>
 		</label>
 
 		${showPublicToggle ?
-		`<div class="o-forms-field" role="group">
+		`<div class="myft-ui-create-list-variant-form-public o-forms-field" role="group">
 				<span class="o-forms-input o-forms-input--toggle">
 					<label>
 						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
-						<span class="o-forms-input__label myft-ui-create-list-variant-form-toggle-label">
+						<span class="myft-ui-create-list-variant-form-toggle-label o-forms-input__label">
 							<span class="o-forms-input__label__main">
 								Public
 							</span>
-							<span id="toggle-group-option-1-description" class="o-forms-input__label__prompt">
-								Your list & profession will be visible to others
+							<span id="myft-ui-create-list-variant-form-public-description" class="o-forms-input__label__prompt">
+								Your profession & list will be visible to others
 							</span>
 						</span>
 					</label>
