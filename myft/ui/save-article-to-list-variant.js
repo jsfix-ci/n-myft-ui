@@ -251,7 +251,7 @@ function ListsElement (lists, addToList, removeFromList) {
 
 	const listsTemplate = `
 	<div class="myft-ui-create-list-variant-lists o-forms-field o-forms-field--optional" role="group">
-		<span class="myft-ui-create-list-variant-lists-text">Add to a list</span>
+		<span class="myft-ui-create-list-variant-lists-text">Add to list</span>
 		<span class="myft-ui-create-list-variant-lists-container o-forms-input o-forms-input--checkbox">
 		</span>
 	</div>
