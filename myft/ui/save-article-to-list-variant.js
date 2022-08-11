@@ -141,6 +141,50 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	});
 }
 
+function showMessageOverlay () {
+	function onClick () {
+		messageOverlay.destroy();
+		createListOverlay.show();
+	}
+
+	const messageElement = MessageElement(onClick);
+
+	const messageOverlay = new Overlay('myft-ui-create-list-variant-message', {
+		html: messageElement,
+		modal: false,
+		parentnode: isMobile() ? '.o-share--horizontal' : '.o-share--vertical',
+		class: 'myft-ui-create-list-variant-message',
+	});
+
+	function getScrollHandler (target) {
+		return realignOverlay(window.scrollY, target);
+	}
+
+	function resizeHandler () {
+		positionOverlay(messageOverlay.wrapper);
+	}
+
+	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
+
+	messageOverlay.open();
+
+	messageOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
+		positionOverlay(data.currentTarget);
+
+		window.addEventListener('scroll', scrollHandler);
+
+		window.addEventListener('oViewport.resize', resizeHandler);
+	});
+
+	messageOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
+		window.removeEventListener('scroll', scrollHandler);
+
+		window.removeEventListener('oViewport.resize', resizeHandler);
+	});
+
+	return messageOverlay;
+}
+
 function FormElement (createList, showPublicToggle) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
@@ -169,7 +213,6 @@ function FormElement (createList, showPublicToggle) {
 		''
 }
 
-
 		<div class="myft-ui-create-list-variant-form-buttons">
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
 			Add
@@ -195,8 +238,14 @@ function FormElement (createList, showPublicToggle) {
 			triggerCreateListEvent(contentId, listId);
 			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
+
+			if (inputIsShareable.checked) {
+				createListOverlay.close();
+				showMessageOverlay();
+			}
 		}));
 		formElement.remove();
+
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
@@ -300,6 +349,26 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 		return listCheckboxElement;
 	};
+}
+
+function MessageElement (onContinue) {
+	const message = `
+	<div class="myft-ui-create-list-variant-message-content">
+		<h3>Thank you for your interest in making a public list</h3>
+		<p>We're currently testing this feature. For now, your list remains private and isn’t visible to others.</p>
+		<div class="myft-ui-create-list-variant-message-buttons">
+			<button class="o-buttons o-buttons--big o-buttons--secondary">
+			Continue
+			</button>
+		</div>
+	</div>
+`;
+
+	const messageElement = stringToHTMLElement(message);
+
+	messageElement.querySelector('button').addEventListener('click', onContinue);
+
+	return messageElement;
 }
 
 function realignOverlay (originalScrollPosition, target) {

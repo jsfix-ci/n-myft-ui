@@ -183,6 +183,26 @@ $spacing-unit: 20px;
 		}
 	}
 
+	.myft-ui-create-list-variant-message {
+		border-radius: 10px;
+		border: 1px solid oColorsByName('black-5');
+		background: oColorsByName('white-80');
+
+		&-content {
+			display: flex;
+			flex-direction: column;
+
+			h3 {
+				margin: 0;
+			}
+		}
+
+		&-buttons {
+			text-align: center;
+		}
+	}
+
+
 	.myft-ui-create-list-variant {
 		border-radius: 10px;
 		border: 1px solid oColorsByName('black-5');
