@@ -65,6 +65,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sinon-chai": "2.0.2",
     "karma-sourcemap-loader": "^0.3.7",
+    "karma-viewport": "^1.0.9",
     "karma-webpack": "^4.0.2",
     "lintspaces-cli": "^0.7.0",
     "lolex": "5.1.1",

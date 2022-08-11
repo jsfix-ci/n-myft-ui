@@ -2,6 +2,8 @@ import Overlay from '@financial-times/o-overlay';
 import myFtClient from 'next-myft-client';
 import { uuid } from 'n-ui-foundations';
 import getToken from './lib/get-csrf-token';
+import isMobile from './lib/is-mobile';
+import stringToHTMLElement from './lib/convert-string-to-html-element';
 
 const csrfToken = getToken();
 
@@ -135,12 +137,6 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 
 		document.querySelector('.article-content').removeEventListener('click', outsideClickHandler);
 	});
-}
-
-function stringToHTMLElement (string) {
-	const template = document.createElement('template');
-	template.innerHTML = string.trim();
-	return template.content.firstChild;
 }
 
 function FormElement (createList) {
@@ -309,12 +305,6 @@ function positionOverlay (target) {
 		target.style['margin-left'] = '45px';
 		target.style['top'] = '220px';
 	}
-}
-
-function isMobile () {
-	const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-
-	return vw <= 980;
 }
 
 function calculateLargerScreenHalf (target) {
