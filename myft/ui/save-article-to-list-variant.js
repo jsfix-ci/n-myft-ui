@@ -11,22 +11,24 @@ let lists = [];
 let haveLoadedLists = false;
 let createListOverlay;
 
-export default async function openSaveArticleToListVariant (name, contentId) {
-	function createList (list, cb) {
-		if(!list) {
-			if (!lists.length) attachDescription();
+export default async function openSaveArticleToListVariant (contentId, options = {}) {
+	const { name, showPublicToggle = false } = options;
+
+	function createList (newList, cb) {
+		if(!newList || !newList.name) {
+			if (!newList && !newList.name) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
 		}
 
-		myFtClient.add('user', null, 'created', 'list', uuid(), { name: list,	token: csrfToken })
+		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.unshift({ name: list, uuid: createdList.actorId, checked: true });
+					lists.unshift({ name: newList.name, uuid: createdList.actorId, checked: true, isShareable: !!newList.isShareable });
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
-					announceListContainer.textContent = `${list} created`;
+					announceListContainer.textContent = `${newList.name} created`;
 					contentElement.addEventListener('click', openFormHandler, { once: true });
 					cb(contentId, createdList.actorId);
 				});
@@ -93,7 +95,7 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	}
 
 	function openFormHandler () {
-		const formElement = FormElement(createList);
+		const formElement = FormElement(createList, showPublicToggle);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -139,17 +141,40 @@ export default async function openSaveArticleToListVariant (name, contentId) {
 	});
 }
 
-function FormElement (createList) {
+function FormElement (createList, showPublicToggle) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
-		<label class="o-forms-field">
+		<label class="myft-ui-create-list-variant-form-name o-forms-field">
 			<span class="o-forms-input o-forms-input--text">
-				<input type="text" name="list-name" aria-label="List name">
+				<input class="myft-ui-create-list-variant-text" type="text" name="list-name" aria-label="List name">
 			</span>
 		</label>
-		<button class="o-buttons o-buttons--secondary" type="submit">
-			Save
-		</button>
+
+		${showPublicToggle ?
+		`<div class="myft-ui-create-list-variant-form-public o-forms-field" role="group">
+				<span class="o-forms-input o-forms-input--toggle">
+					<label>
+						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
+						<span class="myft-ui-create-list-variant-form-toggle-label o-forms-input__label">
+							<span class="o-forms-input__label__main">
+								Public
+							</span>
+							<span id="myft-ui-create-list-variant-form-public-description" class="o-forms-input__label__prompt">
+								Your profession & list will be visible to others
+							</span>
+						</span>
+					</label>
+				</span>
+			</div>` :
+		''
+}
+
+
+		<div class="myft-ui-create-list-variant-form-buttons">
+			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
+			Add
+			</button>
+		</div>
 	</form>
 	`;
 
@@ -159,12 +184,18 @@ function FormElement (createList) {
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		createList(inputListName.value, ((contentId, listId) => {
+		const inputIsShareable = formElement.querySelector('input[name="is-shareable"]');
+
+		const newList = {
+			name: inputListName.value,
+			isShareable: inputIsShareable ? inputIsShareable.checked : false
+		};
+
+		createList(newList, ((contentId, listId) => {
 			triggerCreateListEvent(contentId, listId);
 			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
 		}));
-		inputListName.value = '';
 		formElement.remove();
 	}
 
@@ -220,7 +251,7 @@ function ListsElement (lists, addToList, removeFromList) {
 
 	const listsTemplate = `
 	<div class="myft-ui-create-list-variant-lists o-forms-field o-forms-field--optional" role="group">
-		<span class="myft-ui-create-list-variant-lists-text">Add to a list</span>
+		<span class="myft-ui-create-list-variant-lists-text">Add to list</span>
 		<span class="myft-ui-create-list-variant-lists-container o-forms-input o-forms-input--checkbox">
 		</span>
 	</div>
@@ -290,20 +321,19 @@ function realignOverlay (originalScrollPosition, target) {
 function positionOverlay (target) {
 	target.style['min-width'] = '340px';
 	target.style['width'] = '100%';
-	target.style['margin-top'] = '-50px';
+	target.style['margin-top'] = 0;
 	target.style['left'] = 0;
+	target.style['top'] = 0;
 
 	if (isMobile()) {
 		const shareNavComponent = document.querySelector('.share-nav__horizontal');
 		const topHalfOffset = target.clientHeight + 10;
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = 0;
-		target.style['margin-top'] = 0;
 		target.style['top'] = calculateLargerScreenHalf(shareNavComponent) === 'ABOVE' ? `-${topHalfOffset}px` : '50px';
 	} else {
 		target.style['position'] = 'absolute';
 		target.style['margin-left'] = '45px';
-		target.style['top'] = '220px';
 	}
 }
 
@@ -325,7 +355,7 @@ async function getLists (contentId) {
 	return myFtClient.getListsContent()
 		.then(results => results.items.map(list => {
 			const isChecked = Array.isArray(list.content) && list.content.some(content => content.uuid === contentId);
-			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content };
+			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content, isShareable: false };
 		}));
 }
 

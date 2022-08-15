@@ -239,7 +239,7 @@ $spacing-unit: 20px;
 		}
 
 		&-add-description {
-			margin: 4px 0;
+			margin: oSpacingByName('s1') 0;
 		}
 
 		&-heading {
@@ -258,7 +258,7 @@ $spacing-unit: 20px;
 
 		&-footer {
 			border-top: 1px solid oColorsByName('black-5');
-			padding: 16px;
+			padding: oSpacingByName('s4');
 		}
 
 		&-icon {
@@ -288,29 +288,49 @@ $spacing-unit: 20px;
 		}
 
 		&-form {
+			$field-spacing: 's4';
 			display: flex;
+			flex-direction: column;
 			width: calc(100% - 32px);
-			justify-content: space-between;
-			height: 40px;
-			gap: 8px;
-			padding: 0 16px 16px;
+			gap: oSpacingByName($field-spacing);
+			padding: 0 oSpacingByName($field-spacing) oSpacingByName('s3');
 
 			& > * {
 				flex: 1 1 auto;
+				margin-bottom: 0;
 			}
 
 			.o-forms-input {
 				margin-top: 0;
 			}
+
+			&-toggle {
+				position: absolute;
+			}
+
+			&-toggle-label::after {
+				background-color: oColorsByName('white');
+			}
+
+			&-buttons {
+				display: flex;
+				justify-content: flex-end;
+				@include oTypographySans($scale: 2);
+			}
+
+			&-public {
+				width: calc(100% - 14px);
+				padding: 0 3px;
+			}
 		}
 
 		&-lists {
-			padding: 16px 16px 0;
+			padding: oSpacingByName('s4') oSpacingByName('s4') 0;
 			@include oTypographySans($scale: 1);
 			&-text {
 				@include oTypographySans($weight: 'semibold');
 				color: oColorsByName('black-80');
-				margin-bottom: 16px;
+				margin-bottom: oSpacingByName('s4');
 			}
 			&-container {
 				margin-top: 0;
