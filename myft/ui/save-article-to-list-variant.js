@@ -102,17 +102,10 @@ export default async function openSaveArticleToListVariant (contentId, options =
 		formElement.elements[0].focus();
 	}
 
-	function getScrollHandler (target) {
-		return realignOverlay(window.scrollY, target);
-	}
-
-	function resizeHandler () {
-		positionOverlay(createListOverlay.wrapper);
-	}
-
 	createListOverlay.open();
 
 	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
+	const resizeHandler = getResizeHandler(createListOverlay.wrapper);
 
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
 		if (lists.length) {
@@ -156,15 +149,8 @@ function showMessageOverlay () {
 		class: 'myft-ui-create-list-variant-message',
 	});
 
-	function getScrollHandler (target) {
-		return realignOverlay(window.scrollY, target);
-	}
-
-	function resizeHandler () {
-		positionOverlay(messageOverlay.wrapper);
-	}
-
-	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
+	const scrollHandler = getScrollHandler(messageOverlay.wrapper);
+	const resizeHandler = getResizeHandler(messageOverlay.wrapper);
 
 	messageOverlay.open();
 
@@ -183,6 +169,16 @@ function showMessageOverlay () {
 	});
 
 	return messageOverlay;
+}
+
+function getScrollHandler (target) {
+	return realignOverlay(window.scrollY, target);
+}
+
+function getResizeHandler (target) {
+	return function resizeHandler () {
+		positionOverlay(target);
+	};
 }
 
 function FormElement (createList, showPublicToggle) {
