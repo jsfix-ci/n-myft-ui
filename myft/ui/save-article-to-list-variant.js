@@ -135,12 +135,12 @@ export default async function openSaveArticleToListVariant (contentId, options =
 }
 
 function showMessageOverlay () {
-	function onClick () {
+	function onContinue () {
 		messageOverlay.destroy();
 		createListOverlay.show();
 	}
 
-	const messageElement = MessageElement(onClick);
+	const messageElement = MessageElement(onContinue);
 
 	const messageOverlay = new Overlay('myft-ui-create-list-variant-message', {
 		html: messageElement,
