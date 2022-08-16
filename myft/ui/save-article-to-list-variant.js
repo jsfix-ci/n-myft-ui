@@ -350,9 +350,11 @@ function ListCheckboxElement (addToList, removeFromList) {
 
 function MessageElement (onContinue) {
 	const message = `
-	<div class="myft-ui-create-list-variant-message-content">
-		<h3>Thank you for your interest in making a public list</h3>
-		<p>We're currently testing this feature. For now, your list remains private and isn’t visible to others.</p>
+	<div class="myft-ui-create-list-variant-message-content" >
+		<div class="myft-ui-create-list-variant-message-text" aria-live="polite">
+			<h3>Thank you for your interest in making a public list</h3>
+			<p>We're currently testing this feature. For now, your list remains private and isn't visible to others.</p>
+		</div>
 		<div class="myft-ui-create-list-variant-message-buttons">
 			<button class="o-buttons o-buttons--big o-buttons--secondary">
 			Continue
