@@ -22,15 +22,16 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
 			.then(detail => {
-				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((createdList) => {
-					lists.unshift({ name: newList.name, uuid: createdList.actorId, checked: true, isShareable: !!newList.isShareable });
+				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((data) => {
+					const createdList = { name: newList.name, uuid: data.actorId, checked: true, isShareable: !!newList.isShareable };
+					lists.unshift(createdList);
 					const listElement = ListsElement(lists, addToList, removeFromList);
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
-					announceListContainer.textContent = `${newList.name} created`;
+					announceListContainer.textContent = `${createdList.name} created`;
 					contentElement.addEventListener('click', openFormHandler, { once: true });
-					cb(contentId, createdList.actorId);
+					cb(contentId, createdList);
 				});
 			})
 			.catch(() => {
@@ -230,12 +231,12 @@ function FormElement (createList, showPublicToggle) {
 			isShareable: inputIsShareable ? inputIsShareable.checked : false
 		};
 
-		createList(newList, ((contentId, listId) => {
-			triggerCreateListEvent(contentId, listId);
-			triggerAddToListEvent(contentId, listId);
+		createList(newList, ((contentId, createdList) => {
+			triggerCreateListEvent(contentId, createdList.uuid);
+			triggerAddToListEvent(contentId, createdList.uuid);
 			positionOverlay(createListOverlay.wrapper);
 
-			if (inputIsShareable.checked) {
+			if (createdList.isShareable) {
 				createListOverlay.close();
 				showMessageOverlay();
 			}
