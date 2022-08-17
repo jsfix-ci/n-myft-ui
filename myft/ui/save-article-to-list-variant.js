@@ -16,7 +16,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
-			if (!newList && !newList.name) attachDescription();
+			if (!lists.length) attachDescription();
 			return contentElement.addEventListener('click', openFormHandler, { once: true });
 		}
 
