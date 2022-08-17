@@ -211,6 +211,9 @@ function FormElement (createList, showPublicToggle) {
 }
 
 		<div class="myft-ui-create-list-variant-form-buttons">
+			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="click">
+			Cancel
+			</button>
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
 			Add
 			</button>
@@ -245,7 +248,27 @@ function FormElement (createList, showPublicToggle) {
 
 	}
 
+	function handleCancelClick (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		const inputListName = formElement.querySelector('input[name="list-name"]');
+		const inputIsShareable = formElement.querySelector('input[name="is-shareable"]');
+
+		const createNewList = {
+			name: inputListName.value,
+			isShareable: inputIsShareable ? inputIsShareable.checked : false
+		};
+
+		createList(createNewList, ((contentId, listId) => {
+			triggerCreateListEvent(contentId, listId);
+			triggerAddToListEvent(contentId, listId);
+			positionOverlay(createListOverlay.wrapper);
+		}));
+		formElement.remove()
+	}
+
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
+	formElement.querySelector('button[type="click"]').addEventListener('click', handleCancelClick);
 
 	return formElement;
 }
