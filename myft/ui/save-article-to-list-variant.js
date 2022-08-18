@@ -251,20 +251,13 @@ function FormElement (createList, showPublicToggle) {
 	function handleCancelClick (event) {
 		event.preventDefault();
 		event.stopPropagation();
-		const inputListName = formElement.querySelector('input[name="list-name"]');
-		const inputIsShareable = formElement.querySelector('input[name="is-shareable"]');
 
-		const createNewList = {
-			name: inputListName.value,
-			isShareable: inputIsShareable ? inputIsShareable.checked : false
-		};
-
-		createList(createNewList, ((contentId, listId) => {
+		createList(((contentId, listId) => {
 			triggerCreateListEvent(contentId, listId);
 			triggerAddToListEvent(contentId, listId);
 			positionOverlay(createListOverlay.wrapper);
 		}));
-		formElement.remove()
+		formElement.remove();
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
