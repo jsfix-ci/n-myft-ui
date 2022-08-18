@@ -195,7 +195,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		`<div class="myft-ui-create-list-variant-form-public o-forms-field" role="group">
 				<span class="o-forms-input o-forms-input--toggle">
 					<label>
-						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
+						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked data-trackable="private-link" text="private">
 						<span class="myft-ui-create-list-variant-form-toggle-label o-forms-input__label">
 							<span class="o-forms-input__label__main">
 								Public
@@ -245,7 +245,6 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 			}
 		}));
 		formElement.remove();
-
 	}
 
 	function handleCancelClick (event) {
@@ -256,8 +255,15 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		restoreFormHandler();
 	}
 
+	function onPublicToggleClick (event) {
+		event.target.setAttribute('data-trackable', event.target.checked ? 'private-link' : 'public-link');
+		event.target.setAttribute('text', event.target.checked ? 'private' : 'public');
+		triggerPublicToggleEvent(event.target.checked);
+	}
+
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
 	formElement.querySelector('button[type="button"]').addEventListener('click', handleCancelClick);
+	formElement.querySelector('input[name="is-shareable"]').addEventListener('click', onPublicToggleClick);
 
 	return formElement;
 }
@@ -478,6 +484,18 @@ function triggerCreateListEvent (contentId, listId) {
 			action: 'create-success',
 			article_id: contentId,
 			list_id: listId,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+function triggerPublicToggleEvent (isPublic) {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'list',
+			action: `${isPublic ? 'public-link' : 'private-link'}`,
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
