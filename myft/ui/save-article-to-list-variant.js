@@ -17,7 +17,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
 			if (!lists.length) attachDescription();
-			return contentElement.addEventListener('click', openFormHandler, { once: true });
+			return restoreFormHandler()
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
@@ -29,14 +29,14 @@ export default async function openSaveArticleToListVariant (contentId, options =
 					const overlayContent = document.querySelector('.o-overlay__content');
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
-					announceListContainer.textContent = `${createdList.name} created`;
-					contentElement.addEventListener('click', openFormHandler, { once: true });
-					cb(contentId, createdList);
+					announceListContainer.textContent = `${newList.name} created`;
+					restoreFormHandler()
+					cb(contentId, createdList.actorId);
 				});
 			})
 			.catch(() => {
 				if (!lists.length) attachDescription();
-				return contentElement.addEventListener('click', openFormHandler, { once: true });
+				return restoreFormHandler()
 			});
 	}
 
@@ -74,7 +74,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	}
 
 	const headingElement = HeadingElement();
-	let [contentElement, removeDescription, attachDescription] = ContentElement(!lists.length);
+	let [contentElement, removeDescription, attachDescription, restoreFormHandler] = ContentElement(!lists.length, openFormHandler);
 
 	createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -96,7 +96,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	}
 
 	function openFormHandler () {
-		const formElement = FormElement(createList, showPublicToggle);
+		const formElement = FormElement(createList, showPublicToggle, restoreFormHandler);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -117,7 +117,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 		positionOverlay(data.currentTarget);
 
-		contentElement.addEventListener('click', openFormHandler, { once: true });
+		restoreFormHandler()
 
 		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
 
@@ -182,7 +182,7 @@ function getResizeHandler (target) {
 	};
 }
 
-function FormElement (createList, showPublicToggle) {
+function FormElement (createList, showPublicToggle, restoreFormHandler) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
 		<label class="myft-ui-create-list-variant-form-name o-forms-field">
@@ -211,7 +211,7 @@ function FormElement (createList, showPublicToggle) {
 }
 
 		<div class="myft-ui-create-list-variant-form-buttons">
-			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="click">
+			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="button">
 			Cancel
 			</button>
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
@@ -251,22 +251,17 @@ function FormElement (createList, showPublicToggle) {
 	function handleCancelClick (event) {
 		event.preventDefault();
 		event.stopPropagation();
-
-		createList(((contentId, listId) => {
-			triggerCreateListEvent(contentId, listId);
-			triggerAddToListEvent(contentId, listId);
-			positionOverlay(createListOverlay.wrapper);
-		}));
 		formElement.remove();
+		restoreFormHandler()
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
-	formElement.querySelector('button[type="click"]').addEventListener('click', handleCancelClick);
+	formElement.querySelector('button[type="button"]').addEventListener('click', handleCancelClick);
 
 	return formElement;
 }
 
-function ContentElement (hasDescription) {
+function ContentElement (hasDescription, onClick) {
 	const description = '<p class="myft-ui-create-list-variant-add-description">Lists are a simple way to curate your content</p>';
 
 	const content = `
@@ -292,7 +287,11 @@ function ContentElement (hasDescription) {
 		contentElement.insertAdjacentElement('beforeend', descriptionElement);
 	}
 
-	return [contentElement, removeDescription, attachDescription];
+	function restoreFormHandler () {
+		return contentElement.addEventListener('click', onClick, { once: true });
+	}
+
+	return [contentElement, removeDescription, attachDescription, restoreFormHandler];
 }
 
 function HeadingElement () {
