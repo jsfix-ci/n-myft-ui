@@ -17,7 +17,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
 			if (!lists.length) attachDescription();
-			return restoreFormHandler()
+			return restoreFormHandler();
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
@@ -30,13 +30,13 @@ export default async function openSaveArticleToListVariant (contentId, options =
 					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${newList.name} created`;
-					restoreFormHandler()
+					restoreFormHandler();
 					cb(contentId, createdList.actorId);
 				});
 			})
 			.catch(() => {
 				if (!lists.length) attachDescription();
-				return restoreFormHandler()
+				return restoreFormHandler();
 			});
 	}
 
@@ -117,7 +117,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 		positionOverlay(data.currentTarget);
 
-		restoreFormHandler()
+		restoreFormHandler();
 
 		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
 
