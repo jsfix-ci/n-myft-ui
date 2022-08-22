@@ -96,7 +96,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	}
 
 	function openFormHandler () {
-		const formElement = FormElement(createList, showPublicToggle, restoreFormHandler);
+		const formElement = FormElement(createList, showPublicToggle, restoreFormHandler, attachDescription);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -182,7 +182,7 @@ function getResizeHandler (target) {
 	};
 }
 
-function FormElement (createList, showPublicToggle, restoreFormHandler) {
+function FormElement (createList, showPublicToggle, restoreFormHandler, attachDescription) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
 		<label class="myft-ui-create-list-variant-form-name o-forms-field">
@@ -252,7 +252,8 @@ function FormElement (createList, showPublicToggle, restoreFormHandler) {
 		event.preventDefault();
 		event.stopPropagation();
 		formElement.remove();
-		restoreFormHandler()
+		if (!lists.length) attachDescription();
+		restoreFormHandler();
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
