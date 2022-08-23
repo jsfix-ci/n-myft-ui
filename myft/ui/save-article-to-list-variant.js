@@ -139,6 +139,7 @@ function showMessageOverlay () {
 	function onContinue () {
 		messageOverlay.destroy();
 		createListOverlay.show();
+		triggerAcknowledgeMessageEvent();
 	}
 
 	const messageElement = MessageElement(onContinue);
@@ -238,6 +239,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 			triggerCreateListEvent(contentId, createdList.uuid);
 			triggerAddToListEvent(contentId, createdList.uuid);
 			positionOverlay(createListOverlay.wrapper);
+			triggerCancelEvent();
 
 			if (createdList.isShareable) {
 				createListOverlay.close();
@@ -281,6 +283,8 @@ function ContentElement (hasDescription, onClick) {
 	`;
 
 	const contentElement = stringToHTMLElement(content);
+
+	contentElement.querySelector('.myft-ui-create-list-variant-add').addEventListener('click', triggerAddToNewListEvent);
 
 	function removeDescription () {
 		const descriptionElement = contentElement.querySelector('.myft-ui-create-list-variant-add-description');
@@ -491,11 +495,55 @@ function triggerCreateListEvent (contentId, listId) {
 	}));
 }
 
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
 function triggerPublicToggleEvent (isPublic) {
 	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
 		detail: {
-			category: 'list',
-			action: `${isPublic ? 'public-link' : 'private-link'}`,
+			category: 'publicToggle',
+			action: `${isPublic ? 'setPublic' : 'setPrivate'}`,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerAddToNewListEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'addToNewList',
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerAcknowledgeMessageEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'acknowledgeMessage',
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerCancelEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'cancel ',
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
