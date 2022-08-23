@@ -211,7 +211,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 }
 
 		<div class="myft-ui-create-list-variant-form-buttons">
-			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="button">
+			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="button" data-trackable="cancel-link" text="cancel">
 			Cancel
 			</button>
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
@@ -273,7 +273,7 @@ function ContentElement (hasDescription, onClick) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="Add to a new list">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
@@ -378,7 +378,7 @@ function MessageElement (onContinue) {
 			<p>We're currently testing this feature. For now, your list remains private and isn't visible to others.</p>
 		</div>
 		<div class="myft-ui-create-list-variant-message-buttons">
-			<button class="o-buttons o-buttons--big o-buttons--secondary">
+			<button class="o-buttons o-buttons--big o-buttons--secondary" data-trackable="continue-link" text="continue">
 			Continue
 			</button>
 		</div>
