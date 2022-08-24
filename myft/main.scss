@@ -350,12 +350,12 @@ $spacing-unit: 20px;
 			&-text {
 				@include oTypographySans($weight: 'semibold');
 				color: oColorsByName('black-80');
-				margin-bottom: oSpacingByName('s4');
+				margin-bottom: oSpacingByName('s3');
 			}
 			&-container {
 				margin-top: 0;
 				max-height: 92px;
-				padding-bottom: 2px;
+				padding: 4px 2px;
 				overflow-y: auto;
 				@include oGridRespondTo($from: M) {
 					max-height: 126px;
