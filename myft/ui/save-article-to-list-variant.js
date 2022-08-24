@@ -139,6 +139,7 @@ function showMessageOverlay () {
 	function onContinue () {
 		messageOverlay.destroy();
 		createListOverlay.show();
+		triggerAcknowledgeMessageEvent();
 	}
 
 	const messageElement = MessageElement(onContinue);
@@ -195,7 +196,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		`<div class="myft-ui-create-list-variant-form-public o-forms-field" role="group">
 				<span class="o-forms-input o-forms-input--toggle">
 					<label>
-						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked>
+						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked data-trackable="private-link" text="private">
 						<span class="myft-ui-create-list-variant-form-toggle-label o-forms-input__label">
 							<span class="o-forms-input__label__main">
 								Public
@@ -211,7 +212,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 }
 
 		<div class="myft-ui-create-list-variant-form-buttons">
-			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="button">
+			<button class="o-buttons o-buttons--primary o-buttons--inverse o-buttons--big" type="button" data-trackable="cancel-link" text="cancel">
 			Cancel
 			</button>
 			<button class="o-buttons o-buttons--big o-buttons--secondary" type="submit">
@@ -238,6 +239,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 			triggerCreateListEvent(contentId, createdList.uuid);
 			triggerAddToListEvent(contentId, createdList.uuid);
 			positionOverlay(createListOverlay.wrapper);
+			triggerCancelEvent();
 
 			if (createdList.isShareable) {
 				createListOverlay.close();
@@ -245,7 +247,6 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 			}
 		}));
 		formElement.remove();
-
 	}
 
 	function handleCancelClick (event) {
@@ -256,8 +257,15 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		restoreFormHandler();
 	}
 
+	function onPublicToggleClick (event) {
+		event.target.setAttribute('data-trackable', event.target.checked ? 'private-link' : 'public-link');
+		event.target.setAttribute('text', event.target.checked ? 'private' : 'public');
+		triggerPublicToggleEvent(event.target.checked);
+	}
+
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
 	formElement.querySelector('button[type="button"]').addEventListener('click', handleCancelClick);
+	formElement.querySelector('input[name="is-shareable"]').addEventListener('click', onPublicToggleClick);
 
 	return formElement;
 }
@@ -267,7 +275,7 @@ function ContentElement (hasDescription, onClick) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="Add to a new list">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
@@ -275,6 +283,8 @@ function ContentElement (hasDescription, onClick) {
 	`;
 
 	const contentElement = stringToHTMLElement(content);
+
+	contentElement.querySelector('.myft-ui-create-list-variant-add').addEventListener('click', triggerAddToNewListEvent);
 
 	function removeDescription () {
 		const descriptionElement = contentElement.querySelector('.myft-ui-create-list-variant-add-description');
@@ -372,7 +382,7 @@ function MessageElement (onContinue) {
 			<p>We're currently testing this feature. For now, your list remains private and isn't visible to others.</p>
 		</div>
 		<div class="myft-ui-create-list-variant-message-buttons">
-			<button class="o-buttons o-buttons--big o-buttons--secondary">
+			<button class="o-buttons o-buttons--big o-buttons--secondary" data-trackable="continue-link" text="continue">
 			Continue
 			</button>
 		</div>
@@ -478,6 +488,62 @@ function triggerCreateListEvent (contentId, listId) {
 			action: 'create-success',
 			article_id: contentId,
 			list_id: listId,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerPublicToggleEvent (isPublic) {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: `${isPublic ? 'setPublic' : 'setPrivate'}`,
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerAddToNewListEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'addToNewList',
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerAcknowledgeMessageEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'acknowledgeMessage',
+			teamName: 'customer-products-us-growth',
+			amplitudeExploratory: true
+		},
+		bubbles: true
+	}));
+}
+
+// Temporary event on the public toggle feature.
+// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
+function triggerCancelEvent () {
+	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+		detail: {
+			category: 'publicToggle',
+			action: 'cancel ',
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
