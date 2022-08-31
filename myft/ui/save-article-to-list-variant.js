@@ -16,8 +16,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
-			if (!lists.length) attachDescription();
-			return restoreFormHandler();
+			return restoreContent();
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
@@ -31,8 +30,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 				});
 			})
 			.catch(() => {
-				if (!lists.length) attachDescription();
-				return restoreFormHandler();
+				return restoreContent();
 			});
 	}
 
@@ -56,6 +54,13 @@ export default async function openSaveArticleToListVariant (contentId, options =
 			cb();
 			triggerRemoveFromListEvent(contentId, removedList.actorId);
 		});
+	}
+
+	function restoreContent () {
+		if (!lists.length) attachDescription();
+		refreshListElement();
+		showListElement();
+		return restoreFormHandler();
 	}
 
 	if (!haveLoadedLists) {
