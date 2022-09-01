@@ -16,8 +16,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
-			if (!lists.length) attachDescription();
-			return restoreFormHandler();
+			return restoreContent();
 		}
 
 		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
@@ -25,18 +24,13 @@ export default async function openSaveArticleToListVariant (contentId, options =
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((data) => {
 					const createdList = { name: newList.name, uuid: data.actorId, checked: true, isShareable: !!newList.isShareable };
 					lists.unshift(createdList);
-					const listElement = ListsElement(lists, addToList, removeFromList);
-					const overlayContent = document.querySelector('.o-overlay__content');
-					overlayContent.insertAdjacentElement('afterbegin', listElement);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${newList.name} created`;
-					restoreFormHandler();
 					cb(contentId, createdList);
 				});
 			})
 			.catch(() => {
-				if (!lists.length) attachDescription();
-				return restoreFormHandler();
+				return restoreContent();
 			});
 	}
 
@@ -62,6 +56,13 @@ export default async function openSaveArticleToListVariant (contentId, options =
 		});
 	}
 
+	function restoreContent () {
+		if (!lists.length) attachDescription();
+		refreshListElement();
+		showListElement();
+		return restoreFormHandler();
+	}
+
 	if (!haveLoadedLists) {
 		lists = await getLists(contentId);
 		haveLoadedLists = true;
@@ -75,6 +76,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	const headingElement = HeadingElement();
 	let [contentElement, removeDescription, attachDescription, restoreFormHandler] = ContentElement(!lists.length, openFormHandler);
+	const [listElement, refreshListElement, hideListElement, showListElement] = ListsElement(lists, addToList, removeFromList);
 
 	createListOverlay = new Overlay(name, {
 		html: contentElement,
@@ -95,8 +97,20 @@ export default async function openSaveArticleToListVariant (contentId, options =
 		}
 	}
 
+	function onFormCancel () {
+		showListElement();
+		restoreFormHandler();
+	}
+
+	function onFormListCreated () {
+		refreshListElement();
+		showListElement();
+		restoreFormHandler();
+	}
+
 	function openFormHandler () {
-		const formElement = FormElement(createList, showPublicToggle, restoreFormHandler, attachDescription);
+		hideListElement();
+		const formElement = FormElement(createList, showPublicToggle, attachDescription, onFormListCreated, onFormCancel);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -110,7 +124,6 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	createListOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
 		if (lists.length) {
-			const listElement = ListsElement(lists, addToList, removeFromList);
 			const overlayContent = document.querySelector('.o-overlay__content');
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
@@ -183,7 +196,7 @@ function getResizeHandler (target) {
 	};
 }
 
-function FormElement (createList, showPublicToggle, restoreFormHandler, attachDescription) {
+function FormElement (createList, showPublicToggle, attachDescription, onListCreated, onCancel) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
 		<label class="myft-ui-create-list-variant-form-name o-forms-field">
@@ -245,6 +258,8 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 				createListOverlay.close();
 				showMessageOverlay();
 			}
+
+			onListCreated();
 		}));
 		formElement.remove();
 	}
@@ -254,7 +269,7 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		event.stopPropagation();
 		formElement.remove();
 		if (!lists.length) attachDescription();
-		restoreFormHandler();
+		onCancel();
 	}
 
 	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
@@ -339,9 +354,21 @@ function ListsElement (lists, addToList, removeFromList) {
 
 	const listsElementContainer = listsElement.querySelector('.myft-ui-create-list-variant-lists-container');
 
-	lists.map(list => listsElementContainer.insertAdjacentElement('beforeend', listCheckboxElement(list)));
+	function refresh () {
+		listsElementContainer.replaceChildren(...lists.map(list => listCheckboxElement(list)));
+	}
 
-	return listsElement;
+	function hide () {
+		listsElement.style.display = 'none';
+	}
+
+	function show () {
+		listsElement.style.display = 'flex';
+	}
+
+	refresh();
+
+	return [listsElement, refresh, hide, show];
 }
 
 function ListCheckboxElement (addToList, removeFromList) {
