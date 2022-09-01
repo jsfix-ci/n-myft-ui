@@ -257,17 +257,24 @@ function FormElement (createList, showPublicToggle, restoreFormHandler, attachDe
 		restoreFormHandler();
 	}
 
+	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
+	formElement.querySelector('button[type="button"]').addEventListener('click', handleCancelClick);
+
+	if (showPublicToggle) {
+		addPublicToggleListener(formElement);
+	}
+
+	return formElement;
+}
+
+function addPublicToggleListener (formElement) {
 	function onPublicToggleClick (event) {
 		event.target.setAttribute('data-trackable', event.target.checked ? 'private-link' : 'public-link');
 		event.target.setAttribute('text', event.target.checked ? 'private' : 'public');
 		triggerPublicToggleEvent(event.target.checked);
 	}
 
-	formElement.querySelector('button[type="submit"]').addEventListener('click', handleSubmit);
-	formElement.querySelector('button[type="button"]').addEventListener('click', handleCancelClick);
 	formElement.querySelector('input[name="is-shareable"]').addEventListener('click', onPublicToggleClick);
-
-	return formElement;
 }
 
 function ContentElement (hasDescription, onClick) {
