@@ -297,7 +297,7 @@ function ContentElement (hasDescription, onClick) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add" data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add myft-ui-create-list-variant-add-collapsed" data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
@@ -321,7 +321,13 @@ function ContentElement (hasDescription, onClick) {
 	}
 
 	function restoreFormHandler () {
-		return contentElement.addEventListener('click', onClick, { once: true });
+		contentElement.querySelector('.myft-ui-create-list-variant-add').classList.add('myft-ui-create-list-variant-add-collapsed');
+		return contentElement.addEventListener('click', clickHandler, { once: true });
+	}
+
+	function clickHandler (event) {
+		contentElement.querySelector('.myft-ui-create-list-variant-add').classList.remove('myft-ui-create-list-variant-add-collapsed');
+		onClick(event);
 	}
 
 	return [contentElement, removeDescription, attachDescription, restoreFormHandler];

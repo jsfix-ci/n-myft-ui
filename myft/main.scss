@@ -239,13 +239,12 @@ $spacing-unit: 20px;
 			color: oColorsByName('black-80');
 
 			padding-left: 0;
-			margin-left: -8px;
 
 			&:hover {
 				text-decoration: underline;
 			}
 
-			&::before {
+			&-collapsed::before {
 				content: '';
 				@include oIconsContent(
 					'plus',
@@ -255,6 +254,7 @@ $spacing-unit: 20px;
 				);
 				vertical-align: middle;
 				margin-top: -2px;
+				margin-left: -8px;
 			}
 		}
 
