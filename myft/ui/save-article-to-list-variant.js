@@ -10,6 +10,8 @@ const csrfToken = getToken();
 let lists = [];
 let haveLoadedLists = false;
 let createListOverlay;
+let scrolledOnOpen;
+let listOverlayBottom;
 
 export default async function openSaveArticleToListVariant (contentId, options = {}) {
 	const { name, showPublicToggle = false } = options;
@@ -118,6 +120,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	}
 
 	createListOverlay.open();
+	scrolledOnOpen = window.scrollY;
 
 	const scrollHandler = getScrollHandler(createListOverlay.wrapper);
 	const resizeHandler = getResizeHandler(createListOverlay.wrapper);
@@ -129,6 +132,8 @@ export default async function openSaveArticleToListVariant (contentId, options =
 		}
 
 		positionOverlay(data.currentTarget);
+
+		listOverlayBottom = document.querySelector('.myft-ui-create-list-variant').getBoundingClientRect().bottom;
 
 		restoreFormHandler();
 
@@ -306,6 +311,7 @@ function ContentElement (hasDescription, onClick) {
 
 	const contentElement = stringToHTMLElement(content);
 
+	contentElement.querySelector('.myft-ui-create-list-variant-add').addEventListener('click', checkScrollToAdd);
 	contentElement.querySelector('.myft-ui-create-list-variant-add').addEventListener('click', triggerAddToNewListEvent);
 
 	function removeDescription () {
@@ -589,4 +595,20 @@ function triggerCancelEvent () {
 		},
 		bubbles: true
 	}));
+}
+
+//Temporary event to determine whether users need to scroll to add to a list
+function checkScrollToAdd () {
+	//if the bottom of the overlay was not showing and scrolling has occurred since it was opened
+	if(listOverlayBottom > window.innerHeight && window.scrollY > scrolledOnOpen) {
+		document.body.dispatchEvent(new CustomEvent('oTracking.event', {
+			detail: {
+				category: 'publicToggle',
+				action: 'scrollToAdd',
+				teamName: 'customer-products-us-growth',
+				amplitudeExploratory: true
+			},
+			bubbles: true
+		}));
+	}
 }
