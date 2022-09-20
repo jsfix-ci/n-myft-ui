@@ -257,7 +257,6 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 			triggerCreateListEvent(contentId, createdList.uuid);
 			triggerAddToListEvent(contentId, createdList.uuid);
 			positionOverlay(createListOverlay.wrapper);
-			triggerCancelEvent();
 
 			if (createdList.isShareable) {
 				createListOverlay.close();
@@ -272,6 +271,7 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 	function handleCancelClick (event) {
 		event.preventDefault();
 		event.stopPropagation();
+		triggerCancelEvent();
 		formElement.remove();
 		if (!lists.length) attachDescription();
 		onCancel();
