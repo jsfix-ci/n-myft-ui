@@ -60,6 +60,9 @@ function updateAfterAddToList (listId, contentId, wasAdded) {
 					action: 'copy-success',
 					article_id: contentId,
 					list_id: listId,
+					content: {
+						uuid: contentId
+					},
 					teamName: 'customer-products-us-growth',
 					amplitudeExploratory: true
 				},
@@ -85,7 +88,7 @@ function setUpSaveToExistingListListeners (overlay, contentId) {
 			const listId = listSelect.options[listSelect.selectedIndex].value;
 			myFtClient.add('list', listId, 'contained', 'content', contentId, { token: csrfToken })
 				.then(detail => {
-					updateAfterAddToList(detail.actorId, detail.subjectId, !!detail.results);
+					updateAfterAddToList(detail.actorId, detail.subject, !!detail.results);
 					overlay.close();
 				});
 		});
@@ -252,6 +255,9 @@ function handleRemoveToggleSubmit (event) {
 					action: action === 'add' ? 'add-success' : 'remove-success',
 					article_id: contentId,
 					list_id: listId,
+					content: {
+						uuid: contentId
+					},
 					teamName: 'customer-products-us-growth',
 					amplitudeExploratory: true
 				},
