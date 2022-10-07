@@ -21,10 +21,10 @@ export default async function openSaveArticleToListVariant (contentId, options =
 			return restoreContent();
 		}
 
-		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken })
+		myFtClient.add('user', null, 'created', 'list', uuid(), { name: newList.name,	token: csrfToken, isPublic: newList.isPublic })
 			.then(detail => {
 				myFtClient.add('list', detail.subject, 'contained', 'content', contentId, { token: csrfToken }).then((data) => {
-					const createdList = { name: newList.name, uuid: data.actorId, checked: true, isShareable: !!newList.isShareable };
+					const createdList = { name: newList.name, uuid: data.actorId, checked: true, isPublic: !!newList.isPublic };
 					lists.unshift(createdList);
 					const announceListContainer = document.querySelector('.myft-ui-create-list-variant-announcement');
 					announceListContainer.textContent = `${newList.name} created`;
@@ -153,44 +153,6 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	});
 }
 
-function showMessageOverlay () {
-	function onContinue () {
-		messageOverlay.destroy();
-		createListOverlay.show();
-		triggerAcknowledgeMessageEvent();
-	}
-
-	const messageElement = MessageElement(onContinue);
-
-	const messageOverlay = new Overlay('myft-ui-create-list-variant-message', {
-		html: messageElement,
-		modal: false,
-		parentnode: isMobile() ? '.o-share--horizontal' : '.o-share--vertical',
-		class: 'myft-ui-create-list-variant-message',
-	});
-
-	const scrollHandler = getScrollHandler(messageOverlay.wrapper);
-	const resizeHandler = getResizeHandler(messageOverlay.wrapper);
-
-	messageOverlay.open();
-
-	messageOverlay.wrapper.addEventListener('oOverlay.ready', (data) => {
-		positionOverlay(data.currentTarget);
-
-		window.addEventListener('scroll', scrollHandler);
-
-		window.addEventListener('oViewport.resize', resizeHandler);
-	});
-
-	messageOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
-		window.removeEventListener('scroll', scrollHandler);
-
-		window.removeEventListener('oViewport.resize', resizeHandler);
-	});
-
-	return messageOverlay;
-}
-
 function getScrollHandler (target) {
 	return realignOverlay(window.scrollY, target);
 }
@@ -214,7 +176,7 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 		`<div class="myft-ui-create-list-variant-form-public o-forms-field" role="group">
 				<span class="o-forms-input o-forms-input--toggle">
 					<label>
-						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-shareable" value="public" checked data-trackable="private-link" text="private">
+						<input class="myft-ui-create-list-variant-form-toggle" type="checkbox" name="is-public" value="public" checked data-trackable="private-link" text="private">
 						<span class="myft-ui-create-list-variant-form-toggle-label o-forms-input__label">
 							<span class="o-forms-input__label__main">
 								Public
@@ -246,23 +208,17 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 		event.preventDefault();
 		event.stopPropagation();
 		const inputListName = formElement.querySelector('input[name="list-name"]');
-		const inputIsShareable = formElement.querySelector('input[name="is-shareable"]');
+		const inputIsPublic = formElement.querySelector('input[name="is-public"]');
 
 		const newList = {
 			name: inputListName.value,
-			isShareable: inputIsShareable ? inputIsShareable.checked : false
+			isPublic: inputIsPublic ? inputIsPublic.checked : false
 		};
 
 		createList(newList, ((contentId, createdList) => {
 			triggerCreateListEvent(contentId, createdList.uuid);
 			triggerAddToListEvent(contentId, createdList.uuid);
 			positionOverlay(createListOverlay.wrapper);
-
-			if (createdList.isShareable) {
-				createListOverlay.close();
-				showMessageOverlay();
-			}
-
 			onListCreated();
 		}));
 		formElement.remove();
@@ -294,7 +250,7 @@ function addPublicToggleListener (formElement) {
 		triggerPublicToggleEvent(event.target.checked);
 	}
 
-	formElement.querySelector('input[name="is-shareable"]').addEventListener('click', onPublicToggleClick);
+	formElement.querySelector('input[name="is-public"]').addEventListener('click', onPublicToggleClick);
 }
 
 function ContentElement (hasDescription, onClick) {
@@ -420,28 +376,6 @@ function ListCheckboxElement (addToList, removeFromList) {
 	};
 }
 
-function MessageElement (onContinue) {
-	const message = `
-	<div class="myft-ui-create-list-variant-message-content" >
-		<div class="myft-ui-create-list-variant-message-text" aria-live="polite">
-			<h3>Thank you for your interest in making a public list</h3>
-			<p>We're currently testing this feature. For now, your list remains private and isn't visible to others.</p>
-		</div>
-		<div class="myft-ui-create-list-variant-message-buttons">
-			<button class="o-buttons o-buttons--big o-buttons--secondary" data-trackable="continue-link" text="continue">
-			Continue
-			</button>
-		</div>
-	</div>
-`;
-
-	const messageElement = stringToHTMLElement(message);
-
-	messageElement.querySelector('button').addEventListener('click', onContinue);
-
-	return messageElement;
-}
-
 function realignOverlay (originalScrollPosition, target) {
 	return function () {
 		const currentScrollPosition = window.scrollY;
@@ -495,7 +429,7 @@ async function getLists (contentId) {
 	return myFtClient.getListsContent()
 		.then(results => results.items.map(list => {
 			const isChecked = Array.isArray(list.content) && list.content.some(content => content.uuid === contentId);
-			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content, isShareable: false };
+			return { name: list.name, uuid: list.uuid, checked: isChecked, content: list.content, isPublic: list.isPublic };
 		}));
 }
 
@@ -562,20 +496,6 @@ function triggerAddToNewListEvent () {
 		detail: {
 			category: 'publicToggle',
 			action: 'addToNewList',
-			teamName: 'customer-products-us-growth',
-			amplitudeExploratory: true
-		},
-		bubbles: true
-	}));
-}
-
-// Temporary event on the public toggle feature.
-// These will be used to build a sanity check dashboard, and will be removed after we get clean-up this test.
-function triggerAcknowledgeMessageEvent () {
-	document.body.dispatchEvent(new CustomEvent('oTracking.event', {
-		detail: {
-			category: 'publicToggle',
-			action: 'acknowledgeMessage',
 			teamName: 'customer-products-us-growth',
 			amplitudeExploratory: true
 		},
