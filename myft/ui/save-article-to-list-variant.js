@@ -167,7 +167,8 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 	<form class="myft-ui-create-list-variant-form">
 		<label class="myft-ui-create-list-variant-form-name o-forms-field">
 			<span class="o-forms-input o-forms-input--text">
-				<input class="myft-ui-create-list-variant-text" type="text" name="list-name" aria-label="List name">
+				<input class="myft-ui-create-list-variant-text" type="text" name="list-name">
+				List name
 			</span>
 		</label>
 
