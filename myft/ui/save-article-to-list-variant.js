@@ -116,7 +116,6 @@ export default async function openSaveArticleToListVariant (contentId, options =
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
-		formElement.elements[0].focus();
 	}
 
 	createListOverlay.open();
@@ -258,7 +257,7 @@ function ContentElement (hasDescription, onClick) {
 
 	const content = `
 		<div class="myft-ui-create-list-variant-footer">
-			<button class="myft-ui-create-list-variant-add myft-ui-create-list-variant-add-collapsed" data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
+			<button class="myft-ui-create-list-variant-add myft-ui-create-list-variant-add-collapsed" aria-expanded=false data-trackable="add-to-new-list" text="add to new list">Add to a new list</button>
 			${hasDescription ? `
 			${description}
 		` : ''}
@@ -284,11 +283,13 @@ function ContentElement (hasDescription, onClick) {
 
 	function restoreFormHandler () {
 		contentElement.querySelector('.myft-ui-create-list-variant-add').classList.add('myft-ui-create-list-variant-add-collapsed');
+		contentElement.querySelector('.myft-ui-create-list-variant-add').setAttribute('aria-expanded', false);
 		return contentElement.addEventListener('click', clickHandler, { once: true });
 	}
 
 	function clickHandler (event) {
 		contentElement.querySelector('.myft-ui-create-list-variant-add').classList.remove('myft-ui-create-list-variant-add-collapsed');
+		contentElement.querySelector('.myft-ui-create-list-variant-add').setAttribute('aria-expanded', true);
 		onClick(event);
 	}
 
