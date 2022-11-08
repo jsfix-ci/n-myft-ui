@@ -20,7 +20,7 @@
 		{{#if isSaved}}
 			{{!-- The value of alternate label needs to be the opposite of label / the current saved state. This allows the client side JS to toggle the labels on state changes --}}
 			title="{{#if title}}{{title}} is{{/if}} Saved to myFT"
-			aria-label="{{#if title}}{{title}} is{{/if}} Saved to myFT"
+			aria-label="{{#if title}}{{title}} is{{/if}} Saved to myFT - Unsave"
 			data-alternate-label="{{#if title}}Save {{title}} to myFT for later{{else}}Save this article to myFT for later{{/if}}"
 			aria-pressed="true"
 		{{else}}
