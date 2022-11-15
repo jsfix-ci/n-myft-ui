@@ -24,6 +24,17 @@ $spacing-unit: 20px;
 	display: inline-block;
 }
 
+// article lists modal
+@include oForms($opts: (
+	'elements': ('text', 'checkbox', 'toggle')
+));
+
+@include oButtons($opts: (
+	'sizes': ('big'),
+	'types': ('primary', 'secondary'),
+	'themes': ('inverse')
+));
+
 // experimental flash animation on header icon
 @include myftHeaderIconFlash;
 
@@ -174,6 +185,190 @@ $spacing-unit: 20px;
 
 }
 
+.myft-ui-create-list-variant-message {
+	border-radius: 10px;
+	border: 1px solid oColorsByName('black-5');
+	background: oColorsByName('white-80');
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+
+		h3 {
+			margin: 0;
+		}
+	}
+
+	&-buttons {
+		text-align: center;
+	}
+}
+
+.myft-ui-create-list-variant {
+	border-radius: 10px;
+	border: 1px solid oColorsByName('black-5');
+	background: oColorsByName('white-80');
+
+	.o-overlay__heading {
+		border-radius: 10px 10px 0 0;
+		background: oColorsByName('white-60');
+		@include oTypographySans($scale: 2);
+		color: oColorsByName('black-80');
+	}
+
+	.o-overlay__content {
+		@include oTypographySans($scale: 0);
+		color: oColorsByName('black-80');
+		padding: 0;
+	}
+
+	.o-overlay__title {
+		margin: 8px 14px 0 8px;
+	}
+
+	&-container {
+		display: block;
+		width: 340px;
+		top: 115.5px;
+		left: 50px;
+	}
+
+	&-add {
+		border: 0;
+		background: none;
+		@include oTypographySans($scale: 1, $weight: 'semibold');
+		color: oColorsByName('black-80');
+
+		padding-left: 0;
+
+		&:hover {
+			text-decoration: underline;
+		}
+
+		&-collapsed::before {
+			content: '';
+			@include oIconsContent(
+				'plus',
+				oColorsByName('black-80'),
+				28,
+				$iconset-version: 1
+			);
+			vertical-align: middle;
+			margin-top: -2px;
+			margin-left: -8px;
+		}
+	}
+
+	&-add-description {
+		margin: oSpacingByName('s1') 0;
+	}
+
+	&-heading {
+		&::before {
+			content: '';
+			@include oIconsContent(
+				'tick',
+				oColorsByName('teal'),
+				32,
+				$iconset-version: 1
+				);
+				vertical-align: middle;
+				margin-top: -2px;
+			}
+		}
+
+	&-footer {
+		border-top: 1px solid oColorsByName('black-5');
+		padding: oSpacingByName('s4');
+	}
+
+	&-icon {
+		&::before {
+			content: "";
+			display: inline-block;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: 50%;
+			background-color: transparent;
+			background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1:brand-myft?source=next-article);
+			width: 42px;
+			height: 42px;
+			vertical-align: middle;
+			margin-top: -2px;
+		}
+
+		&-visually-hidden {
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			height: 1px;
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+			width: 1px;
+		}
+		}
+
+	&-form {
+		$field-spacing: 's4';
+		display: flex;
+		flex-direction: column;
+		width: calc(100% - 32px);
+		gap: oSpacingByName($field-spacing);
+		padding: 0 oSpacingByName($field-spacing) oSpacingByName('s3');
+
+		& >* {
+			flex: 1 1 auto;
+			margin-bottom: 0;
+		}
+
+		& >*.o-forms-field {
+			margin-bottom: 0;
+		}
+
+		.o-forms-input {
+			margin-top: 0;
+		}
+
+		&-toggle {
+			position: absolute;
+		}
+
+		&-toggle-label.o-forms-input__label::after {
+			background-color: oColorsByName('white');
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: flex-end;
+			@include oTypographySans($scale: 2);
+		}
+
+		&-public {
+			max-width: 300px;
+			padding: 0 3px;
+		}
+	}
+
+	&-lists {
+		padding: oSpacingByName('s4') oSpacingByName('s4') 0;
+		@include oTypographySans($scale: 1);
+		&-text {
+			@include oTypographySans($weight: 'semibold');
+			color: oColorsByName('black-80');
+			margin-bottom: oSpacingByName('s3');
+		}
+		&-container {
+			margin-top: 0;
+			max-height: 92px;
+			padding: 4px 2px;
+			overflow-y: auto;
+			@include oGridRespondTo($from: M) {
+				max-height: 126px;
+			}
+		}
+	}
+}
+
 .share-nav {
 	&.data-overlap-initialised {
 		.o-overlay {
@@ -182,188 +377,6 @@ $spacing-unit: 20px;
 			z-index: -1;
 		}
 	}
-
-	.myft-ui-create-list-variant-message {
-		border-radius: 10px;
-		border: 1px solid oColorsByName('black-5');
-		background: oColorsByName('white-80');
-
-		&-content {
-			display: flex;
-			flex-direction: column;
-
-			h3 {
-				margin: 0;
-			}
-		}
-
-		&-buttons {
-			text-align: center;
-		}
-	}
-
-
-	.myft-ui-create-list-variant {
-		border-radius: 10px;
-		border: 1px solid oColorsByName('black-5');
-		background: oColorsByName('white-80');
-
-		.o-overlay__heading {
-			border-radius: 10px 10px 0 0;
-			background: oColorsByName('white-60');
-			@include oTypographySans($scale: 2);
-			color: oColorsByName('black-80');
-		}
-
-		.o-overlay__content {
-			@include oTypographySans($scale: 0);
-			color: oColorsByName('black-80');
-			padding: 0;
-		}
-
-		.o-overlay__title {
-			margin: 8px 14px 0 8px;
-		}
-
-		&-container {
-			display: block;
-			width: 340px;
-			top: 115.5px;
-			left: 50px;
-		}
-
-		&-add {
-			border: 0;
-			background: none;
-			@include oTypographySans($scale: 1, $weight: 'semibold');
-			color: oColorsByName('black-80');
-
-			padding-left: 0;
-
-			&:hover {
-				text-decoration: underline;
-			}
-
-			&-collapsed::before {
-				content: '';
-				@include oIconsContent(
-					'plus',
-					oColorsByName('black-80'),
-					28,
-					$iconset-version: 1
-				);
-				vertical-align: middle;
-				margin-top: -2px;
-				margin-left: -8px;
-			}
-		}
-
-		&-add-description {
-			margin: oSpacingByName('s1') 0;
-		}
-
-		&-heading {
-			&::before {
-				content: '';
-				@include oIconsContent(
-					'tick',
-					oColorsByName('teal'),
-					32,
-					$iconset-version: 1
-				);
-				vertical-align: middle;
-				margin-top: -2px;
-			}
-		}
-
-		&-footer {
-			border-top: 1px solid oColorsByName('black-5');
-			padding: oSpacingByName('s4');
-		}
-
-		&-icon {
-			&::before {
-				content: "";
-				display: inline-block;
-				background-repeat: no-repeat;
-				background-size: contain;
-				background-position: 50%;
-				background-color: transparent;
-				background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/ftlogo-v1:brand-myft?source=next-article);
-				width: 42px;
-				height: 42px;
-				vertical-align: middle;
-				margin-top: -2px;
-			}
-
-			&-visually-hidden {
-				clip: rect(0 0 0 0);
-				clip-path: inset(50%);
-				height: 1px;
-				overflow: hidden;
-				position: absolute;
-				white-space: nowrap;
-				width: 1px;
-			}
-		}
-
-		&-form {
-			$field-spacing: 's4';
-			display: flex;
-			flex-direction: column;
-			width: calc(100% - 32px);
-			gap: oSpacingByName($field-spacing);
-			padding: 0 oSpacingByName($field-spacing) oSpacingByName('s3');
-
-			& > * {
-				flex: 1 1 auto;
-				margin-bottom: 0;
-			}
-
-			.o-forms-input {
-				margin-top: 0;
-			}
-
-			&-toggle {
-				position: absolute;
-			}
-
-			&-toggle-label::after {
-				background-color: oColorsByName('white');
-			}
-
-			&-buttons {
-				display: flex;
-				justify-content: flex-end;
-				@include oTypographySans($scale: 2);
-			}
-
-			&-public {
-				max-width: 300px;
-				padding: 0 3px;
-			}
-		}
-
-		&-lists {
-			padding: oSpacingByName('s4') oSpacingByName('s4') 0;
-			@include oTypographySans($scale: 1);
-			&-text {
-				@include oTypographySans($weight: 'semibold');
-				color: oColorsByName('black-80');
-				margin-bottom: oSpacingByName('s3');
-			}
-			&-container {
-				margin-top: 0;
-				max-height: 92px;
-				padding: 4px 2px;
-				overflow-y: auto;
-				@include oGridRespondTo($from: M) {
-					max-height: 126px;
-				}
-			}
-		}
-	}
-
 	.myft-notification {
 		background: oColorsByName('white-80');
 		box-sizing: border-box;
