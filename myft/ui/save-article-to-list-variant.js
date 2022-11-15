@@ -14,7 +14,7 @@ let scrolledOnOpen;
 let listOverlayBottom;
 
 export default async function openSaveArticleToListVariant (contentId, options = {}) {
-	const { name, showPublicToggle = false } = options;
+	const { name, showPublicToggle = false, modal = false } = options;
 
 	function createList (newList, cb) {
 		if(!newList || !newList.name) {
@@ -81,9 +81,9 @@ export default async function openSaveArticleToListVariant (contentId, options =
 	const [listElement, refreshListElement, hideListElement, showListElement] = ListsElement(lists, addToList, removeFromList);
 
 	createListOverlay = new Overlay(name, {
+		modal,
 		html: contentElement,
 		heading: { title: headingElement.outerHTML },
-		modal: false,
 		parentnode: isMobile() ? '.o-share--horizontal' : '.o-share--vertical',
 		class: 'myft-ui-create-list-variant',
 	});
@@ -112,7 +112,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 	function openFormHandler () {
 		hideListElement();
-		const formElement = FormElement(createList, showPublicToggle, attachDescription, onFormListCreated, onFormCancel);
+		const formElement = FormElement(createList, showPublicToggle, attachDescription, onFormListCreated, onFormCancel, modal);
 		const overlayContent = document.querySelector('.o-overlay__content');
 		removeDescription();
 		overlayContent.insertAdjacentElement('beforeend', formElement);
@@ -130,17 +130,20 @@ export default async function openSaveArticleToListVariant (contentId, options =
 			overlayContent.insertAdjacentElement('afterbegin', listElement);
 		}
 
-		positionOverlay(data.currentTarget);
+		if (!modal) {
+			positionOverlay(data.currentTarget);
+
+			window.addEventListener('oViewport.resize', resizeHandler);
+			window.addEventListener('scroll', scrollHandler);
+		}
 
 		listOverlayBottom = document.querySelector('.myft-ui-create-list-variant').getBoundingClientRect().bottom;
 
 		restoreFormHandler();
 
-		document.querySelector('.article-content').addEventListener('click', outsideClickHandler);
+		document.body.addEventListener('click', outsideClickHandler);
 
-		window.addEventListener('scroll', scrollHandler);
 
-		window.addEventListener('oViewport.resize', resizeHandler);
 	});
 
 	createListOverlay.wrapper.addEventListener('oOverlay.destroy', () => {
@@ -148,7 +151,7 @@ export default async function openSaveArticleToListVariant (contentId, options =
 
 		window.removeEventListener('oViewport.resize', resizeHandler);
 
-		document.querySelector('.article-content').removeEventListener('click', outsideClickHandler);
+		document.body.removeEventListener('click', outsideClickHandler);
 	});
 }
 
@@ -162,7 +165,7 @@ function getResizeHandler (target) {
 	};
 }
 
-function FormElement (createList, showPublicToggle, attachDescription, onListCreated, onCancel) {
+function FormElement (createList, showPublicToggle, attachDescription, onListCreated, onCancel, modal=false) {
 	const formString = `
 	<form class="myft-ui-create-list-variant-form">
 		<label class="myft-ui-create-list-variant-form-name o-forms-field">
@@ -218,7 +221,9 @@ function FormElement (createList, showPublicToggle, attachDescription, onListCre
 		createList(newList, ((contentId, createdList) => {
 			triggerCreateListEvent(contentId, createdList.uuid);
 			triggerAddToListEvent(contentId, createdList.uuid);
-			positionOverlay(createListOverlay.wrapper);
+			if (!modal) {
+				positionOverlay(createListOverlay.wrapper);
+			}
 			onListCreated();
 		}));
 		formElement.remove();
@@ -262,6 +267,11 @@ function ContentElement (hasDescription, onClick) {
 			${hasDescription ? `
 			${description}
 		` : ''}
+			<span
+			class="myft-ui-create-list-variant-announcement o-normalise-visually-hidden"
+			role="region"
+			aria-live="assertive"
+			/>
 		</div>
 	`;
 
