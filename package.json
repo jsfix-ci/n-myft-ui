@@ -26,7 +26,7 @@
     "@financial-times/dotcom-build-sass": "^5.0.0",
     "@financial-times/dotcom-server-handlebars": "^5.0.0",
     "@financial-times/n-express": "^23.0.1",
-    "@financial-times/n-gage": "^8.3.2",
+    "@financial-times/n-gage": "^9.0.0",
     "ascii-table": "0.0.9",
     "autoprefixer": "9.7.0",
     "aws-sdk-mock": "4.5.0",
