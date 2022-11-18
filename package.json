@@ -103,7 +103,7 @@
     "fetchres": "^1.7.2",
     "form-serialize": "^0.7.2",
     "ftdomdelegate": "^4.0.6",
-    "js-cookie": "^2.2.1",
+    "js-cookie": "^3.0.1",
     "next-myft-client": "^10.3.0",
     "next-session-client": "^4.0.0",
     "superstore-sync": "^2.1.1"
